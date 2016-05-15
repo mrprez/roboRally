@@ -1,4 +1,4 @@
-package com.mrprez.roboRally.shared;
+package com.mrprez.roborally.shared;
 
 /**
  * <p>

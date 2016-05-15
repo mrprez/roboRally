@@ -6,7 +6,6 @@
 	<artifactId>roboRally</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>GWT Maven Archetype</name>
 
 	<parent>
 		<artifactId>mrprez</artifactId>
@@ -111,7 +110,7 @@
 				<configuration>
 					<runTarget>GameBoard.html</runTarget>
 					<modules>
-						<module>com.mrprez.roboRally.GameBoard</module>
+						<module>com.mrprez.roborally.GameBoard</module>
 					</modules>
 				</configuration>
 			</plugin>
