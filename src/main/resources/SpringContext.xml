@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans classpath:/org/springframework/beans/factory/xml/spring-beans-3.0.xsd
+			http://www.springframework.org/schema/aop classpath:/org/springframework/aop/config/spring-aop-3.0.xsd
+			http://www.springframework.org/schema/tx classpath:/org/springframework/transaction/config/spring-tx-3.0.xsd
+			http://www.springframework.org/schema/jee classpath:/org/springframework/ejb/config/spring-jee-3.0.xsd">
+
+
+
+	
+
+	<jee:jndi-lookup id="roborallyDataSource" jndi-name="java:comp/env/jdbc/RoboRallyDB"/>
+	
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="roborallyDataSource" />
+	</bean>
+	
+	
+	<!-- DAO -->
+	<tx:advice id="daoTxAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="find*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="*" propagation="REQUIRED" rollback-for="Throwable" />
+		</tx:attributes>
+	</tx:advice>
+	
+	<aop:config>
+		<aop:pointcut id="daoMethodes" expression="execution(* com.mrprez.roborally.dao.*DaoImpl.*(..))" />
+		<aop:advisor advice-ref="daoTxAdvice" pointcut-ref="daoMethodes" />
+	</aop:config>
+	
+	<bean id="boardIdGenerator" class="com.mrprez.roborally.dao.IdGenerator" scope="singleton">
+		<constructor-arg ref="roborallyDataSource"/>
+		<constructor-arg type="java.lang.String" value="BOARD"/>
+		<constructor-arg type="java.lang.String" value="ID"/>
+	</bean>
+	<bean id="userDao" class="com.mrprez.roborally.dao.UserDaoImpl" scope="singleton">
+		<property name="dataSource" ref="roborallyDataSource"/>
+	</bean>
+	<bean id="boardDao" class="com.mrprez.roborally.dao.BoardDaoImpl" scope="singleton">
+		<property name="dataSource" ref="roborallyDataSource"/>
+		<property name="idGenerator" ref="boardIdGenerator"/>
+	</bean>
+	
+
+	<!-- BS -->
+	<bean id="userService" class="com.mrprez.roborally.bs.UserServiceImpl" scope="singleton">
+		<property name="userDao" ref="userDao"/>
+	</bean>
+	<bean id="boardService" class="com.mrprez.roborally.bs.BoardServiceImpl" scope="singleton">
+		<property name="boardDao" ref="boardDao"/>
+	</bean>
+
+	
+
+</beans>
