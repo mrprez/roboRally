@@ -52,6 +52,7 @@ public class Login implements EntryPoint {
 					public void onFailure(Throwable caught) {
 						PopupPanel popupPanel = new PopupPanel(true, true);
 						popupPanel.add(new Label(caught.getMessage()));
+						popupPanel.setGlassEnabled(true);
 						popupPanel.center();
 					}
 				});
