@@ -58,7 +58,7 @@
 
 
 	<!-- GWT -->
-	<bean id="authenticationGwtService" class="com.mrprez.roborally.server.AuthenticationGwtServiceImpl">
+	<bean id="authenticationGwtService" class="com.mrprez.roborally.server.AuthenticationGwtServiceImpl" scope="request">
 		<property name="userService" ref="userService"/>
 	</bean>
 
