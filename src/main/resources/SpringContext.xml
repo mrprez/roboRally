@@ -56,6 +56,10 @@
 		<property name="boardDao" ref="boardDao"/>
 	</bean>
 
-	
+
+	<!-- GWT -->
+	<bean id="authenticationGwtService" class="com.mrprez.roborally.server.AuthenticationGwtServiceImpl">
+		<property name="userService" ref="userService"/>
+	</bean>
 
 </beans>

@@ -5,20 +5,29 @@
 
 <web-app>
 
-  <!-- Servlets -->
-  <servlet>
-    <servlet-name>authenticationServlet</servlet-name>
-    <servlet-class>com.mrprez.roborally.server.AuthenticationGwtServiceImpl</servlet-class>
-  </servlet>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/classes/SpringContext.xml</param-value>
+	</context-param>
 
-  <servlet-mapping>
-    <servlet-name>authenticationServlet</servlet-name>
-    <url-pattern>/Login/authenticationService</url-pattern>
-  </servlet-mapping>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
 
-  <!-- Default page to serve -->
-  <welcome-file-list>
-    <welcome-file>Login.html</welcome-file>
-  </welcome-file-list>
+	<!-- Servlets -->
+	<servlet>
+		<servlet-name>authenticationServlet</servlet-name>
+		<servlet-class>com.mrprez.roborally.server.AuthenticationGwtServiceImpl</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>authenticationServlet</servlet-name>
+		<url-pattern>/Login/authenticationService</url-pattern>
+	</servlet-mapping>
+
+	<!-- Default page to serve -->
+	<welcome-file-list>
+		<welcome-file>Login.html</welcome-file>
+	</welcome-file-list>
 
 </web-app>

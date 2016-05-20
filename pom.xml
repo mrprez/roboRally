@@ -100,7 +100,6 @@
 					<execution>
 						<goals>
 							<goal>compile</goal>
-							<goal>test</goal>
 							<goal>generateAsync</goal>
 						</goals>
 					</execution>
@@ -108,9 +107,9 @@
 				<!-- Plugin configuration. There are many available options, see gwt-maven-plugin 
 					documentation at codehaus.org -->
 				<configuration>
-					<runTarget>GameBoard.html</runTarget>
+					<runTarget>Login.html</runTarget>
 					<modules>
-						<module>com.mrprez.roborally.GameBoard</module>
+						<module>com.mrprez.roborally.Login</module>
 					</modules>
 				</configuration>
 			</plugin>
