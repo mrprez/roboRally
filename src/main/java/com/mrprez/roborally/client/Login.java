@@ -4,7 +4,7 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
@@ -44,8 +44,8 @@ public class Login implements EntryPoint {
 					
 					@Override
 					public void onSuccess(UserGwt result) {
-						Window.alert(result.getUsername());
-						// TODO Auto-generated method stub
+						UrlBuilder urlBuilder = new UrlBuilder();
+						urlBuilder.setPath("GameBord.html");
 					}
 					
 					@Override

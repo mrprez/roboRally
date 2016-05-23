@@ -20,6 +20,14 @@
 		<property name="dataSource" ref="roborallyDataSource" />
 	</bean>
 	
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" scope="singleton">
+		<property name="dataSource" ref="roborallyDataSource" />
+		<property name="mapperLocations" value="classpath:RoboRallyMapper.xml" />
+	</bean>
+	
+	<bean id="sqlSession" factory-bean="sqlSessionFactory" factory-method="openSession">
+	</bean>
+	
 	
 	<!-- DAO -->
 	<tx:advice id="daoTxAdvice" transaction-manager="txManager">
@@ -34,26 +42,14 @@
 		<aop:advisor advice-ref="daoTxAdvice" pointcut-ref="daoMethodes" />
 	</aop:config>
 	
-	<bean id="boardIdGenerator" class="com.mrprez.roborally.dao.IdGenerator" scope="singleton">
-		<constructor-arg ref="roborallyDataSource"/>
-		<constructor-arg type="java.lang.String" value="BOARD"/>
-		<constructor-arg type="java.lang.String" value="ID"/>
-	</bean>
 	<bean id="userDao" class="com.mrprez.roborally.dao.UserDaoImpl" scope="singleton">
-		<property name="dataSource" ref="roborallyDataSource"/>
-	</bean>
-	<bean id="boardDao" class="com.mrprez.roborally.dao.BoardDaoImpl" scope="singleton">
-		<property name="dataSource" ref="roborallyDataSource"/>
-		<property name="idGenerator" ref="boardIdGenerator"/>
+		<property name="session" ref="sqlSession"/>
 	</bean>
 	
 
 	<!-- BS -->
 	<bean id="userService" class="com.mrprez.roborally.bs.UserServiceImpl" scope="singleton">
 		<property name="userDao" ref="userDao"/>
-	</bean>
-	<bean id="boardService" class="com.mrprez.roborally.bs.BoardServiceImpl" scope="singleton">
-		<property name="boardDao" ref="boardDao"/>
 	</bean>
 
 

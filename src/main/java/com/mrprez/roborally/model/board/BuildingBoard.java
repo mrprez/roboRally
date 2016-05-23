@@ -3,9 +3,7 @@ package com.mrprez.roborally.model.board;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-import com.mrprez.roborally.model.Direction;
 import com.mrprez.roborally.model.Square;
-import com.mrprez.roborally.model.square.ConveyorBelt;
 import com.mrprez.roborally.model.square.EmptySquare;
 
 public class BuildingBoard extends Board {
@@ -23,7 +21,6 @@ public class BuildingBoard extends Board {
 				squares[x][y] = new EmptySquare(x, y, this);
 			}
 		}
-		squares[6][6] = new ConveyorBelt(6, 6, this, Direction.UP);
 		
 		startSquare = squares[0][0];
 	}

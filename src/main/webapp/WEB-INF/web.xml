@@ -19,10 +19,18 @@
 		<servlet-name>authenticationServlet</servlet-name>
 		<servlet-class>com.mrprez.roborally.server.AuthenticationGwtServiceImpl</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>gameBaordServlet</servlet-name>
+		<servlet-class>com.mrprez.roborally.server.GameBaordGwtServiceImpl</servlet-class>
+	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>authenticationServlet</servlet-name>
 		<url-pattern>/Login/authenticationService</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>gameBaordServlet</servlet-name>
+		<url-pattern>/GameBoard/gameBaordService</url-pattern>
 	</servlet-mapping>
 
 	<!-- Default page to serve -->

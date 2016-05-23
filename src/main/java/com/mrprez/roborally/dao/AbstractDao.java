@@ -1,22 +1,19 @@
 package com.mrprez.roborally.dao;
 
-import javax.sql.DataSource;
+import org.apache.ibatis.session.SqlSession;
 
 public class AbstractDao {
 	
-	private DataSource dataSource;
+	private SqlSession session;
 
 	
-	public DataSource getDataSource() {
-		return dataSource;
+	public SqlSession getSession() {
+		return session;
 	}
 
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
+	public void setSession(SqlSession session) {
+		this.session = session;
 	}
-		
-
-
 	
 
 }

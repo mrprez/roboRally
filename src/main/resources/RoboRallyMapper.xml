@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mrprez.roborally.model">
+	<resultMap id="userResultMap" type="com.mrprez.roborally.model.User">
+		<id property="username" column="USERNAME" />
+	</resultMap>
+
+	<select id="checkUser" resultMap="userResultMap">
+		select * from USER where
+		USERNAME=#{username} and PASSWORD=#{password}
+	</select>
+</mapper>

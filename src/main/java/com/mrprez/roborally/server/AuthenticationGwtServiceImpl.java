@@ -19,6 +19,7 @@ public class AuthenticationGwtServiceImpl extends AbstractGwtService implements 
 		}
 		UserGwt userGwt = new UserGwt();
 		userGwt.setUsername(user.getUsername());
+		getThreadLocalRequest().getSession().setAttribute(UserGwt.KEY, userGwt);
 		return userGwt;
 	}
 	
