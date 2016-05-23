@@ -1,0 +1,14 @@
+@startuml
+Board <|-- GameBoard
+Board *-- "n" Square
+Robot "0-1" -- Square
+GameBoard *-- "n" Robot
+GameBoard *-- CardStock
+CardStock -- "n" Card
+Robot -- "9" Card
+GameBoard *-- "n" TurnResult
+TurnResult *-- "n" Step
+Step *-- "n" Move
+Robot "0-1" --o "n" User
+
+@enduml 

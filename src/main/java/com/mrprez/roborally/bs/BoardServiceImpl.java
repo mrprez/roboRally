@@ -2,12 +2,12 @@ package com.mrprez.roborally.bs;
 
 import java.util.List;
 
-import com.mrprez.roborally.dao.BoardDao;
+import com.mrprez.roborally.dao.BuildingBoardDao;
 import com.mrprez.roborally.model.board.BuildingBoard;
 
 public class BoardServiceImpl implements BoardService {
 	
-	private BoardDao boardDao;
+	private BuildingBoardDao boardDao;
 	
 
 	@Override
@@ -25,12 +25,12 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 
-	public BoardDao getBoardDao() {
+	public BuildingBoardDao getBoardDao() {
 		return boardDao;
 	}
 
 
-	public void setBoardDao(BoardDao boardDao) {
+	public void setBoardDao(BuildingBoardDao boardDao) {
 		this.boardDao = boardDao;
 	}
 

@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.mrprez.roborally.model.board.BuildingBoard;
 
-public interface BoardDao {
+public interface BuildingBoardDao {
 	
 	void createBuildingBoard(BuildingBoard buildingBoard) throws SQLException;
 	

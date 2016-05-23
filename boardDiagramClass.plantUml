@@ -1,0 +1,8 @@
+@startuml
+Board <|-- GameBoard
+Board <|-- BuildingBoard
+Board *-- "n" Square
+GameBoard --o User : owner
+BuildingBoard --o User : owner
+
+@enduml 
