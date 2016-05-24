@@ -45,17 +45,27 @@
 	<bean id="userDao" class="com.mrprez.roborally.dao.UserDaoImpl" scope="singleton">
 		<property name="session" ref="sqlSession"/>
 	</bean>
+	<bean id="gameBoardDao" class="com.mrprez.roborally.dao.GameBoardDaoImpl" scope="singleton">
+		<property name="session" ref="sqlSession"/>
+	</bean>
 	
 
 	<!-- BS -->
 	<bean id="userService" class="com.mrprez.roborally.bs.UserServiceImpl" scope="singleton">
 		<property name="userDao" ref="userDao"/>
 	</bean>
+	<bean id="boardService" class="com.mrprez.roborally.bs.BoardServiceImpl" scope="singleton">
+		<property name="gameBoardDao" ref="gameBoardDao"/>
+	</bean>
+	
 
 
 	<!-- GWT -->
 	<bean id="authenticationGwtService" class="com.mrprez.roborally.server.AuthenticationGwtServiceImpl" scope="request">
 		<property name="userService" ref="userService"/>
+	</bean>
+	<bean id="boardGwtService" class="com.mrprez.roborally.server.BoardGwtServiceImpl" scope="request">
+		<property name="boardService" ref="boardService"/>
 	</bean>
 
 </beans>

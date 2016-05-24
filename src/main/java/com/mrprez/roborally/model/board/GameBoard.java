@@ -4,6 +4,7 @@ import com.mrprez.roborally.model.Square;
 
 public class GameBoard extends Board{
 	
+	private String name;
 	
 	
 	public GameBoard(BuildingBoard buildingBoard){
@@ -24,6 +25,18 @@ public class GameBoard extends Board{
 			targetSquares.add(squares[targetSquare.getX()][targetSquare.getY()]);
 		}
 	}
+
+
+	public String getName() {
+		return name;
+	}
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	
 	
 	
 
