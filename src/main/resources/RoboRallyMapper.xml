@@ -6,15 +6,21 @@
 	<resultMap id="userResultMap" type="com.mrprez.roborally.model.User">
 		<id property="username" column="USERNAME" />
 	</resultMap>
+	<resultMap id="gameBoard" type="com.mrprez.roborally.model.board.GameBoard">
+		<id property="id" column="BOARD_ID" />
+		<result property="name" column="NAME" />
+		<result property="sizeX" column="SIZE_X" />
+		<result property="sizeY" column="SIZE_Y" />
+	</resultMap>
 
 	<select id="checkUser" resultMap="userResultMap">
 		select USERNAME from USER where
 		USERNAME=#{username} and PASSWORD=#{password}
 	</select>
 	<select id="selectUserGameBoards" resultMap="gameBoard">
-		select BOARD.ID, NAME, SIZE_X, SIZE_Y
+		select GAME_BOARD.BOARD_ID, NAME, SIZE_X, SIZE_Y
 		from GAME_BOARD
-		join BOARD on BOARD.ID=GAME_BOARD.ID
+		join BOARD on BOARD.ID=GAME_BOARD.BOARD_ID
 		where OWNER=#{username}
 	</select>
 </mapper>

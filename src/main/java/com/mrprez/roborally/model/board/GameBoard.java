@@ -2,7 +2,7 @@ package com.mrprez.roborally.model.board;
 
 import com.mrprez.roborally.model.Square;
 
-public class GameBoard extends Board{
+public class GameBoard extends Board {
 	
 	private String name;
 	
@@ -24,6 +24,14 @@ public class GameBoard extends Board{
 		for(Square targetSquare : buildingBoard.getTargetSquares()){
 			targetSquares.add(squares[targetSquare.getX()][targetSquare.getY()]);
 		}
+	}
+	
+	public GameBoard(Integer id, String name, Integer sizeX, Integer sizeY){
+		super();
+		setId(id);
+		setName(name);
+		setSizeX(sizeX);
+		setSizeY(sizeY);
 	}
 
 

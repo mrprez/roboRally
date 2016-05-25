@@ -4,12 +4,12 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import com.mrprez.roborally.model.board.GameBoard;
+import com.mrprez.roborally.shared.GameBoardGwt;
 
 @RemoteServiceRelativePath("boardService")
 public interface BoardGwtService extends RemoteService {
 	
 	
-	List<GameBoard> getGameBoardList();
+	List<GameBoardGwt> getGameBoardList();
 
 }

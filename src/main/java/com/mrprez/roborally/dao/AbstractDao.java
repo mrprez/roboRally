@@ -14,6 +14,5 @@ public class AbstractDao {
 	public void setSession(SqlSession session) {
 		this.session = session;
 	}
-	
 
 }

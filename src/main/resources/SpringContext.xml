@@ -25,9 +25,9 @@
 		<property name="mapperLocations" value="classpath:RoboRallyMapper.xml" />
 	</bean>
 	
-	<bean id="sqlSession" factory-bean="sqlSessionFactory" factory-method="openSession">
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory" />
 	</bean>
-	
 	
 	<!-- DAO -->
 	<tx:advice id="daoTxAdvice" transaction-manager="txManager">
@@ -38,8 +38,8 @@
 	</tx:advice>
 	
 	<aop:config>
-		<aop:pointcut id="daoMethodes" expression="execution(* com.mrprez.roborally.dao.*DaoImpl.*(..))" />
-		<aop:advisor advice-ref="daoTxAdvice" pointcut-ref="daoMethodes" />
+		<aop:pointcut id="daoMethods" expression="execution(* com.mrprez.roborally.dao.*DaoImpl.*(..))" />
+		<aop:advisor advice-ref="daoTxAdvice" pointcut-ref="daoMethods" />
 	</aop:config>
 	
 	<bean id="userDao" class="com.mrprez.roborally.dao.UserDaoImpl" scope="singleton">
@@ -51,6 +51,18 @@
 	
 
 	<!-- BS -->
+	<tx:advice id="bsTxAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="get*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="*" propagation="REQUIRED" rollback-for="Throwable" />
+		</tx:attributes>
+	</tx:advice>
+	
+	<aop:config>
+		<aop:pointcut id="bsMethods" expression="execution(* com.mrprez.roborally.dao.*ServiceImpl.*(..))" />
+		<aop:advisor advice-ref="bsTxAdvice" pointcut-ref="bsMethods" />
+	</aop:config>
+	
 	<bean id="userService" class="com.mrprez.roborally.bs.UserServiceImpl" scope="singleton">
 		<property name="userDao" ref="userDao"/>
 	</bean>

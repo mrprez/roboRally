@@ -8,7 +8,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Tree;
-import com.mrprez.roborally.model.board.GameBoard;
+import com.mrprez.roborally.shared.GameBoardGwt;
 
 public class Home implements EntryPoint {
 
@@ -17,10 +17,10 @@ public class Home implements EntryPoint {
 	public void onModuleLoad() {
 		final Tree gameBoardList = new Tree();
 		RootPanel.get().add(gameBoardList);
-		boardGwtService.getGameBoardList(new AsyncCallback<List<GameBoard>>() {
+		boardGwtService.getGameBoardList(new AsyncCallback<List<GameBoardGwt>>() {
 			@Override
-			public void onSuccess(List<GameBoard> result) {
-				for(GameBoard gameBoard : result){
+			public void onSuccess(List<GameBoardGwt> result) {
+				for(GameBoardGwt gameBoard : result){
 					gameBoardList.add(new Label(gameBoard.getName()));
 				}
 			}
