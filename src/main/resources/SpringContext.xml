@@ -32,7 +32,8 @@
 	<!-- DAO -->
 	<tx:advice id="daoTxAdvice" transaction-manager="txManager">
 		<tx:attributes>
-			<tx:method name="find*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="select*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="load*" propagation="REQUIRED" read-only="true" />
 			<tx:method name="*" propagation="REQUIRED" rollback-for="Throwable" />
 		</tx:attributes>
 	</tx:advice>
@@ -45,7 +46,7 @@
 	<bean id="userDao" class="com.mrprez.roborally.dao.UserDaoImpl" scope="singleton">
 		<property name="session" ref="sqlSession"/>
 	</bean>
-	<bean id="gameBoardDao" class="com.mrprez.roborally.dao.GameBoardDaoImpl" scope="singleton">
+	<bean id="gameDao" class="com.mrprez.roborally.dao.GameDaoImpl" scope="singleton">
 		<property name="session" ref="sqlSession"/>
 	</bean>
 	
@@ -66,8 +67,8 @@
 	<bean id="userService" class="com.mrprez.roborally.bs.UserServiceImpl" scope="singleton">
 		<property name="userDao" ref="userDao"/>
 	</bean>
-	<bean id="boardService" class="com.mrprez.roborally.bs.BoardServiceImpl" scope="singleton">
-		<property name="gameBoardDao" ref="gameBoardDao"/>
+	<bean id="gameService" class="com.mrprez.roborally.bs.GameServiceImpl" scope="singleton">
+		<property name="gameDao" ref="gameDao"/>
 	</bean>
 	
 
@@ -76,8 +77,8 @@
 	<bean id="authenticationGwtService" class="com.mrprez.roborally.server.AuthenticationGwtServiceImpl" scope="request">
 		<property name="userService" ref="userService"/>
 	</bean>
-	<bean id="boardGwtService" class="com.mrprez.roborally.server.BoardGwtServiceImpl" scope="request">
-		<property name="boardService" ref="boardService"/>
+	<bean id="gameGwtService" class="com.mrprez.roborally.server.GameGwtServiceImpl" scope="request">
+		<property name="gameService" ref="gameService"/>
 	</bean>
 
 </beans>

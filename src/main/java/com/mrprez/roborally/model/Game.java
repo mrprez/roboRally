@@ -12,7 +12,10 @@ import com.mrprez.roborally.model.board.GameBoard;
 
 
 public class Game {
-	public static int TURN_NB = 5; 
+	public static int TURN_NB = 5;
+	
+	private Integer id;
+	private String name;
 	private GameBoard board;
 	private Set<Robot> robotList = new HashSet<Robot>();
 	private CardStock cardStock = new CardStock();
@@ -115,9 +118,22 @@ public class Game {
 	public List<Round> getHistory(){
 		return history;
 	}
-	
-	
-	
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	
 	
 	

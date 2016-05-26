@@ -20,8 +20,8 @@
 		<servlet-class>com.mrprez.roborally.server.AuthenticationGwtServiceImpl</servlet-class>
 	</servlet>
 	<servlet>
-		<servlet-name>boardServlet</servlet-name>
-		<servlet-class>com.mrprez.roborally.server.BoardGwtServiceImpl</servlet-class>
+		<servlet-name>gameServlet</servlet-name>
+		<servlet-class>com.mrprez.roborally.server.GameGwtServiceImpl</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
@@ -29,8 +29,8 @@
 		<url-pattern>/Login/authenticationService</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>boardServlet</servlet-name>
-		<url-pattern>/Home/boardService</url-pattern>
+		<servlet-name>gameServlet</servlet-name>
+		<url-pattern>/Home/gameService</url-pattern>
 	</servlet-mapping>
 
 	<!-- Default page to serve -->

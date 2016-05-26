@@ -6,21 +6,26 @@
 	<resultMap id="userResultMap" type="com.mrprez.roborally.model.User">
 		<id property="username" column="USERNAME" />
 	</resultMap>
-	<resultMap id="gameBoard" type="com.mrprez.roborally.model.board.GameBoard">
-		<id property="id" column="BOARD_ID" />
+	<resultMap id="game" type="com.mrprez.roborally.model.Game">
+		<id property="id" column="ID" />
 		<result property="name" column="NAME" />
-		<result property="sizeX" column="SIZE_X" />
-		<result property="sizeY" column="SIZE_Y" />
+		<collection property="robotList">
+			
+		</collection>
 	</resultMap>
 
 	<select id="checkUser" resultMap="userResultMap">
 		select USERNAME from USER where
 		USERNAME=#{username} and PASSWORD=#{password}
 	</select>
-	<select id="selectUserGameBoards" resultMap="gameBoard">
-		select GAME_BOARD.BOARD_ID, NAME, SIZE_X, SIZE_Y
-		from GAME_BOARD
-		join BOARD on BOARD.ID=GAME_BOARD.BOARD_ID
-		where OWNER=#{username}
+	<select id="selectUserGames" resultMap="game">
+		select ID, NAME from GAME where OWNER=#{username}
+	</select>
+	<select id="selectGame" resultMap="game">
+		select ID, NAME
+		from GAME
+		join BOARD on GAME.BOARD_ID=BOARD.ID
+		join SQUARE on BOARD.IDSQUARE.BOARD_ID
+		where GAME.ID=#{id}
 	</select>
 </mapper>
