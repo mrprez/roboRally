@@ -22,10 +22,6 @@ public class Game {
 	private List<Round> history = new ArrayList<Round>();
 	
 	
-	public void init(GameBoard board){
-		this.board = board;
-	}
-	
 	public void addRobot(){
 		Robot robot = new Robot(board.getStartSquare());
 		robot.setNumber(robotList.size());
@@ -113,6 +109,10 @@ public class Game {
 	
 	public GameBoard getBoard(){
 		return board;
+	}
+	
+	public void setBoard(GameBoard board) {
+		this.board = board;
 	}
 	
 	public List<Round> getHistory(){

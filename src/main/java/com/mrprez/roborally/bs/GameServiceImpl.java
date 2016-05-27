@@ -1,5 +1,6 @@
 package com.mrprez.roborally.bs;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import com.mrprez.roborally.dao.GameDao;
@@ -15,7 +16,7 @@ public class GameServiceImpl implements GameService {
 	}
 
 	@Override
-	public Game getGame(Integer id, String username) {
+	public Game getGame(Integer id, String username) throws InstantiationException, IllegalAccessException, ClassNotFoundException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		Game game = gameDao.loadGame(id);
 		// TODO check user
 		

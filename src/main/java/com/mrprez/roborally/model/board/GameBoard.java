@@ -30,6 +30,7 @@ public class GameBoard extends Board {
 		setId(id);
 		setSizeX(sizeX);
 		setSizeY(sizeY);
+		squares = new Square[sizeX][sizeY];
 	}
 
 

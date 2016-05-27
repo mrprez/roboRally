@@ -12,7 +12,7 @@ public interface GameGwtService extends RemoteService {
 	
 	List<GameGwt> getGameList();
 	
-	GameGwt getGame(Integer id, String username);
+	GameGwt getGame(Integer id) throws Exception;
 	
 	
 

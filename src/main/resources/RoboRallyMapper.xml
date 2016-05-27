@@ -9,9 +9,20 @@
 	<resultMap id="game" type="com.mrprez.roborally.model.Game">
 		<id property="id" column="ID" />
 		<result property="name" column="NAME" />
-		<collection property="robotList">
-			
-		</collection>
+	</resultMap>
+	<resultMap id="gameBoard" type="com.mrprez.roborally.dto.GameBoardDto">
+		<result property="boardId" column="BOARD_ID" />
+		<result property="name" column="NAME" />
+		<result property="sizeX" column="SIZE_X" />
+		<result property="sizeY" column="SIZE_Y" />
+		<result property="startX" column="START_X" />
+		<result property="startY" column="START_Y" />
+	</resultMap>
+	<resultMap id="square" type="com.mrprez.roborally.dto.SquareDto">
+		<result property="x" column="X" />
+		<result property="y" column="Y" />
+		<result property="clazz" column="CLASS" />
+		<result property="args" column="ARGS" />
 	</resultMap>
 
 	<select id="checkUser" resultMap="userResultMap">
@@ -21,11 +32,12 @@
 	<select id="selectUserGames" resultMap="game">
 		select ID, NAME from GAME where OWNER=#{username}
 	</select>
-	<select id="selectGame" resultMap="game">
-		select ID, NAME
-		from GAME
-		join BOARD on GAME.BOARD_ID=BOARD.ID
-		join SQUARE on BOARD.IDSQUARE.BOARD_ID
+	<select id="selectGame" resultMap="gameBoard">
+		select GAME.BOARD_ID,NAME,SIZE_X,SIZE_Y,START_X,START_Y from GAME
+		join BOARD on BOARD.ID=GAME.BOARD_ID
 		where GAME.ID=#{id}
+	</select>
+	<select id="selectSquareList" resultMap="square">
+		select X,Y,CLASS,ARGS from SQUARE where BOARD_ID=#{boardId}
 	</select>
 </mapper>

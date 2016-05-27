@@ -5,6 +5,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 public class GameGwt implements IsSerializable{
 	private int id;
 	private String name;
+	private GameBoardGwt board;
 	
 	
 	public int getId() {
@@ -19,4 +20,11 @@ public class GameGwt implements IsSerializable{
 	public void setName(String name) {
 		this.name = name;
 	}
+	public GameBoardGwt getBoard() {
+		return board;
+	}
+	public void setBoard(GameBoardGwt board) {
+		this.board = board;
+	}
+	
 }

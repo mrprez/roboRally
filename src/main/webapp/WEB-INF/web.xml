@@ -32,6 +32,10 @@
 		<servlet-name>gameServlet</servlet-name>
 		<url-pattern>/Home/gameService</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>gameServlet</servlet-name>
+		<url-pattern>/Game/gameService</url-pattern>
+	</servlet-mapping>
 
 	<!-- Default page to serve -->
 	<welcome-file-list>
