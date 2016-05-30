@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+	<mapping>
+		<class-a>com.mrprez.roborally.model.Game</class-a>
+		<class-b>com.mrprez.roborally.shared.GameGwt</class-b>
+	</mapping>
+
+	<mapping>
+		<class-a>com.mrprez.roborally.model.board.GameBoard</class-a>
+		<class-b>com.mrprez.roborally.shared.GameBoardGwt</class-b>
+		<field-exclude>
+			<a>squares</a>
+			<b>squares</b>
+		</field-exclude>
+		<field>
+			<a>startSquare.x</a>
+			<b>startX</b>
+		</field>
+		<field>
+			<a>startSquare.y</a>
+			<b>startY</b>
+		</field>
+	</mapping>
+
+</mappings> 
+      

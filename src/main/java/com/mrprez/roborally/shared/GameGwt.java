@@ -6,7 +6,7 @@ public class GameGwt implements IsSerializable{
 	private int id;
 	private String name;
 	private GameBoardGwt board;
-	
+		
 	
 	public int getId() {
 		return id;

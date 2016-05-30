@@ -40,6 +40,7 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 			gameBoard.addSquare(square);
 		}
 		
+		game.getBoard().setStartSquare(gameBoardDto.getStartX(), gameBoardDto.getStartY());
 		
 		
 		return game;

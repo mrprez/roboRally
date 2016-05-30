@@ -7,6 +7,7 @@ public class GameBoardGwt implements IsSerializable {
 	private int sizeY;
 	private int startX;
 	private int startY;
+	private SquareGwt[][] squares;
 	
 	
 	public int getSizeX() {
@@ -32,6 +33,16 @@ public class GameBoardGwt implements IsSerializable {
 	}
 	public void setStartY(int startY) {
 		this.startY = startY;
+	}
+	public SquareGwt[][] getSquares() {
+		return squares;
+	}
+	public void setSquares(SquareGwt[][] squares) {
+		this.squares = squares;
+	}
+	
+	public SquareGwt getSquare(int x, int y){
+		return squares[x][y];
 	}
 	
 	
