@@ -14,7 +14,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.mrprez.roborally.shared.CardGwt;
 import com.mrprez.roborally.shared.GameGwt;
@@ -66,7 +65,7 @@ public class Game implements EntryPoint {
 	
 	public void loadCards(List<CardGwt> cardList){
 		for(CardGwt card : cardList){
-			southPanel.add(new Label(card.getImageName()));
+			southPanel.add(new Image(card.getImageName()));
 		}
 	}
 

@@ -9,7 +9,11 @@ public class CardGwt implements IsSerializable{
 	
 	
 	public String getImageName(){
-		return rapidity+" T"+translation+" R"+rotation;
+		if(translation!=0){
+			return "img/card/translation"+translation+".gif";
+		}else{
+			return "img/card/rotation"+rotation+".gif";
+		}
 	}
 	
 	public int getRapidity() {
