@@ -13,7 +13,7 @@ public class Card {
 		this.rotation = rotation;
 	}
 
-	public int getInitiative() {
+	public int getRapidity() {
 		return rapidity;
 	}
 	public int getTranslation() {

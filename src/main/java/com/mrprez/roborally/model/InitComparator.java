@@ -19,7 +19,7 @@ public class InitComparator implements Comparator<Robot> {
 
 	@Override
 	public int compare(Robot robot0, Robot robot1) {
-		return robot0.getCard(turn).getInitiative()-robot1.getCard(turn).getInitiative();
+		return robot0.getCard(turn).getRapidity()-robot1.getCard(turn).getRapidity();
 	}
 	
 	public int getTurn() {
