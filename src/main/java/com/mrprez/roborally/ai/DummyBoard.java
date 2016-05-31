@@ -8,12 +8,14 @@ import com.mrprez.roborally.model.Game;
 import com.mrprez.roborally.model.Robot;
 import com.mrprez.roborally.model.Square;
 import com.mrprez.roborally.model.board.Board;
+import com.mrprez.roborally.model.board.GameBoard;
 
 public class DummyBoard extends Board {
 	
+	private List<Square> targetSquares;
+
 	
-	
-	public DummyBoard(Board board){
+	public DummyBoard(GameBoard board){
 		super();
 		sizeX = board.getSizeX();
 		sizeY = board.getSizeY();

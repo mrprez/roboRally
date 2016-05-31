@@ -1,10 +1,15 @@
 package com.mrprez.roborally.model.board;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.mrprez.roborally.model.Square;
 
 public class GameBoard extends Board {
 	
-	
+	protected Square startSquare;
+	protected List<Square> targetSquares = new ArrayList<Square>();
+
 	
 	public GameBoard(BuildingBoard buildingBoard){
 		super();
@@ -18,11 +23,7 @@ public class GameBoard extends Board {
 			}
 		}
 		
-		startSquare = squares[buildingBoard.getStartSquare().getX()][buildingBoard.getStartSquare().getY()];
-		
-		for(Square targetSquare : buildingBoard.getTargetSquares()){
-			targetSquares.add(squares[targetSquare.getX()][targetSquare.getY()]);
-		}
+		startSquare = squares[0][0];
 	}
 	
 	public GameBoard(Integer id, Integer sizeX, Integer sizeY){
@@ -33,7 +34,19 @@ public class GameBoard extends Board {
 		squares = new Square[sizeX][sizeY];
 	}
 
+	public Square getStartSquare() {
+		return startSquare;
+	}
+	
+	public void setStartSquare(int x, int y) {
+		startSquare = getSquare(x, y);
+	}
 
+	public List<Square> getTargetSquares() {
+		return targetSquares;
+	}
+
+	
 
 	
 	

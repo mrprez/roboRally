@@ -21,13 +21,6 @@ public class BuildingBoard extends Board {
 				squares[x][y] = new EmptySquare(x, y, this);
 			}
 		}
-		
-		startSquare = squares[0][0];
-	}
-	
-	
-	public boolean isValid(){
-		return ! targetSquares.isEmpty();
 	}
 	
 	public String getName() {

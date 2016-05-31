@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import com.mrprez.roborally.model.board.GameBoard;
+
 
 public class Robot {
 	private int number;
@@ -150,8 +152,9 @@ public class Robot {
 	}
 	
 	public Square getTarget(){
-		if(targetNumber < getSquare().getBoard().getTargetSquares().size()){
-			return square.getBoard().getTargetSquares().get(targetNumber);
+		GameBoard gameBoard = (GameBoard)square.getBoard();
+		if(targetNumber < gameBoard.getTargetSquares().size()){
+			return gameBoard.getTargetSquares().get(targetNumber);
 		}
 		return null;
 	}

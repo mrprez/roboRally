@@ -8,6 +8,7 @@ import java.util.List;
 import com.mrprez.roborally.model.Card;
 import com.mrprez.roborally.model.Robot;
 import com.mrprez.roborally.model.Square;
+import com.mrprez.roborally.model.board.GameBoard;
 
 
 public class AIRobot extends Robot {
@@ -18,7 +19,7 @@ public class AIRobot extends Robot {
 	
 	public AIRobot(Square square) {
 		super(square);
-		dummyBoard = new DummyBoard(square.getBoard());
+		dummyBoard = new DummyBoard((GameBoard) square.getBoard());
 	}
 	
 	public void orderCard(){
