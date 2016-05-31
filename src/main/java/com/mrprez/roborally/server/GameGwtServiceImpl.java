@@ -9,9 +9,11 @@ import org.dozer.DozerBeanMapper;
 
 import com.mrprez.roborally.bs.GameService;
 import com.mrprez.roborally.client.GameGwtService;
+import com.mrprez.roborally.model.Card;
 import com.mrprez.roborally.model.Direction;
 import com.mrprez.roborally.model.Game;
 import com.mrprez.roborally.model.Robot;
+import com.mrprez.roborally.shared.CardGwt;
 import com.mrprez.roborally.shared.GameGwt;
 import com.mrprez.roborally.shared.RobotGwt;
 import com.mrprez.roborally.shared.SquareGwt;
@@ -58,6 +60,17 @@ public class GameGwtServiceImpl extends AbstractGwtService implements GameGwtSer
 		}
 		
 		return gameGwt;
+	}
+
+	
+	@Override
+	public List<CardGwt> getCardList(Integer gameId) {
+		UserGwt user = (UserGwt) getThreadLocalRequest().getSession().getAttribute(UserGwt.KEY);
+		List<CardGwt> gwtCardList = new ArrayList<CardGwt>();
+		for(Card card : gameService.getRobotCards(gameId, user.getUsername())){
+			gwtCardList.add(dozerMapper.map(card, CardGwt.class));
+		}
+		return gwtCardList;
 	}
 	
 	

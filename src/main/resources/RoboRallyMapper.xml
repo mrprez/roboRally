@@ -10,6 +10,13 @@
 		<id property="id" column="ID" />
 		<result property="name" column="NAME" />
 	</resultMap>
+	<resultMap id="card" type="com.mrprez.roborally.model.Card">
+		<constructor>
+			<idArg column="RAPIDITY" javaType="int"/>
+			<arg column="TRANSLATION" javaType="int"/>
+			<arg column="ROTATION" javaType="int"/>
+		</constructor>
+	</resultMap>
 	<resultMap id="gameBoard" type="com.mrprez.roborally.dto.GameBoardDto">
 		<result property="boardId" column="BOARD_ID" />
 		<result property="name" column="NAME" />
@@ -48,5 +55,10 @@
 	</select>
 	<select id="selectRobotList" resultMap="robot">
 		select NUMBER,X,Y,DIRECTION,HEALTH from ROBOT where GAME_ID=#{gameId}
+	</select>
+	<select id="selectHandCardList" resultMap="card">
+		select RAPIDITY,TRANSLATION,ROTATION from CARD
+		join ROBOT on CARD.ROBOT_NB=ROBOT.NUMBER and CARD.GAME_ID=ROBOT.GAME_ID
+		where GAME_ID=#{gameId} and ROBOT.USER=#{username}
 	</select>
 </mapper>

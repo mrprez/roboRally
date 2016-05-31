@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import com.mrprez.roborally.dao.GameDao;
+import com.mrprez.roborally.model.Card;
 import com.mrprez.roborally.model.Game;
 
 public class GameServiceImpl implements GameService {
@@ -21,6 +22,11 @@ public class GameServiceImpl implements GameService {
 		// TODO check user
 		
 		return game;
+	}
+
+	@Override
+	public List<Card> getRobotCards(Integer gameId, String username) {
+		return gameDao.loadHandCards(gameId, username);
 	}
 
 	

@@ -2,13 +2,16 @@ package com.mrprez.roborally.dao;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.dozer.DozerBeanMapper;
 
 import com.mrprez.roborally.dto.GameBoardDto;
 import com.mrprez.roborally.dto.RobotDto;
 import com.mrprez.roborally.dto.SquareDto;
+import com.mrprez.roborally.model.Card;
 import com.mrprez.roborally.model.Game;
 import com.mrprez.roborally.model.Robot;
 import com.mrprez.roborally.model.Square;
@@ -56,6 +59,14 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 		}
 		
 		return game;
+	}
+
+	@Override
+	public List<Card> loadHandCards(Integer gameId, String username) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("gameId", gameId);
+		params.put("username", username);
+		return getSession().selectList("selectHandCardList", params);
 	}
 
 }
