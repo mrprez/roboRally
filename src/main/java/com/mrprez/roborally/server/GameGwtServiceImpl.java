@@ -2,14 +2,18 @@ package com.mrprez.roborally.server;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.dozer.DozerBeanMapper;
 
 import com.mrprez.roborally.bs.GameService;
 import com.mrprez.roborally.client.GameGwtService;
+import com.mrprez.roborally.model.Direction;
 import com.mrprez.roborally.model.Game;
+import com.mrprez.roborally.model.Robot;
 import com.mrprez.roborally.shared.GameGwt;
+import com.mrprez.roborally.shared.RobotGwt;
 import com.mrprez.roborally.shared.SquareGwt;
 import com.mrprez.roborally.shared.UserGwt;
 
@@ -46,7 +50,29 @@ public class GameGwtServiceImpl extends AbstractGwtService implements GameGwtSer
 		}
 		gameGwt.getBoard().setSquares(squareGwtTab);
 		
+		gameGwt.setRobotList(new HashSet<RobotGwt>());
+		for(Robot robot : game.getRobotList()){
+			RobotGwt robotGwt = dozerMapper.map(robot, RobotGwt.class);
+			robotGwt.setDirection(getDirectionChar(robot.getDirection()));
+			gameGwt.getRobotList().add(robotGwt);
+		}
+		
 		return gameGwt;
+	}
+	
+	
+	private char getDirectionChar(Direction direction){
+		switch (direction) {
+		case DOWN:
+			return 'B';
+		case LEFT:
+			return 'G';
+		case RIGHT:
+			return 'D';
+		default:
+			return 'H';
+		}
+		
 	}
 
 

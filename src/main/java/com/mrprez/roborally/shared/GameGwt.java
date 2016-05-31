@@ -1,11 +1,14 @@
 package com.mrprez.roborally.shared;
 
+import java.util.Set;
+
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class GameGwt implements IsSerializable{
 	private int id;
 	private String name;
 	private GameBoardGwt board;
+	private Set<RobotGwt> robotList;
 		
 	
 	public int getId() {
@@ -25,6 +28,12 @@ public class GameGwt implements IsSerializable{
 	}
 	public void setBoard(GameBoardGwt board) {
 		this.board = board;
+	}
+	public Set<RobotGwt> getRobotList() {
+		return robotList;
+	}
+	public void setRobotList(Set<RobotGwt> robotList) {
+		this.robotList = robotList;
 	}
 	
 }

@@ -5,6 +5,10 @@
 	<mapping>
 		<class-a>com.mrprez.roborally.model.Game</class-a>
 		<class-b>com.mrprez.roborally.shared.GameGwt</class-b>
+		<field-exclude>
+			<a>robotList</a>
+			<b>robotList</b>
+		</field-exclude>
 	</mapping>
 
 	<mapping>
@@ -21,6 +25,19 @@
 		<field>
 			<a>startSquare.y</a>
 			<b>startY</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.mrprez.roborally.model.Robot</class-a>
+		<class-b>com.mrprez.roborally.shared.RobotGwt</class-b>
+		<field>
+			<a>square.x</a>
+			<b>x</b>
+		</field>
+		<field>
+			<a>square.y</a>
+			<b>y</b>
 		</field>
 	</mapping>
 

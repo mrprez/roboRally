@@ -12,6 +12,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.mrprez.roborally.shared.GameGwt;
+import com.mrprez.roborally.shared.RobotGwt;
 import com.mrprez.roborally.shared.SquareGwt;
 
 public class Game implements EntryPoint {
@@ -26,6 +27,7 @@ public class Game implements EntryPoint {
 			@Override
 			public void onSuccess(GameGwt game) {
 				loadSquares(game);
+				loadRobots(game);
 			}
 
 			@Override
@@ -40,6 +42,7 @@ public class Game implements EntryPoint {
 		Canvas squaresCanvas = Canvas.createIfSupported();
 		squaresCanvas.setCoordinateSpaceWidth(game.getBoard().getSizeX()*97);
 		squaresCanvas.setCoordinateSpaceHeight(game.getBoard().getSizeY()*97);
+		squaresCanvas.setStyleName("gameCanvas");
 		RootPanel.get().add(squaresCanvas);
 		
 		for (int y = 0; y < game.getBoard().getSizeY(); y++) {
@@ -78,6 +81,27 @@ public class Game implements EntryPoint {
 		});
 		img.setVisible(false);
 		RootPanel.get().add(img);
+	}
+	
+	
+	public void loadRobots(final GameGwt game) {
+		for(final RobotGwt robot : game.getRobotList()){
+			final Image img = new Image(robot.getImageName());
+			img.addLoadHandler(new LoadHandler() {
+				@Override
+				public void onLoad(LoadEvent event) {
+					Canvas robotCanvas = Canvas.createIfSupported();
+					robotCanvas.setCoordinateSpaceWidth(game.getBoard().getSizeX()*97);
+					robotCanvas.setCoordinateSpaceHeight(game.getBoard().getSizeY()*97);
+					robotCanvas.setStyleName("gameCanvas");
+					RootPanel.get().add(robotCanvas);
+					ImageElement imageEl = ImageElement.as(img.getElement());
+					robotCanvas.getContext2d().drawImage(imageEl, robot.getX()*97+25, robot.getY()*97+25);
+				}
+			});
+			img.setVisible(false);
+			RootPanel.get().add(img);
+		}
 	}
 
 }

@@ -24,6 +24,12 @@
 		<result property="clazz" column="CLASS" />
 		<result property="args" column="ARGS" />
 	</resultMap>
+	<resultMap id="robot" type="com.mrprez.roborally.dto.RobotDto">
+		<result property="x" column="X" />
+		<result property="y" column="Y" />
+		<result property="direction" column="DIRECTION" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
+		<result property="health" column="HEALTH" />
+	</resultMap>
 
 	<select id="checkUser" resultMap="userResultMap">
 		select USERNAME from USER where
@@ -39,5 +45,8 @@
 	</select>
 	<select id="selectSquareList" resultMap="square">
 		select X,Y,CLASS,ARGS from SQUARE where BOARD_ID=#{boardId}
+	</select>
+	<select id="selectRobotList" resultMap="robot">
+		select NUMBER,X,Y,DIRECTION,HEALTH from ROBOT where GAME_ID=#{gameId}
 	</select>
 </mapper>
