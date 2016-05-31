@@ -1,14 +1,12 @@
 package com.mrprez.roborally.model;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.mrprez.roborally.model.board.Board;
 
 
-public abstract class Square implements Serializable {
-	private static final long serialVersionUID = 1L;
+public abstract class Square {
 	
 	private int x;
 	private int y;
