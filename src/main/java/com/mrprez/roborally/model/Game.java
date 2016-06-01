@@ -19,7 +19,6 @@ public class Game {
 	private GameBoard board;
 	private Set<Robot> robotList = new HashSet<Robot>();
 	private CardStock cardStock = new CardStock();
-	private List<Round> history = new ArrayList<Round>();
 	
 	
 	public void addRobot(){
@@ -44,10 +43,10 @@ public class Game {
 		}
 	}
 	
-	public void play(){
+	public Round play(){
 		Round round = new Round();
 		for(int turn=0; turn<TURN_NB; turn++){
-			TurnResult turnResult = new TurnResult();
+			TurnResult turnResult = new TurnResult(turn);
 			round.addTurnResult(turnResult);
 			
 			// On joue les cartes
@@ -90,7 +89,6 @@ public class Game {
 				}
 			}
 		}
-		history.add(round);
 		
 		// On redistribue les cartes
 		for(Robot robot : robotList){
@@ -101,6 +99,8 @@ public class Game {
 			Collection<Card> discarded = robot.changeCards(newCards);
 			cardStock.discard(discarded);
 		}
+		
+		return round;
 	}
 	
 	public Set<Robot> getRobotList(){
@@ -115,10 +115,6 @@ public class Game {
 		this.board = board;
 	}
 	
-	public List<Round> getHistory(){
-		return history;
-	}
-
 	public String getName() {
 		return name;
 	}

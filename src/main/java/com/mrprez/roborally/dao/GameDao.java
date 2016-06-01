@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.mrprez.roborally.model.Card;
 import com.mrprez.roborally.model.Game;
+import com.mrprez.roborally.model.Round;
 
 public interface GameDao {
 
@@ -13,6 +14,5 @@ public interface GameDao {
 	Game loadGame(Integer id) throws InstantiationException, IllegalAccessException, ClassNotFoundException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException;
 	
 	List<Card> loadHandCards(Integer gameId, String username);
-	
 
 }

@@ -11,10 +11,14 @@ import org.dozer.DozerBeanMapper;
 import com.mrprez.roborally.dto.GameBoardDto;
 import com.mrprez.roborally.dto.RobotDto;
 import com.mrprez.roborally.dto.SquareDto;
+import com.mrprez.roborally.dto.StepDto;
 import com.mrprez.roborally.model.Card;
 import com.mrprez.roborally.model.Game;
 import com.mrprez.roborally.model.Robot;
+import com.mrprez.roborally.model.Round;
 import com.mrprez.roborally.model.Square;
+import com.mrprez.roborally.model.Step;
+import com.mrprez.roborally.model.TurnResult;
 import com.mrprez.roborally.model.board.Board;
 import com.mrprez.roborally.model.board.GameBoard;
 
@@ -68,5 +72,7 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 		params.put("username", username);
 		return getSession().selectList("selectHandCardList", params);
 	}
+
+	
 
 }
