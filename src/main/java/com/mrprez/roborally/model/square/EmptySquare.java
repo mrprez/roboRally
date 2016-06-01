@@ -5,7 +5,6 @@ import com.mrprez.roborally.model.Step;
 import com.mrprez.roborally.model.board.Board;
 
 public class EmptySquare extends Square {
-	private static final long serialVersionUID = 1L;
 
 	public EmptySquare(Integer x, Integer y, Board board) {
 		super(x, y, board);

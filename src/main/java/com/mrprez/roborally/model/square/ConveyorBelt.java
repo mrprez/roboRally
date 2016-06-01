@@ -6,7 +6,6 @@ import com.mrprez.roborally.model.Step;
 import com.mrprez.roborally.model.board.Board;
 
 public class ConveyorBelt extends Square {
-	private static final long serialVersionUID = 1L;
 	private Direction direction;
 
 	
