@@ -41,3 +41,16 @@ h1 {
 .gameCanvas{
 	position: absolute;
 }
+
+.cardPanel > tbody > tr > td {
+	border: 2px solid green;
+}
+
+.dropping{
+	background-color: grey;
+}
+
+.cardTurnNb{
+	margin: auto;
+	width: 10px;
+}

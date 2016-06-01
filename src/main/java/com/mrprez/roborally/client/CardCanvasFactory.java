@@ -1,0 +1,88 @@
+package com.mrprez.roborally.client;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import com.google.gwt.canvas.client.Canvas;
+import com.google.gwt.dom.client.ImageElement;
+import com.google.gwt.event.dom.client.DragLeaveEvent;
+import com.google.gwt.event.dom.client.DragLeaveHandler;
+import com.google.gwt.event.dom.client.DragOverEvent;
+import com.google.gwt.event.dom.client.DragOverHandler;
+import com.google.gwt.event.dom.client.DragStartEvent;
+import com.google.gwt.event.dom.client.DragStartHandler;
+import com.google.gwt.event.dom.client.DropEvent;
+import com.google.gwt.event.dom.client.DropHandler;
+import com.google.gwt.event.dom.client.LoadEvent;
+import com.google.gwt.event.dom.client.LoadHandler;
+import com.google.gwt.user.client.rpc.IsSerializable;
+import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.mrprez.roborally.shared.CardGwt;
+
+public class CardCanvasFactory implements IsSerializable {
+	private static Map<String, Canvas> canvasCardMap = new HashMap<String, Canvas>();
+	
+	public static Canvas build(CardGwt card, int index){
+		final String rapidity = String.valueOf(card.getRapidity());
+		final Canvas cardCanvas = Canvas.createIfSupported();
+		cardCanvas.setCoordinateSpaceWidth(50);
+		cardCanvas.setCoordinateSpaceHeight(80);
+		canvasCardMap.put(rapidity, cardCanvas);
+		cardCanvas.getElement().setAttribute("draggable", "true");
+		cardCanvas.getElement().setAttribute("rapidity", rapidity);
+		cardCanvas.getElement().setAttribute("index", String.valueOf(index));
+		final Image cardImg = new Image(card.getImageName());
+		cardImg.addLoadHandler(new LoadHandler() {
+			@Override
+			public void onLoad(LoadEvent event) {
+				ImageElement imageEl = ImageElement.as(cardImg.getElement());
+				cardCanvas.getContext2d().drawImage(imageEl, 5, 5);
+				cardCanvas.getContext2d().fillText(rapidity, 10, 55);
+			}
+		});
+		cardImg.setVisible(false);
+		RootPanel.get().add(cardImg);
+		
+		cardCanvas.addDragStartHandler(new DragStartHandler() {
+			@Override
+			public void onDragStart(DragStartEvent event) {
+				event.setData("rapidity", rapidity);
+			}
+		});
+		cardCanvas.addDragOverHandler(new DragOverHandler() {
+			@Override
+			public void onDragOver(DragOverEvent event) {
+				event.getRelativeElement().addClassName("dropping");
+			}
+		});
+		cardCanvas.addDragLeaveHandler(new DragLeaveHandler() {
+			@Override
+			public void onDragLeave(DragLeaveEvent event) {
+				event.getRelativeElement().removeClassName("dropping");
+			}
+		});
+		cardCanvas.addDropHandler(new DropHandler() {
+			@Override
+			public void onDrop(DropEvent event) {
+				event.preventDefault();
+				event.getRelativeElement().removeClassName("dropping");
+				Canvas droppedCanvas = canvasCardMap.get(event.getData("rapidity"));
+				Canvas receptionCanvas = canvasCardMap.get(event.getRelativeElement().getAttribute("rapidity"));
+				int draggedIndex = Integer.parseInt(droppedCanvas.getElement().getAttribute("index"));
+				int droppedIndex = Integer.parseInt(receptionCanvas.getElement().getAttribute("index"));
+				Grid cardPanel = (Grid) droppedCanvas.getParent();
+				cardPanel.clearCell(0, draggedIndex);
+				cardPanel.clearCell(0, droppedIndex);
+				cardPanel.setWidget(0, droppedIndex, droppedCanvas);
+				cardPanel.setWidget(0, draggedIndex, receptionCanvas);
+				droppedCanvas.getElement().setAttribute("index", String.valueOf(droppedIndex));
+				receptionCanvas.getElement().setAttribute("index", String.valueOf(draggedIndex));
+			}
+		});
+		
+		return cardCanvas;
+	}
+
+}

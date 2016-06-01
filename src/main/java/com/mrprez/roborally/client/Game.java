@@ -13,7 +13,9 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.mrprez.roborally.shared.CardGwt;
 import com.mrprez.roborally.shared.GameGwt;
@@ -25,8 +27,8 @@ public class Game implements EntryPoint {
 	private GameGwtServiceAsync gameGwtService = GWT.create(GameGwtService.class);
 	private Integer gameId;
 	private FlowPanel centerPanel = new FlowPanel();
-	private FlowPanel southPanel = new FlowPanel();
-	
+	private Grid southPanel = new Grid(2, 9);
+
 
 	@Override
 	public void onModuleLoad() {
@@ -64,8 +66,15 @@ public class Game implements EntryPoint {
 	
 	
 	public void loadCards(List<CardGwt> cardList){
+		southPanel.addStyleName("cardPanel");
+		int index = 0;
 		for(CardGwt card : cardList){
-			southPanel.add(new Image(card.getImageName()));
+			Label label = new Label(index<5 ? String.valueOf(index+1) : "X");
+			label.addStyleName("cardTurnNb");
+			southPanel.setWidget(1, index, label);
+			Canvas cardCanvas = CardCanvasFactory.build(card, index);
+			southPanel.setWidget(0, index, cardCanvas);
+			index++;
 		}
 	}
 
