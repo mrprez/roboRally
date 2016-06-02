@@ -76,5 +76,10 @@ public class Step implements Iterable<Move>{
 		return number;
 	}
 	
+	public List<Move> getMoveList() {
+		return moveList;
+	}
+
+	
 
 }

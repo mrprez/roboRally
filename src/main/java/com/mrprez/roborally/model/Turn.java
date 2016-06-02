@@ -10,6 +10,10 @@ public class Turn implements Iterable<Step>{
 	private List<Step> stepList = new ArrayList<Step>();
 
 	
+	public List<Step> getStepList() {
+		return stepList;
+	}
+
 	public Turn(int number) {
 		super();
 		this.number = number;

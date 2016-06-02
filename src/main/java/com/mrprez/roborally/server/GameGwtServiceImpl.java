@@ -2,7 +2,6 @@ package com.mrprez.roborally.server;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import org.dozer.DozerBeanMapper;
@@ -52,7 +51,7 @@ public class GameGwtServiceImpl extends AbstractGwtService implements GameGwtSer
 		}
 		gameGwt.getBoard().setSquares(squareGwtTab);
 		
-		gameGwt.setRobotList(new HashSet<RobotGwt>());
+		gameGwt.setRobotList(new ArrayList<RobotGwt>());
 		for(Robot robot : game.getRobotList()){
 			RobotGwt robotGwt = dozerMapper.map(robot, RobotGwt.class);
 			robotGwt.setDirection(getDirectionChar(robot.getDirection()));

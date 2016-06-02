@@ -104,7 +104,7 @@ public class Game {
 		return round;
 	}
 	
-	public Collection<Robot> getRobotList(){
+	public List<Robot> getRobotList(){
 		return robotList;
 	}
 	

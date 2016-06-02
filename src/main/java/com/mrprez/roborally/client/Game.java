@@ -1,34 +1,52 @@
 package com.mrprez.roborally.client;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.ImageElement;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.web.bindery.event.shared.Event;
+import com.google.web.bindery.event.shared.EventBus;
+import com.google.web.bindery.event.shared.SimpleEventBus;
 import com.mrprez.roborally.shared.CardGwt;
 import com.mrprez.roborally.shared.GameGwt;
+import com.mrprez.roborally.shared.MoveGwt;
 import com.mrprez.roborally.shared.RobotGwt;
+import com.mrprez.roborally.shared.RoundGwt;
 import com.mrprez.roborally.shared.SquareGwt;
+import com.mrprez.roborally.shared.StepGwt;
+import com.mrprez.roborally.shared.TurnGwt;
 
 public class Game implements EntryPoint {
+	public static final int ANIMATION_DURATION = 1000;
 
 	private GameGwtServiceAsync gameGwtService = GWT.create(GameGwtService.class);
 	private Integer gameId;
 	private AbsolutePanel centerPanel = new AbsolutePanel();
 	private Grid southPanel = new Grid(2, 9);
-
+	private FlowPanel eastPanel = new FlowPanel();
+	private Map<Integer, Canvas> robotCanvaMap;
+	private GameGwt game;
+	private static EventBus eventBus = new SimpleEventBus();
+	private AnimationEventHandler animationEventHandler = new AnimationEventHandler(ANIMATION_DURATION);
 
 	@Override
 	public void onModuleLoad() {
@@ -37,11 +55,13 @@ public class Game implements EntryPoint {
 		DockPanel dockPanel = new DockPanel();
 		dockPanel.add(centerPanel, DockPanel.CENTER);
 		dockPanel.add(southPanel, DockPanel.SOUTH);
+		dockPanel.add(eastPanel, DockPanel.EAST);
 		RootPanel.get().add(dockPanel);
 		
 		gameGwtService.getGame(gameId, new AsyncCallback<GameGwt>() {
 			@Override
-			public void onSuccess(GameGwt game) {
+			public void onSuccess(GameGwt loadedGame) {
+				game = loadedGame;
 				loadSquares(game);
 				loadRobots(game);
 			}
@@ -62,6 +82,16 @@ public class Game implements EntryPoint {
 			}			
 		});
 		
+		Button playButton = new Button("Play");
+		eastPanel.add(playButton);
+		playButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				loadAnimation(game.getHistory().get(game.getHistory().size()-1));
+			}
+		});
+		
+		eventBus.addHandler(AnimationEvent.TYPE, animationEventHandler);
 	}
 	
 	
@@ -76,6 +106,22 @@ public class Game implements EntryPoint {
 			southPanel.setWidget(0, index, cardCanvas);
 			index++;
 		}
+	}
+	
+	public void loadAnimation(RoundGwt round){
+		for(TurnGwt turn : round.getTurnList()){
+			for(StepGwt step : turn.getStepList()){
+				for(MoveGwt move : step.getMoveList()){
+					if(move.getTranslation()!=null){
+						animationEventHandler.addAnimation(new TranslationAnimation(robotCanvaMap.get(move.getRobotNb()), move.getTranslation(), eventBus));
+					}
+					if(move.getRotation()!=0){
+						animationEventHandler.addAnimation(new RotationAnimation(game.getRobotList().get(move.getRobotNb()), robotCanvaMap.get(move.getRobotNb()), move.getRotation(), eventBus));
+					}
+				}
+			}
+		}
+		eventBus.fireEvent(new AnimationEvent());
 	}
 
 	public void loadSquares(GameGwt game) {
@@ -126,6 +172,7 @@ public class Game implements EntryPoint {
 	
 	
 	public void loadRobots(final GameGwt game) {
+		robotCanvaMap = new HashMap<Integer, Canvas>();
 		for(final RobotGwt robot : game.getRobotList()){
 			final Image img = new Image(robot.getImageName());
 			img.addLoadHandler(new LoadHandler() {
@@ -138,11 +185,18 @@ public class Game implements EntryPoint {
 					centerPanel.add(robotCanvas, robot.getX()*97, robot.getY()*97);
 					ImageElement imageEl = ImageElement.as(img.getElement());
 					robotCanvas.getContext2d().drawImage(imageEl, 25, 25);
+					robotCanvaMap.put(robot.getNumber(), robotCanvas);
 				}
 			});
 			img.setVisible(false);
 			RootPanel.get().add(img);
 		}
 	}
+	
+	public static void fireEventInBus(Event<?> event){
+		eventBus.fireEvent(event);
+	}
+	
+	
 
 }

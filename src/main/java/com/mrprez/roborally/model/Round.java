@@ -27,5 +27,9 @@ public class Round implements Iterable<Turn> {
 	public int getNumber() {
 		return number;
 	}
+	
+	public List<Turn> getTurnList(){
+		return turnList;
+	}
 
 }
