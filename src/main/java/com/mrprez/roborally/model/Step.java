@@ -8,17 +8,36 @@ public class Step implements Iterable<Move>{
 	
 	private List<Move> moveList = new ArrayList<Move>();
 	
-	private Card card;
-	private Square square;
+	private int cardRapidity;
+	private int squareX;
+	private int squareY;
+	private int number;
+
 	
-	public Step(Card card){
+	public Step(int number, Card card){
 		super();
-		this.card = card;
+		this.number = number;
+		this.cardRapidity = card.getRapidity();
 	}
 	
-	public Step(Square square){
+	public Step(int number, Square square){
 		super();
-		this.square = square;
+		this.number = number;
+		this.squareX = square.getX();
+		this.squareY = square.getY();
+	}
+	
+	public Step(int number, int cardRapidity){
+		super();
+		this.number = number;
+		this.cardRapidity = cardRapidity;
+	}
+	
+	public Step(int number, int squareX, int squareY){
+		super();
+		this.number = number;
+		this.squareX = squareX;
+		this.squareY = squareY;
 	}
 
 	@Override
@@ -41,20 +60,20 @@ public class Step implements Iterable<Move>{
 	}
 
 	
-	public Card getCard() {
-		return card;
+	public int getCardRapidity() {
+		return cardRapidity;
 	}
 
-	public void setCard(Card card) {
-		this.card = card;
+	public int getSquareX() {
+		return squareX;
 	}
 
-	public Square getSquare() {
-		return square;
+	public int getSquareY() {
+		return squareY;
 	}
 
-	public void setSquare(Square square) {
-		this.square = square;
+	public int getNumber() {
+		return number;
 	}
 	
 

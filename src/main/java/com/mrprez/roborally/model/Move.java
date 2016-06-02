@@ -7,14 +7,6 @@ public class Move {
 	private boolean success = true;
 	
 	
-	public Move(Robot robot, int rotation, Direction translation, boolean success){
-		super();
-		this.robot = robot;
-		this.rotation = rotation;
-		this.translation = translation;
-		this.setSuccess(success);
-	}
-	
 	public Move(Robot robot, Direction translation, boolean success){
 		super();
 		this.robot = robot;

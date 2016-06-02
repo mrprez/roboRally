@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.TreeSet;
 
 import com.mrprez.roborally.ai.AIRobot;
@@ -17,8 +16,9 @@ public class Game {
 	private Integer id;
 	private String name;
 	private GameBoard board;
-	private Set<Robot> robotList = new HashSet<Robot>();
+	private List<Robot> robotList = new ArrayList<Robot>();
 	private CardStock cardStock = new CardStock();
+	private List<Round> history = new ArrayList<Round>();
 	
 	
 	public void addRobot(){
@@ -44,17 +44,16 @@ public class Game {
 	}
 	
 	public Round play(){
-		Round round = new Round();
+		Round round = new Round(history.size());
 		for(int turn=0; turn<TURN_NB; turn++){
-			TurnResult turnResult = new TurnResult(turn);
-			round.addTurnResult(turnResult);
+			Turn turnResult = new Turn(turn);
+			round.addTurn(turnResult);
 			
 			// On joue les cartes
 			TreeSet<Robot> robotOrderedList = new TreeSet<Robot>(new InitComparator(turn));
 			robotOrderedList.addAll(robotList);
 			for(Robot robot : robotOrderedList){
-				Step step = robot.playCard(turn);
-				turnResult.addStep(step);
+				turnResult.addAllSteps(robot.playCard(turn));
 			}
 			
 			// on vérifie les fantomes
@@ -100,10 +99,12 @@ public class Game {
 			cardStock.discard(discarded);
 		}
 		
+		history.add(round);
+		
 		return round;
 	}
 	
-	public Set<Robot> getRobotList(){
+	public Collection<Robot> getRobotList(){
 		return robotList;
 	}
 	
@@ -130,7 +131,15 @@ public class Game {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
+	public List<Round> getHistory() {
+		return history;
+	}
+
+	public Robot getRobot(int robotNb) {
+		return robotList.get(robotNb);
+	}
+
 	
 	
 }

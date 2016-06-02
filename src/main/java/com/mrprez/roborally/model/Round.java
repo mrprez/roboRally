@@ -4,17 +4,28 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Round implements Iterable<TurnResult> {
-	private List<TurnResult> turnResultList = new ArrayList<TurnResult>();
+public class Round implements Iterable<Turn> {
+	
+	private int number;
+	private List<Turn> turnList = new ArrayList<Turn>();
 	
 	
-	public void addTurnResult(TurnResult turnResult){
-		turnResultList.add(turnResult);
+	public Round(int number) {
+		super();
+		this.number = number;
+	}
+
+	public void addTurn(Turn turnResult){
+		turnList.add(turnResult);
 	}
 
 	@Override
-	public Iterator<TurnResult> iterator() {
-		return turnResultList.iterator();
+	public Iterator<Turn> iterator() {
+		return turnList.iterator();
+	}
+
+	public int getNumber() {
+		return number;
 	}
 
 }

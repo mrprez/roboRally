@@ -37,6 +37,19 @@
 		<result property="direction" column="DIRECTION" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
 		<result property="health" column="HEALTH" />
 	</resultMap>
+	<resultMap id="step" type="com.mrprez.roborally.dto.StepDto">
+		<result property="roundNb" column="ROUND_NB" />
+		<result property="turnNb" column="TURN_NB" />
+		<result property="stepNb" column="STEP_NB" />
+		<result property="cardRapidity" column="CARD_RAPIDITY" />
+		<result property="squareX" column="SQUARE_X" />
+		<result property="squareY" column="SQUARE_Y" />
+		<collection property="moveList" ofType="com.mrprez.roborally.dto.MoveDto" >
+			<result property="robotNb" column="ROBOT_NB" />
+			<result property="translation" column="TRANSLATION" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
+			<result property="rotation" column="ROTATION" />
+		</collection>
+	</resultMap>
 
 	<select id="checkUser" resultMap="userResultMap">
 		select USERNAME from ACCOUNT where
@@ -60,5 +73,13 @@
 		select RAPIDITY,TRANSLATION,ROTATION from CARD
 		join ROBOT on CARD.ROBOT_NB=ROBOT.NUMBER and CARD.GAME_ID=ROBOT.GAME_ID
 		where GAME_ID=#{gameId} and ROBOT.USER_NAME=#{username}
+	</select>
+	<select id="selectStepList" resultMap="step">
+		select STEP.ROUND_NB, STEP.TURN_NB, STEP.STEP_NB, STEP.CARD_RAPIDITY, STEP.SQUARE_X, STEP.SQUARE_Y, 
+			MOVE.NUMBER, MOVE.ROBOT_NB, MOVE.ROTATION, MOVE.TRANSLATION
+		from STEP
+		left join MOVE on  STEP.GAME_ID=MOVE.GAME_ID and STEP.ROUND_NB=MOVE.ROUND_NB and STEP.TURN_NB=MOVE.TURN_NB and STEP.STEP_NB=MOVE.STEP_NB 
+		where STEP.GAME_ID=#{gameId}
+		order by STEP.ROUND_NB, STEP.TURN_NB, STEP.STEP_NB, MOVE.NUMBER asc
 	</select>
 </mapper>

@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class TurnResult implements Iterable<Step>{
+public class Turn implements Iterable<Step>{
 	private int number;
 	
 	private List<Step> stepList = new ArrayList<Step>();
 
 	
-	public TurnResult(int number) {
+	public Turn(int number) {
 		super();
 		this.number = number;
 	}
@@ -24,6 +24,10 @@ public class TurnResult implements Iterable<Step>{
 		if(step != null){
 			stepList.add(step);
 		}
+	}
+	
+	public void addAllSteps(List<Step> stepList){
+		stepList.addAll(stepList);
 	}
 
 	public int getNumber() {

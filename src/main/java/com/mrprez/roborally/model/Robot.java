@@ -88,25 +88,26 @@ public class Robot {
 		return garbage;
 	}
 	
-	public Step playCard(int turn){
-		Card card = cards.get(turn);
-		Step step = new Step(card);
-		for(int i=0; i<card.getTranslation(); i++){
-			if(canMove(direction)){
-				step.addAllMove(move(direction));
-			}else{
-				step.addMove(new Move(this, direction, false));
-			}
-		}
-		for(int i=0; i>card.getTranslation(); i--){
-			if(canMove(direction.getOpposite())){
-				step.addAllMove(move(direction.getOpposite()));
-			}else{
-				step.addMove(new Move(this, direction.getOpposite(), false));
-			}
-		}
-		step.addMove(rotate(card.getRotation()));
-		return step;
+	public List<Step> playCard(int turn){
+		List<Step> stepList = new ArrayList<Step>();
+//		Card card = cards.get(turn);
+//		Step step = new Step(card);
+//		for(int i=0; i<card.getTranslation(); i++){
+//			if(canMove(direction)){
+//				step.addAllMove(move(direction));
+//			}else{
+//				step.addMove(new Move(this, direction, false));
+//			}
+//		}
+//		for(int i=0; i>card.getTranslation(); i--){
+//			if(canMove(direction.getOpposite())){
+//				step.addAllMove(move(direction.getOpposite()));
+//			}else{
+//				step.addMove(new Move(this, direction.getOpposite(), false));
+//			}
+//		}
+//		step.addMove(rotate(card.getRotation()));
+		return stepList;
 	}
 	
 	public boolean canMove(Direction direction){

@@ -2,13 +2,19 @@
 <mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
 
+	<configuration>
+		<custom-converters>
+			<converter type="com.mrprez.roborally.server.MoveConverter">
+				<class-a>com.mrprez.roborally.model.Move</class-a>
+				<class-b>com.mrprez.roborally.shared.MoveGwt</class-b>
+			</converter>
+		</custom-converters>
+	</configuration>
+	
+	
 	<mapping>
 		<class-a>com.mrprez.roborally.model.Game</class-a>
 		<class-b>com.mrprez.roborally.shared.GameGwt</class-b>
-		<field-exclude>
-			<a>robotList</a>
-			<b>robotList</b>
-		</field-exclude>
 	</mapping>
 
 	<mapping>
@@ -27,7 +33,7 @@
 			<b>startY</b>
 		</field>
 	</mapping>
-	
+
 	<mapping>
 		<class-a>com.mrprez.roborally.model.Robot</class-a>
 		<class-b>com.mrprez.roborally.shared.RobotGwt</class-b>
@@ -39,6 +45,19 @@
 			<a>square.y</a>
 			<b>y</b>
 		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.mrprez.roborally.model.Round</class-a>
+		<class-b>com.mrprez.roborally.shared.RoundGwt</class-b>
+	</mapping>
+	<mapping>
+		<class-a>com.mrprez.roborally.model.Turn</class-a>
+		<class-b>com.mrprez.roborally.shared.TurnGwt</class-b>
+	</mapping>
+	<mapping>
+		<class-a>com.mrprez.roborally.model.Step</class-a>
+		<class-b>com.mrprez.roborally.shared.StepGwt</class-b>
 	</mapping>
 
 </mappings> 

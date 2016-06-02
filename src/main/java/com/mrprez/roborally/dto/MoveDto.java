@@ -1,9 +1,11 @@
 package com.mrprez.roborally.dto;
 
+import com.mrprez.roborally.model.Direction;
+
 public class MoveDto {
 	
 	private int robotNb;
-	private Integer translation;
+	private Direction translation;
 	private Integer rotation;
 	
 	
@@ -13,10 +15,10 @@ public class MoveDto {
 	public void setRobotNb(int robotNb) {
 		this.robotNb = robotNb;
 	}
-	public Integer getTranslation() {
+	public Direction getTranslation() {
 		return translation;
 	}
-	public void setTranslation(Integer translation) {
+	public void setTranslation(Direction translation) {
 		this.translation = translation;
 	}
 	public Integer getRotation() {
