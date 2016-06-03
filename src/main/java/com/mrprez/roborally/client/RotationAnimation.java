@@ -3,10 +3,9 @@ package com.mrprez.roborally.client;
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.user.client.ui.Image;
-import com.google.web.bindery.event.shared.EventBus;
 import com.mrprez.roborally.shared.RobotGwt;
 
-public class RotationAnimation extends QueuedAnimation {
+public class RotationAnimation implements MoveAnimation {
 	
 	private int rotation;
 	private Canvas robotCanvas;
@@ -14,15 +13,17 @@ public class RotationAnimation extends QueuedAnimation {
 	private RobotGwt robot;
 	
 	
-	public RotationAnimation(RobotGwt robot, Canvas robotCanvas, int rotation, EventBus eventBus){
-		super(eventBus);
+	public RotationAnimation(RobotGwt robot, Canvas robotCanvas, int rotation){
 		this.robotCanvas = robotCanvas;
 		this.robot = robot;
 		this.rotation = rotation;
 	}
+	
+	@Override
+	public void onStart() {}
 
 	@Override
-	protected void onUpdate(double progress) {
+	public void update(double progress) {
 		robotCanvas.getContext2d().clearRect(0, 0, robotCanvas.getCoordinateSpaceWidth(), robotCanvas.getCoordinateSpaceHeight());
 		robotCanvas.getContext2d().translate(robotCanvas.getCoordinateSpaceWidth()/2, robotCanvas.getCoordinateSpaceHeight()/2);
 		robotCanvas.getContext2d().rotate(progress*Math.PI/2*rotation - currentAngle);
@@ -34,12 +35,12 @@ public class RotationAnimation extends QueuedAnimation {
 	}
 	
 	@Override
-	protected void onComplete(){
-		super.onComplete();
-		robot.setDirection(getEndDirection());
-		Image img = new Image(robot.getImageName());
-		ImageElement imageEl = ImageElement.as(img.getElement());
-		robotCanvas.getContext2d().drawImage(imageEl, 25, 25);
+	public void onComplete(){
+//		robot.setDirection(getEndDirection());
+//		Image img = new Image(robot.getImageName());
+//		ImageElement imageEl = ImageElement.as(img.getElement());
+//		robotCanvas.getContext2d().clearRect(0, 0, robotCanvas.getCoordinateSpaceWidth(), robotCanvas.getCoordinateSpaceHeight());
+//		robotCanvas.getContext2d().drawImage(imageEl, 25, 25);
 	}
 	
 	
@@ -67,6 +68,8 @@ public class RotationAnimation extends QueuedAnimation {
 		}
 		return endDirection;
 	}
+
+	
 
 
 }

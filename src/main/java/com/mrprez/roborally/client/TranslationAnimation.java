@@ -5,7 +5,7 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.web.bindery.event.shared.EventBus;
 import com.mrprez.roborally.shared.RobotGwt;
 
-public class TranslationAnimation extends QueuedAnimation {
+public class TranslationAnimation implements MoveAnimation {
 	
 	private int x;
 	private int y;
@@ -16,8 +16,7 @@ public class TranslationAnimation extends QueuedAnimation {
 	private AbsolutePanel absolutePanel;
 	
 	
-	public TranslationAnimation(RobotGwt robot, Canvas robotCanvas, int[] direction, EventBus eventBus){
-		super(eventBus);
+	public TranslationAnimation(RobotGwt robot, Canvas robotCanvas, int[] direction){
 		this.robotCanvas = robotCanvas;
 		this.robot = robot;
 		absolutePanel = (AbsolutePanel) robotCanvas.getParent();
@@ -26,21 +25,20 @@ public class TranslationAnimation extends QueuedAnimation {
 	}
 
 	@Override
-	protected void onUpdate(double progress) {
+	public void update(double progress) {
 		absolutePanel.setWidgetPosition(robotCanvas, (int)(startLeft+x*97*progress), (int)(startTop+y*97*progress));
 	}
 
 	@Override
-	protected void onStart(){
+	public void onStart(){
 		startLeft = absolutePanel.getWidgetLeft(robotCanvas);
 		startTop = absolutePanel.getWidgetTop(robotCanvas);
 	}
 	
 	@Override
-	protected void onComplete(){
-		super.onComplete();
-		robot.setX(robot.getX()+x);
-		robot.setY(robot.getY()+y);
+	public void onComplete(){
+//		robot.setX(robot.getX()+x);
+//		robot.setY(robot.getY()+y);
 	}
 
 }

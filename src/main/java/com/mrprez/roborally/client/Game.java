@@ -28,7 +28,6 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 import com.mrprez.roborally.shared.CardGwt;
 import com.mrprez.roborally.shared.GameGwt;
-import com.mrprez.roborally.shared.MoveGwt;
 import com.mrprez.roborally.shared.RobotGwt;
 import com.mrprez.roborally.shared.RoundGwt;
 import com.mrprez.roborally.shared.SquareGwt;
@@ -46,7 +45,7 @@ public class Game implements EntryPoint {
 	private Map<Integer, Canvas> robotCanvaMap;
 	private GameGwt game;
 	private static EventBus eventBus = new SimpleEventBus();
-	private AnimationEventHandler animationEventHandler = new AnimationEventHandler(ANIMATION_DURATION);
+	private StepAnimationEventHandler stepAnimationEventHandler = new StepAnimationEventHandler(ANIMATION_DURATION);
 
 	@Override
 	public void onModuleLoad() {
@@ -91,7 +90,7 @@ public class Game implements EntryPoint {
 			}
 		});
 		
-		eventBus.addHandler(AnimationEvent.TYPE, animationEventHandler);
+		eventBus.addHandler(StepAnimationEvent.TYPE, stepAnimationEventHandler);
 	}
 	
 	
@@ -111,17 +110,10 @@ public class Game implements EntryPoint {
 	public void loadAnimation(RoundGwt round){
 		for(TurnGwt turn : round.getTurnList()){
 			for(StepGwt step : turn.getStepList()){
-				for(MoveGwt move : step.getMoveList()){
-					if(move.getTranslation()!=null){
-						animationEventHandler.addAnimation(new TranslationAnimation(robotCanvaMap.get(move.getRobotNb()), move.getTranslation(), eventBus));
-					}
-					if(move.getRotation()!=0){
-						animationEventHandler.addAnimation(new RotationAnimation(game.getRobotList().get(move.getRobotNb()), robotCanvaMap.get(move.getRobotNb()), move.getRotation(), eventBus));
-					}
-				}
+				stepAnimationEventHandler.addAnimation(new StepAnimation(step, game.getRobotList(), robotCanvaMap, eventBus));
 			}
 		}
-		eventBus.fireEvent(new AnimationEvent());
+		eventBus.fireEvent(new StepAnimationEvent());
 	}
 
 	public void loadSquares(GameGwt game) {
