@@ -7,6 +7,7 @@ public class MoveDto {
 	private int robotNb;
 	private Direction translation;
 	private Integer rotation;
+	private boolean success;
 	
 	
 	public int getRobotNb() {
@@ -26,6 +27,12 @@ public class MoveDto {
 	}
 	public void setRotation(Integer rotation) {
 		this.rotation = rotation;
+	}
+	public boolean isSuccess() {
+		return success;
+	}
+	public void setSuccess(boolean success) {
+		this.success = success;
 	}
 	
 }

@@ -111,7 +111,7 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 			}
 			for(MoveDto moveDto : stepDto.getMoveList()){
 				if(moveDto.getTranslation()!=null){
-					step.addMove(new Move(game.getRobot(moveDto.getRobotNb()), moveDto.getTranslation(), true));
+					step.addMove(new Move(game.getRobot(moveDto.getRobotNb()), moveDto.getTranslation(), moveDto.isSuccess()));
 				} else {
 					step.addMove(new Move(game.getRobot(moveDto.getRobotNb()), moveDto.getRotation()));
 				}

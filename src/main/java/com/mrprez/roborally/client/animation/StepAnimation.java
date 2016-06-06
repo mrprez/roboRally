@@ -1,4 +1,4 @@
-package com.mrprez.roborally.client;
+package com.mrprez.roborally.client.animation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,20 +15,23 @@ public class StepAnimation extends Animation {
 	private static final double DELAY = 0.6;
 	
 	private EventBus eventBus;
-	private List<MoveAnimation> animationList = new ArrayList<MoveAnimation>();
+	private List<UnitAnimation> animationList = new ArrayList<UnitAnimation>();
 	
 	
-	public StepAnimation(StepGwt step, List<RobotGwt> robotList, Map<Integer,Canvas> robotCanvaMap, EventBus eventBus){
+	public StepAnimation(StepGwt step, List<RobotGwt> robotList, Map<Integer,Canvas> robotCanvaMap){
 		super();
-		this.eventBus = eventBus;
 		for(MoveGwt move : step.getMoveList()){
 			RobotGwt robot = robotList.get(move.getRobotNb());
 			Canvas robotCanvas = robotCanvaMap.get(move.getRobotNb());
 			if(move.getTranslation()!=null){
-				animationList.add(new TranslationAnimation(robot, robotCanvas, move.getTranslation()));
+				if(move.isSuccess()){
+					animationList.add(new TranslationAnimation(robotCanvas, move.getTranslation()));
+				} else {
+					animationList.add(new FailedTranslationAnimation(robotCanvas, move.getTranslation()));
+				}
 			}
 			if(move.getRotation()!=0){
-				animationList.add(new RotationAnimation(robot, robotCanvas, move.getRotation()));
+				animationList.add(new RotationAnimation(robot.getImageName(), robotCanvas, move.getRotation()));
 			}
 		}
 	}
@@ -43,7 +46,7 @@ public class StepAnimation extends Animation {
 	
 	@Override
 	protected void onStart(){
-		for(MoveAnimation animation : animationList){
+		for(UnitAnimation animation : animationList){
 			animation.onStart();
 		}
 	}
@@ -53,7 +56,7 @@ public class StepAnimation extends Animation {
 	protected void onUpdate(double progress) {
 		double delay = 0;
 		double coefficient = getTimeCoefficiant();
-		for(MoveAnimation animation : animationList){
+		for(UnitAnimation animation : animationList){
 			double currentProgress = progress * coefficient - delay;
 			delay = delay + DELAY;
 			currentProgress = Math.max(currentProgress, 0);
@@ -66,10 +69,21 @@ public class StepAnimation extends Animation {
 
 	@Override
 	protected void onComplete(){
-		for(MoveAnimation animation : animationList){
+		for(UnitAnimation animation : animationList){
 			animation.onComplete();
 		}
 		eventBus.fireEvent(new StepAnimationEvent());
 	}
+	
+	
+	public EventBus getEventBus() {
+		return eventBus;
+	}
+
+
+	public void setEventBus(EventBus eventBus) {
+		this.eventBus = eventBus;
+	}
+
 
 }

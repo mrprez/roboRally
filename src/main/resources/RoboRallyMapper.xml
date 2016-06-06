@@ -48,6 +48,7 @@
 			<result property="robotNb" column="ROBOT_NB" />
 			<result property="translation" column="TRANSLATION" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
 			<result property="rotation" column="ROTATION" />
+			<result property="success" column="SUCCESS" />
 		</collection>
 	</resultMap>
 
@@ -76,7 +77,7 @@
 	</select>
 	<select id="selectStepList" resultMap="step">
 		select STEP.ROUND_NB, STEP.TURN_NB, STEP.STEP_NB, STEP.CARD_RAPIDITY, STEP.SQUARE_X, STEP.SQUARE_Y, 
-			MOVE.NUMBER, MOVE.ROBOT_NB, MOVE.ROTATION, MOVE.TRANSLATION
+			MOVE.NUMBER, MOVE.ROBOT_NB, MOVE.ROTATION, MOVE.TRANSLATION, MOVE.SUCCESS
 		from STEP
 		left join MOVE on  STEP.GAME_ID=MOVE.GAME_ID and STEP.ROUND_NB=MOVE.ROUND_NB and STEP.TURN_NB=MOVE.TURN_NB and STEP.STEP_NB=MOVE.STEP_NB 
 		where STEP.GAME_ID=#{gameId}

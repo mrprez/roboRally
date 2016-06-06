@@ -11,6 +11,7 @@ public class Move {
 		super();
 		this.robot = robot;
 		this.translation = translation;
+		this.success = success;
 	}
 	
 	public Move(Robot robot, int rotation){

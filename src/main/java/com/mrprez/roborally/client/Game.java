@@ -23,9 +23,8 @@ import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.web.bindery.event.shared.Event;
-import com.google.web.bindery.event.shared.EventBus;
-import com.google.web.bindery.event.shared.SimpleEventBus;
+import com.mrprez.roborally.client.animation.AnimationManager;
+import com.mrprez.roborally.client.animation.StepAnimation;
 import com.mrprez.roborally.shared.CardGwt;
 import com.mrprez.roborally.shared.GameGwt;
 import com.mrprez.roborally.shared.RobotGwt;
@@ -44,8 +43,7 @@ public class Game implements EntryPoint {
 	private FlowPanel eastPanel = new FlowPanel();
 	private Map<Integer, Canvas> robotCanvaMap;
 	private GameGwt game;
-	private static EventBus eventBus = new SimpleEventBus();
-	private StepAnimationEventHandler stepAnimationEventHandler = new StepAnimationEventHandler(ANIMATION_DURATION);
+	private AnimationManager animationManager = new AnimationManager(ANIMATION_DURATION);
 
 	@Override
 	public void onModuleLoad() {
@@ -81,16 +79,23 @@ public class Game implements EntryPoint {
 			}			
 		});
 		
-		Button playButton = new Button("Play");
+		final Button playButton = new Button("Play");
 		eastPanel.add(playButton);
 		playButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				loadAnimation(game.getHistory().get(game.getHistory().size()-1));
+				if(playButton.getText().equals("Play")){
+					if( ! animationManager.isPaused()){
+						loadRoundAnimation(game.getHistory().get(game.getHistory().size()-1));
+					}
+					playButton.setText("Pause");
+					animationManager.play();
+				} else {
+					playButton.setText("Play");
+					animationManager.pause();
+				}
 			}
 		});
-		
-		eventBus.addHandler(StepAnimationEvent.TYPE, stepAnimationEventHandler);
 	}
 	
 	
@@ -107,13 +112,12 @@ public class Game implements EntryPoint {
 		}
 	}
 	
-	public void loadAnimation(RoundGwt round){
+	public void loadRoundAnimation(RoundGwt round){
 		for(TurnGwt turn : round.getTurnList()){
 			for(StepGwt step : turn.getStepList()){
-				stepAnimationEventHandler.addAnimation(new StepAnimation(step, game.getRobotList(), robotCanvaMap, eventBus));
+				animationManager.addAnimation(new StepAnimation(step, game.getRobotList(), robotCanvaMap));
 			}
 		}
-		eventBus.fireEvent(new StepAnimationEvent());
 	}
 
 	public void loadSquares(GameGwt game) {
@@ -183,10 +187,6 @@ public class Game implements EntryPoint {
 			img.setVisible(false);
 			RootPanel.get().add(img);
 		}
-	}
-	
-	public static void fireEventInBus(Event<?> event){
-		eventBus.fireEvent(event);
 	}
 	
 	

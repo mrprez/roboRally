@@ -1,6 +1,6 @@
-package com.mrprez.roborally.client;
+package com.mrprez.roborally.client.animation;
 
-public interface MoveAnimation {
+public interface UnitAnimation {
 
 	void update(double progress);
 
