@@ -18,6 +18,10 @@ public class Robot {
 	private int targetNumber = 0;
 	
 	
+	protected Robot(){
+		super();
+	}
+	
 	public Robot(Square square) {
 		super();
 		this.square = square;
@@ -71,6 +75,10 @@ public class Robot {
 	
 	public Card getCard(int turn){
 		return cards.get(turn);
+	}
+	
+	public List<Card> getCards(){
+		return cards;
 	}
 	
 	protected void setCards(List<Card> cards){

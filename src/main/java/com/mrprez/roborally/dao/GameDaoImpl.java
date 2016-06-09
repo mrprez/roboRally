@@ -121,12 +121,24 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 		return history;
 	}
 
+	
 	@Override
-	public List<Card> loadHandCards(Integer gameId, String username) {
+	public Robot loadPlayerRobot(Integer gameId, String username) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("gameId", gameId);
 		params.put("username", username);
-		return getSession().selectList("selectHandCardList", params);
+		return getSession().selectOne("selectPlayerRobot", params);
+	}
+
+	@Override
+	public void saveHandCards(Integer gameId, int robotNumber, List<Card> cardList) {
+		for(int index=0; index<cardList.size(); index++){
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("gameId", gameId);
+			params.put("rapidity", cardList.get(index).getRapidity());
+			params.put("index", index);
+			getSession().update("updateHandCard", params);
+		}
 	}
 
 	

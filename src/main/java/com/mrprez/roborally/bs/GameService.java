@@ -3,8 +3,8 @@ package com.mrprez.roborally.bs;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-import com.mrprez.roborally.model.Card;
 import com.mrprez.roborally.model.Game;
+import com.mrprez.roborally.model.Robot;
 
 public interface GameService {
 	
@@ -13,6 +13,8 @@ public interface GameService {
 	
 	Game getGame(Integer id, String username) throws InstantiationException, IllegalAccessException, ClassNotFoundException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException;
 	
-	List<Card> getRobotCards(Integer gameId, String username);
+	Robot getPlayerRobot(Integer gameId, String username);
+
+	void saveRobotCards(Integer gameId, String username, List<Integer> cardList);
 
 }

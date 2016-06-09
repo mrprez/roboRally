@@ -31,7 +31,7 @@
 		<result property="clazz" column="CLASS" />
 		<result property="args" column="ARGS" />
 	</resultMap>
-	<resultMap id="robot" type="com.mrprez.roborally.dto.RobotDto">
+	<resultMap id="robotDto" type="com.mrprez.roborally.dto.RobotDto">
 		<result property="x" column="X" />
 		<result property="y" column="Y" />
 		<result property="direction" column="DIRECTION" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
@@ -51,6 +51,12 @@
 			<result property="success" column="SUCCESS" />
 		</collection>
 	</resultMap>
+	<resultMap id="playerRobot" type="com.mrprez.roborally.model.Robot">
+		<id property="number" column="NUMBER" />
+		<result property="direction" column="DIRECTION" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
+		<result property="health" column="HEALTH" />
+		<collection property="cards" resultMap="card" ofType="com.mrprez.roborally.model.Card"/>
+	</resultMap>
 
 	<select id="checkUser" resultMap="userResultMap">
 		select USERNAME from ACCOUNT where
@@ -67,13 +73,14 @@
 	<select id="selectSquareList" resultMap="square">
 		select X,Y,CLASS,ARGS from SQUARE where BOARD_ID=#{boardId}
 	</select>
-	<select id="selectRobotList" resultMap="robot">
+	<select id="selectRobotList" resultMap="robotDto">
 		select NUMBER,X,Y,DIRECTION,HEALTH from ROBOT where GAME_ID=#{gameId}
 	</select>
-	<select id="selectHandCardList" resultMap="card">
-		select RAPIDITY,TRANSLATION,ROTATION from CARD
+	<select id="selectPlayerRobot" resultMap="playerRobot">
+		select NUMBER,HEALTH,DIRECTION,RAPIDITY,TRANSLATION,ROTATION from CARD
 		join ROBOT on CARD.ROBOT_NB=ROBOT.NUMBER and CARD.GAME_ID=ROBOT.GAME_ID
-		where GAME_ID=#{gameId} and ROBOT.USER_NAME=#{username}
+		where ROBOT.GAME_ID=#{gameId} and ROBOT.USER_NAME=#{username}
+		order by HAND_INDEX asc
 	</select>
 	<select id="selectStepList" resultMap="step">
 		select STEP.ROUND_NB, STEP.TURN_NB, STEP.STEP_NB, STEP.CARD_RAPIDITY, STEP.SQUARE_X, STEP.SQUARE_Y, 
@@ -83,4 +90,9 @@
 		where STEP.GAME_ID=#{gameId}
 		order by STEP.ROUND_NB, STEP.TURN_NB, STEP.STEP_NB, MOVE.NUMBER asc
 	</select>
+	
+	<insert id="updateHandCard">
+		update CARD set HAND_INDEX=#{index} where GAME_ID=#{gameId} and RAPIDITY=#{rapidity}
+	</insert>
+	
 </mapper>

@@ -1,5 +1,6 @@
 package com.mrprez.roborally.client;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,11 +18,13 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.mrprez.roborally.client.animation.AnimationManager;
 import com.mrprez.roborally.client.animation.StepAnimation;
@@ -39,7 +42,7 @@ public class Game implements EntryPoint {
 	private GameGwtServiceAsync gameGwtService = GWT.create(GameGwtService.class);
 	private Integer gameId;
 	private AbsolutePanel centerPanel = new AbsolutePanel();
-	private Grid southPanel = new Grid(2, 9);
+	private FlexTable southPanel = new FlexTable();
 	private FlowPanel eastPanel = new FlowPanel();
 	private Map<Integer, Canvas> robotCanvaMap;
 	private GameGwt game;
@@ -79,23 +82,58 @@ public class Game implements EntryPoint {
 			}			
 		});
 		
-		final Button playButton = new Button("Play");
+		addPlayerButtons(eastPanel);
+		
+	}
+	
+	
+	public void addPlayerButtons(FlowPanel panel){
+		final PushButton playButton  = new PushButton(new Image("img/media_playback_start.png"));
+		final PushButton pauseButton = new PushButton(new Image("img/media_playback_pause.png"));
+		final PushButton stopButton  = new PushButton(new Image("img/media_playback_stop.png"));
+		playButton.addStyleName("playerButton");
+		pauseButton.addStyleName("playerButton");
+		stopButton.addStyleName("playerButton");
 		eastPanel.add(playButton);
+		eastPanel.add(pauseButton);
+		eastPanel.add(stopButton);
+		pauseButton.setEnabled(false);
+		stopButton.setEnabled(false);
+		
 		playButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				if(playButton.getText().equals("Play")){
-					if( ! animationManager.isPaused()){
-						loadRoundAnimation(game.getHistory().get(game.getHistory().size()-1));
-					}
-					playButton.setText("Pause");
-					animationManager.play();
-				} else {
-					playButton.setText("Play");
-					animationManager.pause();
+				if( ! animationManager.isPaused()){
+					loadRoundAnimation(game.getHistory().get(game.getHistory().size()-1));
 				}
+				animationManager.play();
+				playButton.setEnabled(false);
+				pauseButton.setEnabled(true);
+				stopButton.setEnabled(true);
 			}
 		});
+		
+		pauseButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				animationManager.pause();
+				playButton.setEnabled(true);
+				pauseButton.setEnabled(false);
+				stopButton.setEnabled(true);
+			}
+		});
+		
+		stopButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				animationManager.stop();
+				playButton.setEnabled(true);
+				pauseButton.setEnabled(false);
+				stopButton.setEnabled(false);
+			}
+		});
+		
+		
 	}
 	
 	
@@ -110,6 +148,41 @@ public class Game implements EntryPoint {
 			southPanel.setWidget(0, index, cardCanvas);
 			index++;
 		}
+		
+		Button saveButton = new Button("Sauvegarder");
+		saveButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				List<Integer> cardRapidityList = new ArrayList<Integer>();
+				for(int i=0; i<southPanel.getCellCount(0); i++){
+					Integer rapidity = Integer.valueOf(southPanel.getWidget(0, i).getElement().getAttribute("rapidity"));
+					cardRapidityList.add(rapidity);
+				}
+				gameGwtService.saveCards(gameId, cardRapidityList, new AsyncCallback<Void>() {
+					@Override
+					public void onSuccess(Void result) {
+						final DialogBox dialogBox = new DialogBox(true);
+						dialogBox.setTitle("Sauvegarde");
+						dialogBox.setText("Votre programmation a été sauvegardée avec succés");
+						Button okButton = new Button("OK");
+						dialogBox.add(okButton);
+						okButton.addClickHandler(new ClickHandler() {
+							@Override
+							public void onClick(ClickEvent event) {
+								dialogBox.hide();
+							}
+						});
+						dialogBox.center();
+					}
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub	
+					}
+				});
+			}
+		});
+		southPanel.setWidget(2, 0, saveButton);
+		southPanel.getFlexCellFormatter().setColSpan(2, 0, 9);
+		southPanel.getFlexCellFormatter().addStyleName(2, 0, "saveCardsLine");
 	}
 	
 	public void loadRoundAnimation(RoundGwt round){

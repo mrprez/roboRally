@@ -16,7 +16,7 @@ import com.google.gwt.event.dom.client.DropHandler;
 import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.user.client.rpc.IsSerializable;
-import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.mrprez.roborally.shared.CardGwt;
@@ -72,7 +72,7 @@ public class CardCanvasFactory implements IsSerializable {
 				Canvas receptionCanvas = canvasCardMap.get(event.getRelativeElement().getAttribute("rapidity"));
 				int draggedIndex = Integer.parseInt(droppedCanvas.getElement().getAttribute("index"));
 				int droppedIndex = Integer.parseInt(receptionCanvas.getElement().getAttribute("index"));
-				Grid cardPanel = (Grid) droppedCanvas.getParent();
+				FlexTable cardPanel = (FlexTable) droppedCanvas.getParent();
 				cardPanel.clearCell(0, draggedIndex);
 				cardPanel.clearCell(0, droppedIndex);
 				cardPanel.setWidget(0, droppedIndex, droppedCanvas);

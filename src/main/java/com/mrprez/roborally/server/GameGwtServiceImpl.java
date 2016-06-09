@@ -66,7 +66,8 @@ public class GameGwtServiceImpl extends AbstractGwtService implements GameGwtSer
 	public List<CardGwt> getCardList(Integer gameId) {
 		UserGwt user = (UserGwt) getThreadLocalRequest().getSession().getAttribute(UserGwt.KEY);
 		List<CardGwt> gwtCardList = new ArrayList<CardGwt>();
-		for(Card card : gameService.getRobotCards(gameId, user.getUsername())){
+		Robot robot = gameService.getPlayerRobot(gameId, user.getUsername());
+		for(Card card : robot.getCards()){
 			gwtCardList.add(dozerMapper.map(card, CardGwt.class));
 		}
 		return gwtCardList;
@@ -102,6 +103,12 @@ public class GameGwtServiceImpl extends AbstractGwtService implements GameGwtSer
 
 	public void setDozerMapper(DozerBeanMapper dozerMapper) {
 		this.dozerMapper = dozerMapper;
+	}
+
+	@Override
+	public void saveCards(Integer gameId, List<Integer> cardList) {
+		UserGwt user = (UserGwt) getThreadLocalRequest().getSession().getAttribute(UserGwt.KEY);
+		gameService.saveRobotCards(gameId, user.getUsername(), cardList);
 	}
 
 	

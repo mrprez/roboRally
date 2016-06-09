@@ -17,5 +17,6 @@ public interface GameGwtService extends RemoteService {
 	
 	List<CardGwt> getCardList(Integer gameId);
 	
+	void saveCards(Integer gameId, List<Integer> cardList);
 
 }
