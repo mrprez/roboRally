@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.mrprez.roborally.animation.MoveAnimation;
 
 public class StepGwt implements IsSerializable {
-	private List<MoveGwt> moveList = new ArrayList<MoveGwt>();
+	private List<MoveAnimation> moveList = new ArrayList<MoveAnimation>();
 	
 	private int cardRapidity;
 	private int squareX;
@@ -14,10 +15,10 @@ public class StepGwt implements IsSerializable {
 	private int number;
 	
 	
-	public List<MoveGwt> getMoveList() {
+	public List<MoveAnimation> getMoveList() {
 		return moveList;
 	}
-	public void setMoveList(List<MoveGwt> moveList) {
+	public void setMoveList(List<MoveAnimation> moveList) {
 		this.moveList = moveList;
 	}
 	public int getCardRapidity() {

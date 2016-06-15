@@ -2,9 +2,15 @@ package com.mrprez.roborally.server;
 
 import org.dozer.CustomConverter;
 
+import com.mrprez.roborally.animation.FailedTranslationAnimation;
+import com.mrprez.roborally.animation.MoveAnimation;
+import com.mrprez.roborally.animation.RotationAnimation;
+import com.mrprez.roborally.animation.TranslationAnimation;
 import com.mrprez.roborally.model.Direction;
-import com.mrprez.roborally.model.Move;
-import com.mrprez.roborally.shared.MoveGwt;
+import com.mrprez.roborally.model.move.FailedTranslation;
+import com.mrprez.roborally.model.move.Move;
+import com.mrprez.roborally.model.move.Rotation;
+import com.mrprez.roborally.model.move.Translation;
 
 public class MoveConverter implements CustomConverter {
 
@@ -13,24 +19,22 @@ public class MoveConverter implements CustomConverter {
 		if(source==null){
 			return null;
 		}
-		if(sourceClass.isAssignableFrom(Move.class)){
-			Move move = (Move) source;
-			MoveGwt moveGwt;
-			if(destination==null){
-				moveGwt = new MoveGwt();
-			} else {
-				moveGwt = (MoveGwt) destination;
-			}
-			moveGwt.setRobotNb(move.getRobot().getNumber());
-			moveGwt.setRotation(move.getRotation());
-			moveGwt.setSuccess(move.isSuccess());
-			if(move.getTranslation()!=null){
-				moveGwt.setTranslation(convertTranslation(move.getTranslation()));
-			}
-			
-			return moveGwt;
+		Move move = (Move) source;
+		MoveAnimation moveAnimation;
+		if(move instanceof Translation){
+			Translation translation = (Translation) move;
+			moveAnimation = new TranslationAnimation(convertTranslation(translation.getDirection()));
+		}else if(move instanceof Rotation){
+			Rotation rotation = (Rotation) move;
+			moveAnimation = new RotationAnimation(rotation.getAngle());
+		} else if(move instanceof FailedTranslation){
+			FailedTranslation failedTranslation = (FailedTranslation) move;
+			moveAnimation = new FailedTranslationAnimation(convertTranslation(failedTranslation.getDirection()));
+		} else {
+			throw new IllegalArgumentException(sourceClass+" is not castable into "+Move.class);
 		}
-		throw new IllegalArgumentException(sourceClass+" is not asiignable from "+Move.class);
+		moveAnimation.setRobotNb(move.getRobot().getNumber());
+		return moveAnimation;
 	}
 	
 	

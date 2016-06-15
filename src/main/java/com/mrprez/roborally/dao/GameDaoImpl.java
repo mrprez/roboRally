@@ -16,7 +16,6 @@ import com.mrprez.roborally.dto.SquareDto;
 import com.mrprez.roborally.dto.StepDto;
 import com.mrprez.roborally.model.Card;
 import com.mrprez.roborally.model.Game;
-import com.mrprez.roborally.model.Move;
 import com.mrprez.roborally.model.Robot;
 import com.mrprez.roborally.model.Round;
 import com.mrprez.roborally.model.Square;
@@ -24,6 +23,9 @@ import com.mrprez.roborally.model.Step;
 import com.mrprez.roborally.model.Turn;
 import com.mrprez.roborally.model.board.Board;
 import com.mrprez.roborally.model.board.GameBoard;
+import com.mrprez.roborally.model.move.FailedTranslation;
+import com.mrprez.roborally.model.move.Rotation;
+import com.mrprez.roborally.model.move.Translation;
 
 public class GameDaoImpl extends AbstractDao implements GameDao {
 	
@@ -111,9 +113,13 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 			}
 			for(MoveDto moveDto : stepDto.getMoveList()){
 				if(moveDto.getTranslation()!=null){
-					step.addMove(new Move(game.getRobot(moveDto.getRobotNb()), moveDto.getTranslation(), moveDto.isSuccess()));
+					if(moveDto.isSuccess()){
+						step.addMove(new Translation(game.getRobot(moveDto.getRobotNb()), moveDto.getTranslation()));
+					}else{
+						step.addMove(new FailedTranslation(game.getRobot(moveDto.getRobotNb()), moveDto.getTranslation()));
+					}
 				} else {
-					step.addMove(new Move(game.getRobot(moveDto.getRobotNb()), moveDto.getRotation()));
+					step.addMove(new Rotation(game.getRobot(moveDto.getRobotNb()), moveDto.getRotation()));
 				}
 			}
 		}

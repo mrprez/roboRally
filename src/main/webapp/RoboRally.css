@@ -62,3 +62,7 @@ h1 {
 .playerButton{
 	display: inline-block;
 }
+
+.playerButtonImg{
+	vertical-align: middle;
+}

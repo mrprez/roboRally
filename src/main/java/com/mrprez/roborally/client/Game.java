@@ -1,266 +1,57 @@
 package com.mrprez.roborally.client;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import com.google.gwt.canvas.client.Canvas;
-import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.ImageElement;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.LoadEvent;
-import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
-import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.mrprez.roborally.client.animation.AnimationManager;
-import com.mrprez.roborally.client.animation.StepAnimation;
+import com.mrprez.roborally.client.panel.AnimationPlayerPanel;
+import com.mrprez.roborally.client.panel.BoardPanel;
+import com.mrprez.roborally.client.panel.HandCardsPanel;
 import com.mrprez.roborally.shared.CardGwt;
 import com.mrprez.roborally.shared.GameGwt;
-import com.mrprez.roborally.shared.RobotGwt;
-import com.mrprez.roborally.shared.RoundGwt;
-import com.mrprez.roborally.shared.SquareGwt;
-import com.mrprez.roborally.shared.StepGwt;
-import com.mrprez.roborally.shared.TurnGwt;
 
 public class Game implements EntryPoint {
-	public static final int ANIMATION_DURATION = 1000;
-
+	
 	private GameGwtServiceAsync gameGwtService = GWT.create(GameGwtService.class);
 	private Integer gameId;
-	private AbsolutePanel centerPanel = new AbsolutePanel();
-	private FlexTable southPanel = new FlexTable();
 	private FlowPanel eastPanel = new FlowPanel();
-	private Map<Integer, Canvas> robotCanvaMap;
-	private GameGwt game;
-	private AnimationManager animationManager = new AnimationManager(ANIMATION_DURATION);
-
+	private BoardPanel boardPanel;
+	private HandCardsPanel handCardsPanel;
+	private AnimationPlayerPanel animationPlayerPanel;
+	
 	@Override
 	public void onModuleLoad() {
 		gameId = Integer.parseInt(Window.Location.getParameter("gameId"));
-		
-		DockPanel dockPanel = new DockPanel();
-		dockPanel.add(centerPanel, DockPanel.CENTER);
-		dockPanel.add(southPanel, DockPanel.SOUTH);
+		final DockPanel dockPanel = new DockPanel();
 		dockPanel.add(eastPanel, DockPanel.EAST);
 		RootPanel.get().add(dockPanel);
 		
-		gameGwtService.getGame(gameId, new AsyncCallback<GameGwt>() {
+		gameGwtService.getGame(gameId, new AbstractAsyncCallback<GameGwt>() {
 			@Override
 			public void onSuccess(GameGwt loadedGame) {
-				game = loadedGame;
-				loadSquares(game);
-				loadRobots(game);
-			}
-			@Override
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+				boardPanel = new BoardPanel(loadedGame);
+				dockPanel.add(boardPanel, DockPanel.CENTER);
+				animationPlayerPanel = new AnimationPlayerPanel(loadedGame.getHistory(), boardPanel);
+				eastPanel.add(animationPlayerPanel);
 			}
 		});
 		
-		gameGwtService.getCardList(gameId, new AsyncCallback<List<CardGwt>>(){
+		gameGwtService.getCardList(gameId, new AbstractAsyncCallback<List<CardGwt>>(){
 			@Override
 			public void onSuccess(List<CardGwt> cardList) {
-				loadCards(cardList);
-			}
-			@Override
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-			}			
+				handCardsPanel = new HandCardsPanel(gameId, cardList);
+				dockPanel.add(handCardsPanel, DockPanel.SOUTH);
+			}		
 		});
 		
-		addPlayerButtons(eastPanel);
-		
 	}
 	
 	
-	public void addPlayerButtons(FlowPanel panel){
-		final PushButton playButton  = new PushButton(new Image("img/media_playback_start.png"));
-		final PushButton pauseButton = new PushButton(new Image("img/media_playback_pause.png"));
-		final PushButton stopButton  = new PushButton(new Image("img/media_playback_stop.png"));
-		playButton.addStyleName("playerButton");
-		pauseButton.addStyleName("playerButton");
-		stopButton.addStyleName("playerButton");
-		eastPanel.add(playButton);
-		eastPanel.add(pauseButton);
-		eastPanel.add(stopButton);
-		pauseButton.setEnabled(false);
-		stopButton.setEnabled(false);
-		
-		playButton.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				if( ! animationManager.isPaused()){
-					loadRoundAnimation(game.getHistory().get(game.getHistory().size()-1));
-				}
-				animationManager.play();
-				playButton.setEnabled(false);
-				pauseButton.setEnabled(true);
-				stopButton.setEnabled(true);
-			}
-		});
-		
-		pauseButton.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				animationManager.pause();
-				playButton.setEnabled(true);
-				pauseButton.setEnabled(false);
-				stopButton.setEnabled(true);
-			}
-		});
-		
-		stopButton.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				animationManager.stop();
-				playButton.setEnabled(true);
-				pauseButton.setEnabled(false);
-				stopButton.setEnabled(false);
-			}
-		});
-		
-		
-	}
 	
-	
-	public void loadCards(List<CardGwt> cardList){
-		southPanel.addStyleName("cardPanel");
-		int index = 0;
-		for(CardGwt card : cardList){
-			Label label = new Label(index<5 ? String.valueOf(index+1) : "X");
-			label.addStyleName("cardTurnNb");
-			southPanel.setWidget(1, index, label);
-			Canvas cardCanvas = CardCanvasFactory.build(card, index);
-			southPanel.setWidget(0, index, cardCanvas);
-			index++;
-		}
-		
-		Button saveButton = new Button("Sauvegarder");
-		saveButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				List<Integer> cardRapidityList = new ArrayList<Integer>();
-				for(int i=0; i<southPanel.getCellCount(0); i++){
-					Integer rapidity = Integer.valueOf(southPanel.getWidget(0, i).getElement().getAttribute("rapidity"));
-					cardRapidityList.add(rapidity);
-				}
-				gameGwtService.saveCards(gameId, cardRapidityList, new AsyncCallback<Void>() {
-					@Override
-					public void onSuccess(Void result) {
-						final DialogBox dialogBox = new DialogBox(true);
-						dialogBox.setTitle("Sauvegarde");
-						dialogBox.setText("Votre programmation a été sauvegardée avec succés");
-						Button okButton = new Button("OK");
-						dialogBox.add(okButton);
-						okButton.addClickHandler(new ClickHandler() {
-							@Override
-							public void onClick(ClickEvent event) {
-								dialogBox.hide();
-							}
-						});
-						dialogBox.center();
-					}
-					@Override
-					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub	
-					}
-				});
-			}
-		});
-		southPanel.setWidget(2, 0, saveButton);
-		southPanel.getFlexCellFormatter().setColSpan(2, 0, 9);
-		southPanel.getFlexCellFormatter().addStyleName(2, 0, "saveCardsLine");
-	}
-	
-	public void loadRoundAnimation(RoundGwt round){
-		for(TurnGwt turn : round.getTurnList()){
-			for(StepGwt step : turn.getStepList()){
-				animationManager.addAnimation(new StepAnimation(step, game.getRobotList(), robotCanvaMap));
-			}
-		}
-	}
-
-	public void loadSquares(GameGwt game) {
-		centerPanel.setHeight(game.getBoard().getSizeX()*97+"px");
-		centerPanel.setWidth(game.getBoard().getSizeY()*97+"px");
-		
-		Canvas squaresCanvas = Canvas.createIfSupported();
-		squaresCanvas.setCoordinateSpaceWidth(game.getBoard().getSizeX()*97);
-		squaresCanvas.setCoordinateSpaceHeight(game.getBoard().getSizeY()*97);
-		squaresCanvas.setStyleName("gameCanvas");
-		centerPanel.add(squaresCanvas);
-		for (int y = 0; y < game.getBoard().getSizeY(); y++) {
-			for (int x = 0; x < game.getBoard().getSizeX(); x++) {
-				loadSquare(squaresCanvas.getContext2d(), game.getBoard().getSquare(x, y), x, y);
-			}
-		}
-		
-		loadStartSquare(squaresCanvas.getContext2d(), game.getBoard().getStartX(), game.getBoard().getStartY());
-	}
-	
-	
-	public void loadStartSquare(final Context2d context2d, final int x, final int y){
-		final Image img = new Image("img/Start.png");
-		img.addLoadHandler(new LoadHandler() {
-			@Override
-			public void onLoad(LoadEvent event) {
-				ImageElement imageEl = ImageElement.as(img.getElement());
-				context2d.drawImage(imageEl, x*97, y*97);
-			}
-		});
-		img.setVisible(false);
-		RootPanel.get().add(img);
-	}
-	
-
-	public void loadSquare(final Context2d context2d, SquareGwt square, final int x, final int y) {
-		final Image img = new Image(square.getImageName());
-		img.addLoadHandler(new LoadHandler() {
-			@Override
-			public void onLoad(LoadEvent event) {
-				ImageElement imageEl = ImageElement.as(img.getElement());
-				context2d.drawImage(imageEl, x*97, y*97);
-			}
-		});
-		img.setVisible(false);
-		RootPanel.get().add(img);
-	}
-	
-	
-	public void loadRobots(final GameGwt game) {
-		robotCanvaMap = new HashMap<Integer, Canvas>();
-		for(final RobotGwt robot : game.getRobotList()){
-			final Image img = new Image(robot.getImageName());
-			img.addLoadHandler(new LoadHandler() {
-				@Override
-				public void onLoad(LoadEvent event) {
-					Canvas robotCanvas = Canvas.createIfSupported();
-					robotCanvas.setCoordinateSpaceWidth(97);
-					robotCanvas.setCoordinateSpaceHeight(97);
-					robotCanvas.setStyleName("gameCanvas");
-					centerPanel.add(robotCanvas, robot.getX()*97, robot.getY()*97);
-					ImageElement imageEl = ImageElement.as(img.getElement());
-					robotCanvas.getContext2d().drawImage(imageEl, 25, 25);
-					robotCanvaMap.put(robot.getNumber(), robotCanvas);
-				}
-			});
-			img.setVisible(false);
-			RootPanel.get().add(img);
-		}
-	}
 	
 	
 

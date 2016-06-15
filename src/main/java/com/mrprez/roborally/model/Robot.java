@@ -6,6 +6,9 @@ import java.util.HashSet;
 import java.util.List;
 
 import com.mrprez.roborally.model.board.GameBoard;
+import com.mrprez.roborally.model.move.Move;
+import com.mrprez.roborally.model.move.Rotation;
+import com.mrprez.roborally.model.move.Translation;
 
 
 public class Robot {
@@ -137,7 +140,7 @@ public class Robot {
 	
 	public List<Move> move(Direction direction){
 		List<Move> moveList = new ArrayList<Move>(); 
-		moveList.add(new Move(this, direction, true));
+		moveList.add(new Translation(this, direction));
 		Square destination = square.getNextSquare(direction);
 		if(destination.getRobot()!=null && !ghost){
 			moveList.addAll(destination.getRobot().move(direction));
@@ -149,7 +152,7 @@ public class Robot {
 	
 	public Move rotate(int r){
 		direction = direction.rotate(r);
-		return new Move(this, r);
+		return new Rotation(this, r);
 	}
 	
 	public boolean isOnTarget(){

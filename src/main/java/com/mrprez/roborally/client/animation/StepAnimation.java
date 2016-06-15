@@ -2,37 +2,24 @@ package com.mrprez.roborally.client.animation;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import com.google.gwt.animation.client.Animation;
-import com.google.gwt.canvas.client.Canvas;
 import com.google.web.bindery.event.shared.EventBus;
-import com.mrprez.roborally.shared.MoveGwt;
-import com.mrprez.roborally.shared.RobotGwt;
+import com.mrprez.roborally.animation.MoveAnimation;
+import com.mrprez.roborally.client.panel.BoardPanel;
 import com.mrprez.roborally.shared.StepGwt;
 
 public class StepAnimation extends Animation {
 	private static final double DELAY = 0.6;
 	
 	private EventBus eventBus;
-	private List<UnitAnimation> animationList = new ArrayList<UnitAnimation>();
+	private List<MoveAnimation> animationList = new ArrayList<MoveAnimation>();
 	
 	
-	public StepAnimation(StepGwt step, List<RobotGwt> robotList, Map<Integer,Canvas> robotCanvaMap){
+	public StepAnimation(StepGwt step, BoardPanel boardPanel){
 		super();
-		for(MoveGwt move : step.getMoveList()){
-			RobotGwt robot = robotList.get(move.getRobotNb());
-			Canvas robotCanvas = robotCanvaMap.get(move.getRobotNb());
-			if(move.getTranslation()!=null){
-				if(move.isSuccess()){
-					animationList.add(new TranslationAnimation(robotCanvas, move.getTranslation()));
-				} else {
-					animationList.add(new FailedTranslationAnimation(robotCanvas, move.getTranslation()));
-				}
-			}
-			if(move.getRotation()!=0){
-				animationList.add(new RotationAnimation(robot.getImageName(), robotCanvas, move.getRotation()));
-			}
+		for(MoveAnimation moveAnimation : step.getMoveList()){
+			moveAnimation.init(boardPanel.getRobotCanvas(moveAnimation.getRobotNb()));
 		}
 	}
 	
@@ -45,18 +32,14 @@ public class StepAnimation extends Animation {
 	}
 	
 	@Override
-	protected void onStart(){
-		for(UnitAnimation animation : animationList){
-			animation.onStart();
-		}
-	}
+	protected void onStart(){}
 	
 
 	@Override
 	protected void onUpdate(double progress) {
 		double delay = 0;
 		double coefficient = getTimeCoefficiant();
-		for(UnitAnimation animation : animationList){
+		for(MoveAnimation animation : animationList){
 			double currentProgress = progress * coefficient - delay;
 			delay = delay + DELAY;
 			currentProgress = Math.max(currentProgress, 0);
@@ -69,9 +52,6 @@ public class StepAnimation extends Animation {
 
 	@Override
 	protected void onComplete(){
-		for(UnitAnimation animation : animationList){
-			animation.onComplete();
-		}
 		eventBus.fireEvent(new StepAnimationEvent());
 	}
 	

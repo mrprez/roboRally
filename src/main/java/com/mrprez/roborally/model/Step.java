@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.mrprez.roborally.model.move.Move;
+
 public class Step implements Iterable<Move>{
 	
 	private List<Move> moveList = new ArrayList<Move>();
@@ -47,9 +49,7 @@ public class Step implements Iterable<Move>{
 	
 	public void addMove(Move move){
 		if(move!=null){
-			if(move.getTranslation()!=null || move.getRotation()!=0){
-				moveList.add(move);
-			}
+			moveList.add(move);
 		}
 	}
 	

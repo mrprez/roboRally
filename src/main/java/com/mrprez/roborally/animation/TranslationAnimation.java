@@ -1,9 +1,9 @@
-package com.mrprez.roborally.client.animation;
+package com.mrprez.roborally.animation;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 
-public class TranslationAnimation implements UnitAnimation {
+public class TranslationAnimation extends MoveAnimation {
 	
 	private int x;
 	private int y;
@@ -13,11 +13,17 @@ public class TranslationAnimation implements UnitAnimation {
 	private AbsolutePanel absolutePanel;
 	
 	
-	public TranslationAnimation(Canvas robotCanvas, int[] direction){
-		this.robotCanvas = robotCanvas;
-		absolutePanel = (AbsolutePanel) robotCanvas.getParent();
+	public TranslationAnimation(int[] direction){
 		this.x = direction[0];
 		this.y = direction[1];
+	}
+	
+	@Override
+	public void init(Canvas robotCanvas) {
+		this.robotCanvas = robotCanvas;
+		absolutePanel = (AbsolutePanel) robotCanvas.getParent();
+		startLeft = absolutePanel.getWidgetLeft(robotCanvas);
+		startTop = absolutePanel.getWidgetTop(robotCanvas);
 	}
 
 	@Override
@@ -25,13 +31,8 @@ public class TranslationAnimation implements UnitAnimation {
 		absolutePanel.setWidgetPosition(robotCanvas, (int)(startLeft+x*97*progress), (int)(startTop+y*97*progress));
 	}
 
-	@Override
-	public void onStart(){
-		startLeft = absolutePanel.getWidgetLeft(robotCanvas);
-		startTop = absolutePanel.getWidgetTop(robotCanvas);
-	}
+
+
 	
-	@Override
-	public void onComplete(){}
 
 }

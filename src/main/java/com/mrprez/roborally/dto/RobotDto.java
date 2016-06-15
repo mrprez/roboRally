@@ -7,6 +7,7 @@ public class RobotDto {
 	private int x;
 	private int y;
 	private int health;
+	private boolean ghost;
 	private Direction direction;
 	
 	
@@ -39,6 +40,12 @@ public class RobotDto {
 	}
 	public void setDirection(Direction direction) {
 		this.direction = direction;
+	}
+	public boolean getGhost() {
+		return ghost;
+	}
+	public void setGhost(boolean ghost) {
+		this.ghost = ghost;
 	}
 	
 	

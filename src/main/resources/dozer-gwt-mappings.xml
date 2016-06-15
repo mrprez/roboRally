@@ -5,8 +5,8 @@
 	<configuration>
 		<custom-converters>
 			<converter type="com.mrprez.roborally.server.MoveConverter">
-				<class-a>com.mrprez.roborally.model.Move</class-a>
-				<class-b>com.mrprez.roborally.shared.MoveGwt</class-b>
+				<class-a>com.mrprez.roborally.model.move.Move</class-a>
+				<class-b>com.mrprez.roborally.shared.animation.MoveAnimation</class-b>
 			</converter>
 		</custom-converters>
 	</configuration>

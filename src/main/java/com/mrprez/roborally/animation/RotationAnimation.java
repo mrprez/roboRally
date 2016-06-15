@@ -1,10 +1,10 @@
-package com.mrprez.roborally.client.animation;
+package com.mrprez.roborally.animation;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.user.client.ui.Image;
 
-public class RotationAnimation implements UnitAnimation {
+public class RotationAnimation extends MoveAnimation {
 	
 	private int rotation;
 	private Canvas robotCanvas;
@@ -12,15 +12,16 @@ public class RotationAnimation implements UnitAnimation {
 	private ImageElement imageEl;
 	
 	
-	public RotationAnimation(String imageName, Canvas robotCanvas, int rotation){
-		this.robotCanvas = robotCanvas;
-		Image img = new Image(imageName);
-		imageEl = ImageElement.as(img.getElement());
+	public RotationAnimation(int rotation){
 		this.rotation = rotation;
 	}
 	
 	@Override
-	public void onStart() {}
+	public void init(Canvas robotCanvas){
+		this.robotCanvas = robotCanvas;
+		Image img = new Image(robotCanvas.getCanvasElement().getAttribute("imageName"));
+		imageEl = ImageElement.as(img.getElement());
+	}
 
 	@Override
 	public void update(double progress) {
@@ -31,9 +32,6 @@ public class RotationAnimation implements UnitAnimation {
 		robotCanvas.getContext2d().translate(-robotCanvas.getCoordinateSpaceWidth()/2, -robotCanvas.getCoordinateSpaceHeight()/2);
 		robotCanvas.getContext2d().drawImage(imageEl, 25, 25);
 	}
-
-	@Override
-	public void onComplete() {}
 	
 	
 

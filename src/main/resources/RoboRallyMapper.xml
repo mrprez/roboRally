@@ -36,6 +36,7 @@
 		<result property="y" column="Y" />
 		<result property="direction" column="DIRECTION" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
 		<result property="health" column="HEALTH" />
+		<result property="ghost" column="GHOST" />
 	</resultMap>
 	<resultMap id="step" type="com.mrprez.roborally.dto.StepDto">
 		<result property="roundNb" column="ROUND_NB" />
@@ -74,7 +75,7 @@
 		select X,Y,CLASS,ARGS from SQUARE where BOARD_ID=#{boardId}
 	</select>
 	<select id="selectRobotList" resultMap="robotDto">
-		select NUMBER,X,Y,DIRECTION,HEALTH from ROBOT where GAME_ID=#{gameId}
+		select NUMBER,X,Y,DIRECTION,HEALTH,GHOST from ROBOT where GAME_ID=#{gameId}
 	</select>
 	<select id="selectPlayerRobot" resultMap="playerRobot">
 		select NUMBER,HEALTH,DIRECTION,RAPIDITY,TRANSLATION,ROTATION from CARD

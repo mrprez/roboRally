@@ -8,10 +8,19 @@ public class RobotGwt implements IsSerializable {
 	private int y;
 	private int health;
 	private char direction;
+	private boolean ghost;
 	
 	
 	public String getImageName(){
-		return "img/robot/robot"+number+"_"+direction+".gif";
+		StringBuilder imageName= new StringBuilder("img/robot/robot");
+		imageName.append(number);
+		if(ghost){
+			imageName.append("V");
+		}
+		imageName.append("_");
+		imageName.append(direction);
+		imageName.append(".gif");
+		return imageName.toString();
 	}
 	public int getNumber() {
 		return number;
@@ -42,6 +51,12 @@ public class RobotGwt implements IsSerializable {
 	}
 	public void setDirection(char direction) {
 		this.direction = direction;
+	}
+	public boolean isGhost() {
+		return ghost;
+	}
+	public void setGhost(boolean ghost) {
+		this.ghost = ghost;
 	}
 	
 
