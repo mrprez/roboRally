@@ -1,4 +1,4 @@
-package com.mrprez.roborally.animation;
+package com.mrprez.roborally.client.animation;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.dom.client.ImageElement;
@@ -13,6 +13,7 @@ public class RotationAnimation extends MoveAnimation {
 	
 	
 	public RotationAnimation(int rotation){
+		super();
 		this.rotation = rotation;
 	}
 	

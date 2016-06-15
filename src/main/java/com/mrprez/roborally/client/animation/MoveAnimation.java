@@ -1,9 +1,8 @@
-package com.mrprez.roborally.animation;
+package com.mrprez.roborally.client.animation;
 
 import com.google.gwt.canvas.client.Canvas;
-import com.google.gwt.user.client.rpc.IsSerializable;
 
-public abstract class MoveAnimation implements IsSerializable {
+public abstract class MoveAnimation {
 	private int robotNb;
 	
 

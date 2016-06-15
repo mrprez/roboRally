@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
-import com.mrprez.roborally.animation.MoveAnimation;
 
 public class StepGwt implements IsSerializable {
 	private List<MoveAnimation> moveList = new ArrayList<MoveAnimation>();

@@ -2,15 +2,15 @@ package com.mrprez.roborally.server;
 
 import org.dozer.CustomConverter;
 
-import com.mrprez.roborally.animation.FailedTranslationAnimation;
-import com.mrprez.roborally.animation.MoveAnimation;
-import com.mrprez.roborally.animation.RotationAnimation;
-import com.mrprez.roborally.animation.TranslationAnimation;
 import com.mrprez.roborally.model.Direction;
 import com.mrprez.roborally.model.move.FailedTranslation;
 import com.mrprez.roborally.model.move.Move;
 import com.mrprez.roborally.model.move.Rotation;
 import com.mrprez.roborally.model.move.Translation;
+import com.mrprez.roborally.shared.animation.FailedTranslationAnimation;
+import com.mrprez.roborally.shared.animation.MoveAnimation;
+import com.mrprez.roborally.shared.animation.RotationAnimation;
+import com.mrprez.roborally.shared.animation.TranslationAnimation;
 
 public class MoveConverter implements CustomConverter {
 

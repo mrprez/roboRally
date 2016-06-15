@@ -5,9 +5,9 @@ import java.util.List;
 
 import com.google.gwt.animation.client.Animation;
 import com.google.web.bindery.event.shared.EventBus;
-import com.mrprez.roborally.animation.MoveAnimation;
 import com.mrprez.roborally.client.panel.BoardPanel;
 import com.mrprez.roborally.shared.StepGwt;
+import com.mrprez.roborally.client.animation.MoveAnimation;
 
 public class StepAnimation extends Animation {
 	private static final double DELAY = 0.6;
@@ -19,6 +19,7 @@ public class StepAnimation extends Animation {
 	public StepAnimation(StepGwt step, BoardPanel boardPanel){
 		super();
 		for(MoveAnimation moveAnimation : step.getMoveList()){
+			// TODO convert shared Move from gwt web service into Client moveAnimation
 			moveAnimation.init(boardPanel.getRobotCanvas(moveAnimation.getRobotNb()));
 		}
 	}
