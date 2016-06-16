@@ -37,7 +37,7 @@ public class DummyBoard extends Board {
 		robot.setTargetNumber(targetNumber);
 		robot.setDirection(direction);
 		robot.initCards(cards);
-		for(int turn=0; turn<Game.TURN_NB; turn++){
+		for(int turn=0; turn<Game.STAGE_NB; turn++){
 			robot.playCard(turn);
 			robot.getSquare().play();
 			if(robot.isOnTarget()){

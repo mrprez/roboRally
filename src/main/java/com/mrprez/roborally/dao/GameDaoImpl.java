@@ -17,15 +17,15 @@ import com.mrprez.roborally.dto.StepDto;
 import com.mrprez.roborally.model.Card;
 import com.mrprez.roborally.model.Game;
 import com.mrprez.roborally.model.Robot;
-import com.mrprez.roborally.model.Round;
 import com.mrprez.roborally.model.Square;
-import com.mrprez.roborally.model.Step;
-import com.mrprez.roborally.model.Turn;
 import com.mrprez.roborally.model.board.Board;
 import com.mrprez.roborally.model.board.GameBoard;
-import com.mrprez.roborally.model.move.FailedTranslation;
-import com.mrprez.roborally.model.move.Rotation;
-import com.mrprez.roborally.model.move.Translation;
+import com.mrprez.roborally.model.history.FailedTranslation;
+import com.mrprez.roborally.model.history.Rotation;
+import com.mrprez.roborally.model.history.Round;
+import com.mrprez.roborally.model.history.Step;
+import com.mrprez.roborally.model.history.Translation;
+import com.mrprez.roborally.model.history.Stage;
 
 public class GameDaoImpl extends AbstractDao implements GameDao {
 	
@@ -89,7 +89,7 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 	private List<Round> loadHistory(Game game){
 		List<Round> history = new ArrayList<Round>();
 		Round round = null;
-		Turn turn = null;
+		Stage turn = null;
 		Step step = null;
 		for(Object dtoObject : getSession().selectList("selectStepList", game.getId())){
 			StepDto stepDto = (StepDto) dtoObject;
@@ -99,7 +99,7 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 				turn = null;
 			}
 			if(turn==null || turn.getNumber()!=stepDto.getTurnNb()){
-				turn = new Turn(stepDto.getTurnNb());
+				turn = new Stage(stepDto.getTurnNb());
 				round.addTurn(turn);
 				step = null;
 			}

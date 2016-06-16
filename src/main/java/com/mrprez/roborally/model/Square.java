@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.mrprez.roborally.model.board.Board;
+import com.mrprez.roborally.model.history.Action;
+import com.mrprez.roborally.model.history.Step;
 
 
 public abstract class Square {
@@ -23,7 +25,7 @@ public abstract class Square {
 	}
 	
 	
-	public abstract Step play();
+	public abstract Action play();
 	protected abstract Square copy();
 	public abstract String getImageName();
 	public abstract String getArgs();

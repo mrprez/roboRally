@@ -3,10 +3,10 @@ package com.mrprez.roborally.server;
 import org.dozer.CustomConverter;
 
 import com.mrprez.roborally.model.Direction;
-import com.mrprez.roborally.model.move.FailedTranslation;
-import com.mrprez.roborally.model.move.Move;
-import com.mrprez.roborally.model.move.Rotation;
-import com.mrprez.roborally.model.move.Translation;
+import com.mrprez.roborally.model.history.FailedTranslation;
+import com.mrprez.roborally.model.history.Move;
+import com.mrprez.roborally.model.history.Rotation;
+import com.mrprez.roborally.model.history.Translation;
 import com.mrprez.roborally.shared.animation.FailedTranslationAnimation;
 import com.mrprez.roborally.shared.animation.MoveAnimation;
 import com.mrprez.roborally.shared.animation.RotationAnimation;

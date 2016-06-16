@@ -6,9 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 
 import com.mrprez.roborally.model.board.GameBoard;
-import com.mrprez.roborally.model.move.Move;
-import com.mrprez.roborally.model.move.Rotation;
-import com.mrprez.roborally.model.move.Translation;
+import com.mrprez.roborally.model.history.Action;
+import com.mrprez.roborally.model.history.Step;
 
 
 public class Robot {
@@ -99,9 +98,9 @@ public class Robot {
 		return garbage;
 	}
 	
-	public List<Step> playCard(int turn){
-		List<Step> stepList = new ArrayList<Step>();
-//		Card card = cards.get(turn);
+	public Action playCard(int stageNb){
+//		List<Step> stepList = new ArrayList<Step>();
+		Card card = cards.get(stageNb);
 //		Step step = new Step(card);
 //		for(int i=0; i<card.getTranslation(); i++){
 //			if(canMove(direction)){
@@ -118,7 +117,7 @@ public class Robot {
 //			}
 //		}
 //		step.addMove(rotate(card.getRotation()));
-		return stepList;
+		return new Action(card);
 	}
 	
 	public boolean canMove(Direction direction){
@@ -138,22 +137,22 @@ public class Robot {
 		return true;
 	}
 	
-	public List<Move> move(Direction direction){
-		List<Move> moveList = new ArrayList<Move>(); 
-		moveList.add(new Translation(this, direction));
-		Square destination = square.getNextSquare(direction);
-		if(destination.getRobot()!=null && !ghost){
-			moveList.addAll(destination.getRobot().move(direction));
-		}
-		square.setRobot(null);
-		setSquare(destination);
-		return moveList;
-	}
-	
-	public Move rotate(int r){
-		direction = direction.rotate(r);
-		return new Rotation(this, r);
-	}
+//	public List<Move> move(Direction direction){
+//		List<Move> moveList = new ArrayList<Move>(); 
+//		moveList.add(new Translation(this, direction));
+//		Square destination = square.getNextSquare(direction);
+//		if(destination.getRobot()!=null && !ghost){
+//			moveList.addAll(destination.getRobot().move(direction));
+//		}
+//		square.setRobot(null);
+//		setSquare(destination);
+//		return moveList;
+//	}
+//	
+//	public Move rotate(int r){
+//		direction = direction.rotate(r);
+//		return new Rotation(this, r);
+//	}
 	
 	public boolean isOnTarget(){
 		Square target = getTarget();

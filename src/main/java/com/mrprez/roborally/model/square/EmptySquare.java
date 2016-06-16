@@ -1,8 +1,8 @@
 package com.mrprez.roborally.model.square;
 
 import com.mrprez.roborally.model.Square;
-import com.mrprez.roborally.model.Step;
 import com.mrprez.roborally.model.board.Board;
+import com.mrprez.roborally.model.history.Step;
 
 public class EmptySquare extends Square {
 

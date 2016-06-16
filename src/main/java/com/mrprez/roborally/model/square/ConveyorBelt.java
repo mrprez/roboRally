@@ -2,8 +2,8 @@ package com.mrprez.roborally.model.square;
 
 import com.mrprez.roborally.model.Direction;
 import com.mrprez.roborally.model.Square;
-import com.mrprez.roborally.model.Step;
 import com.mrprez.roborally.model.board.Board;
+import com.mrprez.roborally.model.history.Step;
 
 public class ConveyorBelt extends Square {
 	private Direction direction;

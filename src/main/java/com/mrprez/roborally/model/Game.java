@@ -8,10 +8,12 @@ import java.util.TreeSet;
 
 import com.mrprez.roborally.ai.AIRobot;
 import com.mrprez.roborally.model.board.GameBoard;
+import com.mrprez.roborally.model.history.Round;
+import com.mrprez.roborally.model.history.Stage;
 
 
 public class Game {
-	public static int TURN_NB = 5;
+	public static int STAGE_NB = 5;
 	
 	private Integer id;
 	private String name;
@@ -45,15 +47,15 @@ public class Game {
 	
 	public Round play(){
 		Round round = new Round(history.size());
-		for(int turn=0; turn<TURN_NB; turn++){
-			Turn turnResult = new Turn(turn);
-			round.addTurn(turnResult);
+		for(int stageNb=0; stageNb<STAGE_NB; stageNb++){
+			Stage stage = new Stage(stageNb);
+			round.setStage(stageNb, stage);
 			
 			// On joue les cartes
-			TreeSet<Robot> robotOrderedList = new TreeSet<Robot>(new InitComparator(turn));
+			TreeSet<Robot> robotOrderedList = new TreeSet<Robot>(new InitComparator(stageNb));
 			robotOrderedList.addAll(robotList);
 			for(Robot robot : robotOrderedList){
-				turnResult.addAllSteps(robot.playCard(turn));
+				stage.addAction(robot.playCard(stageNb));
 			}
 			
 			// on vérifie les fantomes
@@ -77,8 +79,7 @@ public class Game {
 			
 			// On joue le terrain
 			for(Robot robot : robotOrderedList){
-				Step step = robot.getSquare().play();
-				turnResult.addStep(step);
+				stage.addAction( robot.getSquare().play());
 			}
 			
 			// on vérifie si les robot ont atteind une cible
