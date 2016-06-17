@@ -2,7 +2,7 @@ package com.mrprez.roborally.model.square;
 
 import com.mrprez.roborally.model.Square;
 import com.mrprez.roborally.model.board.Board;
-import com.mrprez.roborally.model.history.Step;
+import com.mrprez.roborally.model.history.Action;
 
 public class EmptySquare extends Square {
 
@@ -11,7 +11,7 @@ public class EmptySquare extends Square {
 	}
 
 	@Override
-	public Step play() {
+	public Action play() {
 		return null;
 	}
 

@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class TurnGwt implements IsSerializable {
+public class StageGwt implements IsSerializable {
 	private int number;
-	private List<StepGwt> stepList;
+	private List<ActionGwt> action;
 	
 	
 	public int getNumber() {
@@ -15,11 +15,11 @@ public class TurnGwt implements IsSerializable {
 	public void setNumber(int number) {
 		this.number = number;
 	}
-	public List<StepGwt> getStepList() {
-		return stepList;
+	public List<ActionGwt> getActionList() {
+		return action;
 	}
-	public void setStepList(List<StepGwt> stepList) {
-		this.stepList = stepList;
+	public void setActionList(List<ActionGwt> stepList) {
+		this.action = stepList;
 	}
 
 }

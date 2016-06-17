@@ -8,14 +8,12 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PushButton;
 import com.mrprez.roborally.client.animation.AnimationManager;
-import com.mrprez.roborally.client.animation.StepAnimation;
+import com.mrprez.roborally.shared.ActionGwt;
 import com.mrprez.roborally.shared.RoundGwt;
-import com.mrprez.roborally.shared.StepGwt;
-import com.mrprez.roborally.shared.TurnGwt;
+import com.mrprez.roborally.shared.StageGwt;
 
 public class AnimationPlayerPanel extends FlexTable {
 	public static final int ANIMATION_DURATION = 1000;
-	private BoardPanel boardPanel;
 	
 	private AnimationManager animationManager;
 	private List<RoundGwt> history;
@@ -27,8 +25,7 @@ public class AnimationPlayerPanel extends FlexTable {
 	public AnimationPlayerPanel(List<RoundGwt> history, BoardPanel boardPanel){
 		super();
 		this.history = history;
-		this.boardPanel = boardPanel;
-		animationManager = new AnimationManager(ANIMATION_DURATION);
+		animationManager = new AnimationManager(ANIMATION_DURATION, boardPanel);
 		Image playImg = new Image("img/media_playback_start.png");
 		Image pauseImg = new Image("img/media_playback_pause.png");
 		Image stopImg = new Image("img/media_playback_stop.png");
@@ -68,9 +65,9 @@ public class AnimationPlayerPanel extends FlexTable {
 	}
 	
 	private void loadRoundAnimation(RoundGwt round){
-		for(TurnGwt turn : round.getTurnList()){
-			for(StepGwt step : turn.getStepList()){
-				animationManager.addAnimation(new StepAnimation(step, boardPanel));
+		for(StageGwt stage : round.getStageList()){
+			for(ActionGwt action : stage.getActionList()){
+				animationManager.addAnimation(action);
 			}
 		}
 	}

@@ -13,7 +13,7 @@ import com.mrprez.roborally.model.history.Stage;
 
 
 public class Game {
-	public static int STAGE_NB = 5;
+	public final static int STAGE_NB = 5;
 	
 	private Integer id;
 	private String name;
@@ -48,8 +48,7 @@ public class Game {
 	public Round play(){
 		Round round = new Round(history.size());
 		for(int stageNb=0; stageNb<STAGE_NB; stageNb++){
-			Stage stage = new Stage(stageNb);
-			round.setStage(stageNb, stage);
+			Stage stage = round.getStage(stageNb);
 			
 			// On joue les cartes
 			TreeSet<Robot> robotOrderedList = new TreeSet<Robot>(new InitComparator(stageNb));

@@ -3,7 +3,7 @@ package com.mrprez.roborally.model.square;
 import com.mrprez.roborally.model.Direction;
 import com.mrprez.roborally.model.Square;
 import com.mrprez.roborally.model.board.Board;
-import com.mrprez.roborally.model.history.Step;
+import com.mrprez.roborally.model.history.Action;
 
 public class ConveyorBelt extends Square {
 	private Direction direction;
@@ -19,7 +19,7 @@ public class ConveyorBelt extends Square {
 	}
 
 	@Override
-	public Step play() {
+	public Action play() {
 		// TODO Auto-generated method stub
 		return null;
 	}

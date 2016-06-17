@@ -1,26 +1,38 @@
 package com.mrprez.roborally.client.animation;
 
-import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 
 public class TranslationAnimation extends MoveAnimation {
+	public static final String UP = "UP";
+	public static final String DOWN = "DOWN";
+	public static final String LEFT = "LEFT";
+	public static final String RIGHT = "RIGHT";
 	
 	private int x;
 	private int y;
 	private int startLeft;
 	private int startTop;
-	private Canvas robotCanvas;
 	private AbsolutePanel absolutePanel;
 	
 	
-	public TranslationAnimation(int[] direction){
-		this.x = direction[0];
-		this.y = direction[1];
+	public TranslationAnimation(String direction){
+		if(direction.equals(UP)){
+			x = 0;
+			y = -1;
+		}else if(direction.equals(DOWN)){
+			x = 0;
+			y = 1;
+		} else if(direction.equals(LEFT)){
+			x = -1;
+			y = 0;
+		}else if(direction.equals(RIGHT)){
+			x = 1;
+			y = 0;
+		}
 	}
 	
 	@Override
-	public void init(Canvas robotCanvas) {
-		this.robotCanvas = robotCanvas;
+	public void onStart() {
 		absolutePanel = (AbsolutePanel) robotCanvas.getParent();
 		startLeft = absolutePanel.getWidgetLeft(robotCanvas);
 		startTop = absolutePanel.getWidgetTop(robotCanvas);

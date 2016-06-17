@@ -5,7 +5,6 @@ import java.util.Set;
 
 import com.mrprez.roborally.model.board.Board;
 import com.mrprez.roborally.model.history.Action;
-import com.mrprez.roborally.model.history.Step;
 
 
 public abstract class Square {

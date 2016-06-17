@@ -38,18 +38,19 @@
 		<result property="health" column="HEALTH" />
 		<result property="ghost" column="GHOST" />
 	</resultMap>
-	<resultMap id="step" type="com.mrprez.roborally.dto.StepDto">
+	<resultMap id="action" type="com.mrprez.roborally.dto.ActionDto">
 		<result property="roundNb" column="ROUND_NB" />
-		<result property="turnNb" column="TURN_NB" />
-		<result property="stepNb" column="STEP_NB" />
+		<result property="stageNb" column="STAGE_NB" />
+		<result property="actionNb" column="ACTION_NB" />
 		<result property="cardRapidity" column="CARD_RAPIDITY" />
 		<result property="squareX" column="SQUARE_X" />
 		<result property="squareY" column="SQUARE_Y" />
 		<collection property="moveList" ofType="com.mrprez.roborally.dto.MoveDto" >
+			<result property="stepNb" column="STEP_NB" />
+			<result property="moveNb" column="MOVE_NB" />
 			<result property="robotNb" column="ROBOT_NB" />
-			<result property="translation" column="TRANSLATION" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
-			<result property="rotation" column="ROTATION" />
-			<result property="success" column="SUCCESS" />
+			<result property="type" column="TYPE" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
+			<result property="args" column="ARGS" />
 		</collection>
 	</resultMap>
 	<resultMap id="playerRobot" type="com.mrprez.roborally.model.Robot">
@@ -83,13 +84,12 @@
 		where ROBOT.GAME_ID=#{gameId} and ROBOT.USER_NAME=#{username}
 		order by HAND_INDEX asc
 	</select>
-	<select id="selectStepList" resultMap="step">
-		select STEP.ROUND_NB, STEP.TURN_NB, STEP.STEP_NB, STEP.CARD_RAPIDITY, STEP.SQUARE_X, STEP.SQUARE_Y, 
-			MOVE.NUMBER, MOVE.ROBOT_NB, MOVE.ROTATION, MOVE.TRANSLATION, MOVE.SUCCESS
-		from STEP
-		left join MOVE on  STEP.GAME_ID=MOVE.GAME_ID and STEP.ROUND_NB=MOVE.ROUND_NB and STEP.TURN_NB=MOVE.TURN_NB and STEP.STEP_NB=MOVE.STEP_NB 
-		where STEP.GAME_ID=#{gameId}
-		order by STEP.ROUND_NB, STEP.TURN_NB, STEP.STEP_NB, MOVE.NUMBER asc
+	<select id="selectHistory" resultMap="action">
+		select ACTION.ROUND_NB, ACTION.STAGE_NB, ACTION.ACTION_NB, MOVE.STEP_NB, MOVE.MOVE_NB, ACTION.CARD_RAPIDITY, ACTION.SQUARE_X, ACTION.SQUARE_Y, MOVE.ROBOT_NB, MOVE.TYPE, MOVE.ARGS
+		from ACTION
+		left join MOVE on  ACTION.GAME_ID=MOVE.GAME_ID and ACTION.ROUND_NB=MOVE.ROUND_NB and ACTION.STAGE_NB=MOVE.STAGE_NB and ACTION.ACTION_NB=MOVE.ACTION_NB 
+		where ACTION.GAME_ID=#{gameId}
+		order by ACTION.ROUND_NB, ACTION.STAGE_NB, ACTION.ACTION_NB, MOVE.STEP_NB, MOVE.MOVE_NB asc
 	</select>
 	
 	<insert id="updateHandCard">

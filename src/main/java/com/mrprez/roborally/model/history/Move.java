@@ -2,7 +2,7 @@ package com.mrprez.roborally.model.history;
 
 import com.mrprez.roborally.model.Robot;
 
-public abstract class Move {
+public class Move {
 	private MoveType type;
 	private String args;
 	

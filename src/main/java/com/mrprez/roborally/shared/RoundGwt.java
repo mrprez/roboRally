@@ -6,7 +6,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class RoundGwt implements IsSerializable {
 	private int number;
-	private List<TurnGwt> turnList;
+	private List<StageGwt> stageList;
 
 	
 	public int getNumber() {
@@ -17,12 +17,12 @@ public class RoundGwt implements IsSerializable {
 		this.number = number;
 	}
 
-	public List<TurnGwt> getTurnList() {
-		return turnList;
+	public List<StageGwt> getStageList() {
+		return stageList;
 	}
 
-	public void setTurnList(List<TurnGwt> turnList) {
-		this.turnList = turnList;
+	public void setStageList(List<StageGwt> stageList) {
+		this.stageList = stageList;
 	}
 	
 }

@@ -1,13 +1,11 @@
 package com.mrprez.roborally.client.animation;
 
-import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.user.client.ui.Image;
 
 public class RotationAnimation extends MoveAnimation {
 	
 	private int rotation;
-	private Canvas robotCanvas;
 	private double currentAngle = 0;
 	private ImageElement imageEl;
 	
@@ -18,8 +16,7 @@ public class RotationAnimation extends MoveAnimation {
 	}
 	
 	@Override
-	public void init(Canvas robotCanvas){
-		this.robotCanvas = robotCanvas;
+	public void onStart(){
 		Image img = new Image(robotCanvas.getCanvasElement().getAttribute("imageName"));
 		imageEl = ImageElement.as(img.getElement());
 	}

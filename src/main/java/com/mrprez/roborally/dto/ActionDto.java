@@ -2,11 +2,11 @@ package com.mrprez.roborally.dto;
 
 import java.util.List;
 
-public class StepDto {
+public class ActionDto {
 	
 	private int roundNb;
-	private int turnNb;
-	private int stepNb;
+	private int stageNb;
+	private int actionNb;
 	private Integer cardRapidity;
 	private Integer squareX;
 	private Integer squareY;
@@ -19,17 +19,17 @@ public class StepDto {
 	public void setRoundNb(int roundNb) {
 		this.roundNb = roundNb;
 	}
-	public int getTurnNb() {
-		return turnNb;
+	public int getStageNb() {
+		return stageNb;
 	}
-	public void setTurnNb(int turnNb) {
-		this.turnNb = turnNb;
+	public void setStageNb(int stageNb) {
+		this.stageNb = stageNb;
 	}
-	public int getStepNb() {
-		return stepNb;
+	public int getActionNb() {
+		return actionNb;
 	}
-	public void setStepNb(int stepNb) {
-		this.stepNb = stepNb;
+	public void setActionNb(int actionNb) {
+		this.actionNb = actionNb;
 	}
 	public Integer getCardRapidity() {
 		return cardRapidity;

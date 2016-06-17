@@ -7,8 +7,6 @@ import java.util.List;
 
 import com.mrprez.roborally.model.board.GameBoard;
 import com.mrprez.roborally.model.history.Action;
-import com.mrprez.roborally.model.history.Step;
-
 
 public class Robot {
 	private int number;

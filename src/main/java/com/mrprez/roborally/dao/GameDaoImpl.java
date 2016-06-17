@@ -13,19 +13,18 @@ import com.mrprez.roborally.dto.GameBoardDto;
 import com.mrprez.roborally.dto.MoveDto;
 import com.mrprez.roborally.dto.RobotDto;
 import com.mrprez.roborally.dto.SquareDto;
-import com.mrprez.roborally.dto.StepDto;
+import com.mrprez.roborally.dto.ActionDto;
 import com.mrprez.roborally.model.Card;
 import com.mrprez.roborally.model.Game;
 import com.mrprez.roborally.model.Robot;
 import com.mrprez.roborally.model.Square;
 import com.mrprez.roborally.model.board.Board;
 import com.mrprez.roborally.model.board.GameBoard;
-import com.mrprez.roborally.model.history.FailedTranslation;
-import com.mrprez.roborally.model.history.Rotation;
+import com.mrprez.roborally.model.history.Action;
+import com.mrprez.roborally.model.history.Move;
 import com.mrprez.roborally.model.history.Round;
-import com.mrprez.roborally.model.history.Step;
-import com.mrprez.roborally.model.history.Translation;
 import com.mrprez.roborally.model.history.Stage;
+import com.mrprez.roborally.model.history.Step;
 
 public class GameDaoImpl extends AbstractDao implements GameDao {
 	
@@ -89,38 +88,27 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 	private List<Round> loadHistory(Game game){
 		List<Round> history = new ArrayList<Round>();
 		Round round = null;
-		Stage turn = null;
-		Step step = null;
-		for(Object dtoObject : getSession().selectList("selectStepList", game.getId())){
-			StepDto stepDto = (StepDto) dtoObject;
-			if(round==null || round.getNumber()!=stepDto.getRoundNb()){
-				round = new Round(stepDto.getRoundNb());
+		for(ActionDto actionDto : getSession().<ActionDto>selectList("selectHistory", game.getId())){
+			if(round==null || round.getNumber()!=actionDto.getRoundNb()){
+				round = new Round(actionDto.getRoundNb());
 				history.add(round);
-				turn = null;
 			}
-			if(turn==null || turn.getNumber()!=stepDto.getTurnNb()){
-				turn = new Stage(stepDto.getTurnNb());
-				round.addTurn(turn);
-				step = null;
+			Stage stage = round.getStage(actionDto.getStageNb());
+			Action action;
+			if(actionDto.getCardRapidity()!=null){
+				action = new Action(actionDto.getCardRapidity());
+			} else {
+				action = new Action(actionDto.getSquareX(), actionDto.getSquareY());
 			}
-			if(step==null || step.getNumber()!=stepDto.getStepNb()){
-				if(stepDto.getCardRapidity()!=null){
-					step = new Step(stepDto.getStepNb(), stepDto.getCardRapidity());
-				} else {
-					step = new Step(stepDto.getStepNb(), stepDto.getSquareX(), stepDto.getSquareY());
+			stage.addAction(action);
+			Step step = null;
+			for(MoveDto moveDto : actionDto.getMoveList()){
+				if(step==null || moveDto.getStepNb()==step.getMoveList().size()){
+					step = new Step();
+					action.addStep(step);
 				}
-				turn.addStep(step);
-			}
-			for(MoveDto moveDto : stepDto.getMoveList()){
-				if(moveDto.getTranslation()!=null){
-					if(moveDto.isSuccess()){
-						step.addMove(new Translation(game.getRobot(moveDto.getRobotNb()), moveDto.getTranslation()));
-					}else{
-						step.addMove(new FailedTranslation(game.getRobot(moveDto.getRobotNb()), moveDto.getTranslation()));
-					}
-				} else {
-					step.addMove(new Rotation(game.getRobot(moveDto.getRobotNb()), moveDto.getRotation()));
-				}
+				Robot robot = game.getRobot(moveDto.getRobotNb());
+				step.addMove(new Move(moveDto.getType(), moveDto.getArgs(), robot));
 			}
 		}
 		

@@ -2,16 +2,6 @@
 <mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
 
-	<configuration>
-		<custom-converters>
-			<converter type="com.mrprez.roborally.server.MoveConverter">
-				<class-a>com.mrprez.roborally.model.move.Move</class-a>
-				<class-b>com.mrprez.roborally.shared.animation.MoveAnimation</class-b>
-			</converter>
-		</custom-converters>
-	</configuration>
-	
-	
 	<mapping>
 		<class-a>com.mrprez.roborally.model.Game</class-a>
 		<class-b>com.mrprez.roborally.shared.GameGwt</class-b>
@@ -48,16 +38,28 @@
 	</mapping>
 
 	<mapping>
-		<class-a>com.mrprez.roborally.model.Round</class-a>
+		<class-a>com.mrprez.roborally.model.history.Round</class-a>
 		<class-b>com.mrprez.roborally.shared.RoundGwt</class-b>
 	</mapping>
 	<mapping>
-		<class-a>com.mrprez.roborally.model.Turn</class-a>
-		<class-b>com.mrprez.roborally.shared.TurnGwt</class-b>
+		<class-a>com.mrprez.roborally.model.history.Stage</class-a>
+		<class-b>com.mrprez.roborally.shared.StageGwt</class-b>
 	</mapping>
 	<mapping>
-		<class-a>com.mrprez.roborally.model.Step</class-a>
+		<class-a>com.mrprez.roborally.model.history.Action</class-a>
+		<class-b>com.mrprez.roborally.shared.ActionGwt</class-b>
+	</mapping>
+	<mapping>
+		<class-a>com.mrprez.roborally.model.history.Step</class-a>
 		<class-b>com.mrprez.roborally.shared.StepGwt</class-b>
+	</mapping>
+	<mapping>
+		<class-a>com.mrprez.roborally.model.history.Move</class-a>
+		<class-b>com.mrprez.roborally.shared.MoveGwt</class-b>
+		<field>
+			<a>robot.number</a>
+			<b>robotNb</b>
+		</field>
 	</mapping>
 
 </mappings> 

@@ -1,13 +1,13 @@
 package com.mrprez.roborally.dto;
 
-import com.mrprez.roborally.model.Direction;
+import com.mrprez.roborally.model.history.MoveType;
 
 public class MoveDto {
-	
+	private int stepNb;
+	private int moveNb;
 	private int robotNb;
-	private Direction translation;
-	private Integer rotation;
-	private boolean success;
+	private MoveType type;
+	private String args;
 	
 	
 	public int getRobotNb() {
@@ -16,23 +16,30 @@ public class MoveDto {
 	public void setRobotNb(int robotNb) {
 		this.robotNb = robotNb;
 	}
-	public Direction getTranslation() {
-		return translation;
+	public int getStepNb() {
+		return stepNb;
 	}
-	public void setTranslation(Direction translation) {
-		this.translation = translation;
+	public void setStepNb(int stepNb) {
+		this.stepNb = stepNb;
 	}
-	public Integer getRotation() {
-		return rotation;
+	public int getMoveNb() {
+		return moveNb;
 	}
-	public void setRotation(Integer rotation) {
-		this.rotation = rotation;
+	public void setMoveNb(int moveNb) {
+		this.moveNb = moveNb;
 	}
-	public boolean isSuccess() {
-		return success;
+	public MoveType getType() {
+		return type;
 	}
-	public void setSuccess(boolean success) {
-		this.success = success;
+	public void setType(MoveType type) {
+		this.type = type;
 	}
+	public String getArgs() {
+		return args;
+	}
+	public void setArgs(String args) {
+		this.args = args;
+	}
+	
 	
 }
