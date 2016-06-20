@@ -42,6 +42,11 @@ h1 {
 	position: absolute;
 }
 
+.cardPanel{
+	position: static;
+	margin: auto;
+}
+
 .cardPanel > tbody > tr > td {
 	border: 2px solid green;
 }

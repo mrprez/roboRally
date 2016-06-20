@@ -14,9 +14,6 @@ public class RobotGwt implements IsSerializable {
 	public String getImageName(){
 		StringBuilder imageName= new StringBuilder("img/robot/robot");
 		imageName.append(number);
-		if(ghost){
-			imageName.append("V");
-		}
 		imageName.append("_");
 		imageName.append(direction);
 		imageName.append(".gif");

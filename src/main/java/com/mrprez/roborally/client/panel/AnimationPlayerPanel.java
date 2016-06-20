@@ -22,8 +22,7 @@ public class AnimationPlayerPanel extends FlexTable {
 	private PushButton pauseButton;
 	private PushButton stopButton;
 	
-	public AnimationPlayerPanel(List<RoundGwt> history, BoardPanel boardPanel){
-		super();
+	public void init(List<RoundGwt> history, BoardPanel boardPanel){
 		this.history = history;
 		animationManager = new AnimationManager(ANIMATION_DURATION, boardPanel);
 		Image playImg = new Image("img/media_playback_start.png");

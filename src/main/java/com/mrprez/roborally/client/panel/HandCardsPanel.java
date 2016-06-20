@@ -23,10 +23,10 @@ public class HandCardsPanel extends FlexTable {
 	private int gameId;
 	
 	
-	public HandCardsPanel(int gameId, List<CardGwt> cardList){
-		super();
+	public void init(int gameId, List<CardGwt> cardList){
 		this.gameId = gameId;
 		loadCards(cardList);
+		this.getElement().getStyle().clearPosition();
 	}
 	
 	
