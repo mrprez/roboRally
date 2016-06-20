@@ -22,8 +22,8 @@ public class BoardPanel extends AbsolutePanel {
 	
 	public BoardPanel(GameGwt game){
 		super();
-		setHeight(game.getBoard().getSizeX()*97+"px");
-		setWidth(game.getBoard().getSizeY()*97+"px");
+		setWidth(game.getBoard().getSizeX()*97+"px");
+		setHeight(game.getBoard().getSizeY()*97+"px");
 		
 		loadSquares(game);
 		loadRobots(game);
