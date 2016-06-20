@@ -95,8 +95,8 @@ CREATE TABLE MOVE (
 );
 
 INSERT INTO ACCOUNT(USERNAME,PASSWORD) VALUES('mrprez', '135db287cad29417f6cdea20b7e359a3');
-INSERT INTO BOARD(TYPE,SIZE_X,SIZE_Y,START_X,START_Y) VALUES ('Game', 4, 4, 0, 0);
-INSERT INTO BOARD(TYPE,SIZE_X,SIZE_Y,START_X,START_Y) VALUES ('Game', 32, 16, 2, 2);
+INSERT INTO BOARD(TYPE,SIZE_X,SIZE_Y,START_X,START_Y) VALUES ('Game', 16, 4, 0, 0);
+INSERT INTO BOARD(TYPE,SIZE_X,SIZE_Y,START_X,START_Y) VALUES ('Game', 32, 4, 2, 2);
 INSERT INTO GAME(OWNER,NAME,BOARD_ID) VALUES ('mrprez', 'test0', 0);
 INSERT INTO GAME(OWNER,NAME,BOARD_ID) VALUES ('mrprez', 'test1', 1);
 
@@ -154,3 +154,54 @@ INSERT INTO MOVE(GAME_ID,ROUND_NB,STAGE_NB,ACTION_NB,STEP_NB,MOVE_NB,ROBOT_NB,TY
 INSERT INTO MOVE(GAME_ID,ROUND_NB,STAGE_NB,ACTION_NB,STEP_NB,MOVE_NB,ROBOT_NB,TYPE,ARGS) VALUES (0,0,0, 4,1,0,2,'TRANSLATION','LEFT');
 -- ROBOT 1 tente d'avancer mais échoue
 INSERT INTO MOVE(GAME_ID,ROUND_NB,STAGE_NB,ACTION_NB,STEP_NB,MOVE_NB,ROBOT_NB,TYPE,ARGS) VALUES (0,0,0, 5,0,0,1,'FAILED_TRANSLATION','RIGHT');
+
+
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0, 4,0,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0, 5,0,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0, 6,0,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0, 7,0,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0, 8,0,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0, 9,0,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0,10,0,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0,11,0,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0,12,0,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0,13,0,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0,14,0,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0,15,0,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0, 4,1,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0, 5,1,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0, 6,1,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0, 7,1,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0, 8,1,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0, 9,1,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0,10,1,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0,11,1,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0,12,1,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0,13,1,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0,14,1,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0,15,1,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0, 4,2,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0, 5,2,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0, 6,2,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0, 7,2,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0, 8,2,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0, 9,2,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0,10,2,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0,11,2,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0,12,2,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0,13,2,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0,14,2,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0,15,2,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0, 4,3,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0, 5,3,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0, 6,3,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0, 7,3,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0, 8,3,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0, 9,3,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0,10,3,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0,11,3,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0,12,3,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0,13,3,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0,14,3,'com.mrprez.roborally.model.square.EmptySquare',null);
+INSERT INTO SQUARE(BOARD_ID,X,Y,CLASS,ARGS) VALUES (0,15,3,'com.mrprez.roborally.model.square.EmptySquare',null);
+
