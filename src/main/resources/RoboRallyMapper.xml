@@ -22,7 +22,7 @@
 		<result property="name" column="NAME" />
 		<result property="sizeX" column="SIZE_X" />
 		<result property="sizeY" column="SIZE_Y" />
-		<collection property="targetList">
+		<collection property="targetList" ofType="com.mrprez.roborally.dto.TargetDto">
 			<result property="x" column="TARGET_X"/>
 			<result property="y" column="TARGET_Y"/>
 		</collection>

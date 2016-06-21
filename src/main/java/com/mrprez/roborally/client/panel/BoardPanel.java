@@ -40,8 +40,6 @@ public class BoardPanel extends AbsolutePanel {
 				loadSquare(squaresCanvas.getContext2d(), game.getBoard().getSquare(x, y), x, y);
 			}
 		}
-		
-		//loadStartSquare(squaresCanvas.getContext2d(), game.getBoard().getStartX(), game.getBoard().getStartY());
 	}
 	
 	
@@ -56,21 +54,20 @@ public class BoardPanel extends AbsolutePanel {
 		});
 		img.setVisible(false);
 		RootPanel.get().add(img);
+		
+		if(square.getTargetNumber()!=null){
+			final Image targetImg = new Image(square.getTargetImgName());
+			targetImg.addLoadHandler(new LoadHandler() {
+				@Override
+				public void onLoad(LoadEvent event) {
+					ImageElement imageEl = ImageElement.as(targetImg.getElement());
+					context2d.drawImage(imageEl, x*97, y*97);
+				}
+			});
+			targetImg.setVisible(false);
+			RootPanel.get().add(targetImg);
+		}
 	}
-	
-	
-//	private void loadStartSquare(final Context2d context2d, final int x, final int y){
-//		final Image img = new Image("img/Start.png");
-//		img.addLoadHandler(new LoadHandler() {
-//			@Override
-//			public void onLoad(LoadEvent event) {
-//				ImageElement imageEl = ImageElement.as(img.getElement());
-//				context2d.drawImage(imageEl, x*97, y*97);
-//			}
-//		});
-//		img.setVisible(false);
-//		RootPanel.get().add(img);
-//	}
 	
 	
 	private void loadRobots(final GameGwt game) {

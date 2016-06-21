@@ -12,6 +12,7 @@ import com.mrprez.roborally.model.Card;
 import com.mrprez.roborally.model.Direction;
 import com.mrprez.roborally.model.Game;
 import com.mrprez.roborally.model.Robot;
+import com.mrprez.roborally.model.Square;
 import com.mrprez.roborally.shared.CardGwt;
 import com.mrprez.roborally.shared.GameGwt;
 import com.mrprez.roborally.shared.RobotGwt;
@@ -50,6 +51,12 @@ public class GameGwtServiceImpl extends AbstractGwtService implements GameGwtSer
 			}
 		}
 		gameGwt.getBoard().setSquares(squareGwtTab);
+		
+		int targetNumber = 0;
+		for(Square targetSquare : game.getBoard().getTargetSquares()){
+			squareGwtTab[targetSquare.getX()][targetSquare.getY()].setTargetNumber(targetNumber);
+			targetNumber++;
+		}
 		
 		gameGwt.setRobotList(new ArrayList<RobotGwt>());
 		for(Robot robot : game.getRobotList()){

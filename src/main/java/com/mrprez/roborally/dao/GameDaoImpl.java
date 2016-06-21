@@ -13,6 +13,7 @@ import com.mrprez.roborally.dto.GameBoardDto;
 import com.mrprez.roborally.dto.MoveDto;
 import com.mrprez.roborally.dto.RobotDto;
 import com.mrprez.roborally.dto.SquareDto;
+import com.mrprez.roborally.dto.TargetDto;
 import com.mrprez.roborally.dto.ActionDto;
 import com.mrprez.roborally.model.Card;
 import com.mrprez.roborally.model.Game;
@@ -44,9 +45,14 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 		game.setId(id);
 		game.setName(gameBoardDto.getName());
 		game.setBoard(gameBoard);
-		
+				
 		// Squares
 		loadSquares(gameBoard);
+		
+		// Targets
+		for(TargetDto targetDto : gameBoardDto.getTargetList()){
+			gameBoard.getTargetSquares().add(gameBoard.getSquare(targetDto.getX(), targetDto.getY()));
+		}
 		
 		// Robot
 		game.getRobotList().addAll(loadRobots(gameBoard));
