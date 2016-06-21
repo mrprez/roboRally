@@ -1,12 +1,14 @@
 package com.mrprez.roborally.dto;
 
+import java.util.List;
+
 public class GameBoardDto {
 	private String name;
 	private int boardId;
 	private int sizeX;
 	private int sizeY;
-	private int startX;
-	private int startY;
+	
+	private List<TargetDto> targetList;
 	
 	
 	public String getName() {
@@ -27,23 +29,17 @@ public class GameBoardDto {
 	public void setSizeY(int sizeY) {
 		this.sizeY = sizeY;
 	}
-	public int getStartX() {
-		return startX;
-	}
-	public void setStartX(int startX) {
-		this.startX = startX;
-	}
-	public int getStartY() {
-		return startY;
-	}
-	public void setStartY(int startY) {
-		this.startY = startY;
-	}
 	public int getBoardId() {
 		return boardId;
 	}
 	public void setBoardId(int boardId) {
 		this.boardId = boardId;
+	}
+	public List<TargetDto> getTargetList() {
+		return targetList;
+	}
+	public void setTargetList(List<TargetDto> targetList) {
+		this.targetList = targetList;
 	}
 	
 	

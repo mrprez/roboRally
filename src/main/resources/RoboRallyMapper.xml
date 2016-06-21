@@ -22,8 +22,10 @@
 		<result property="name" column="NAME" />
 		<result property="sizeX" column="SIZE_X" />
 		<result property="sizeY" column="SIZE_Y" />
-		<result property="startX" column="START_X" />
-		<result property="startY" column="START_Y" />
+		<collection property="targetList">
+			<result property="x" column="TARGET_X"/>
+			<result property="y" column="TARGET_Y"/>
+		</collection>
 	</resultMap>
 	<resultMap id="square" type="com.mrprez.roborally.dto.SquareDto">
 		<result property="x" column="X" />
@@ -68,8 +70,9 @@
 		select ID, NAME from GAME where OWNER=#{username}
 	</select>
 	<select id="selectGame" resultMap="gameBoard">
-		select GAME.BOARD_ID,NAME,SIZE_X,SIZE_Y,START_X,START_Y from GAME
+		select GAME.BOARD_ID,NAME,SIZE_X,SIZE_Y,TARGET.X as TARGET_X,TARGET.Y as TARGET_Y from GAME
 		join BOARD on BOARD.ID=GAME.BOARD_ID
+		join TARGET on TARGET.BOARD_ID=BOARD.ID
 		where GAME.ID=#{id}
 	</select>
 	<select id="selectSquareList" resultMap="square">

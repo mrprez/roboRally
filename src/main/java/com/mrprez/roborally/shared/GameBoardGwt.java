@@ -5,8 +5,6 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 public class GameBoardGwt implements IsSerializable {
 	private int sizeX;
 	private int sizeY;
-	private int startX;
-	private int startY;
 	private SquareGwt[][] squares;
 	
 	
@@ -21,18 +19,6 @@ public class GameBoardGwt implements IsSerializable {
 	}
 	public void setSizeY(int sizeY) {
 		this.sizeY = sizeY;
-	}
-	public int getStartX() {
-		return startX;
-	}
-	public void setStartX(int startX) {
-		this.startX = startX;
-	}
-	public int getStartY() {
-		return startY;
-	}
-	public void setStartY(int startY) {
-		this.startY = startY;
 	}
 	public SquareGwt[][] getSquares() {
 		return squares;

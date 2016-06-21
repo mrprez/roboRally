@@ -7,7 +7,6 @@ import com.mrprez.roborally.model.Square;
 
 public class GameBoard extends Board {
 	
-	protected Square startSquare;
 	protected List<Square> targetSquares = new ArrayList<Square>();
 
 	
@@ -22,8 +21,6 @@ public class GameBoard extends Board {
 				squares[x][y] = buildingBoard.getSquare(x, y).copyForNewBoard(this);
 			}
 		}
-		
-		startSquare = squares[0][0];
 	}
 	
 	public GameBoard(Integer id, Integer sizeX, Integer sizeY){
@@ -34,16 +31,13 @@ public class GameBoard extends Board {
 		squares = new Square[sizeX][sizeY];
 	}
 
-	public Square getStartSquare() {
-		return startSquare;
-	}
 	
-	public void setStartSquare(int x, int y) {
-		startSquare = getSquare(x, y);
-	}
-
 	public List<Square> getTargetSquares() {
 		return targetSquares;
+	}
+
+	public Square getStartSquare() {
+		return targetSquares.get(0);
 	}
 
 	

@@ -15,7 +15,7 @@ public class Robot {
 	private Direction direction = Direction.UP;
 	private List<Card> cards = new ArrayList<Card>(9);
 	private boolean ghost = true;
-	private int targetNumber = 0;
+	private int targetNumber = 1;
 	
 	
 	protected Robot(){

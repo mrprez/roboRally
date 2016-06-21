@@ -14,14 +14,6 @@
 			<a>squares</a>
 			<b>squares</b>
 		</field-exclude>
-		<field>
-			<a>startSquare.x</a>
-			<b>startX</b>
-		</field>
-		<field>
-			<a>startSquare.y</a>
-			<b>startY</b>
-		</field>
 	</mapping>
 
 	<mapping>
