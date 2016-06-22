@@ -6,7 +6,6 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -25,7 +24,7 @@ public class Home implements EntryPoint {
 		verticalPanel.setWidth("100%");
 		final Tree gameList = new Tree();
 		verticalPanel.add(gameList);
-		gameGwtService.getGameList(new AsyncCallback<List<GameGwt>>() {
+		gameGwtService.getGameList(new AbstractAsyncCallback<List<GameGwt>>() {
 			@Override
 			public void onSuccess(List<GameGwt> result) {
 				for(GameGwt game : result){
@@ -35,8 +34,6 @@ public class Home implements EntryPoint {
 					gameList.add(new Anchor(game.getName(), urlBuilder.buildString()));
 				}
 			}
-			@Override
-			public void onFailure(Throwable caught) {}
 		});
 	}
 }

@@ -13,12 +13,9 @@ import com.google.gwt.event.dom.client.DragStartEvent;
 import com.google.gwt.event.dom.client.DragStartHandler;
 import com.google.gwt.event.dom.client.DropEvent;
 import com.google.gwt.event.dom.client.DropHandler;
-import com.google.gwt.event.dom.client.LoadEvent;
-import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.mrprez.roborally.shared.CardGwt;
 
 public class CardCanvasFactory implements IsSerializable {
@@ -33,17 +30,14 @@ public class CardCanvasFactory implements IsSerializable {
 		cardCanvas.getElement().setAttribute("draggable", "true");
 		cardCanvas.getElement().setAttribute("rapidity", rapidity);
 		cardCanvas.getElement().setAttribute("index", String.valueOf(index));
-		final Image cardImg = new Image(card.getImageName());
-		cardImg.addLoadHandler(new LoadHandler() {
+		ImageLoader.getInstance().loadImage(card.getImageName(), new ImageLoaderCallback() {
 			@Override
-			public void onLoad(LoadEvent event) {
-				ImageElement imageEl = ImageElement.as(cardImg.getElement());
+			public void onImageLoaded(Image image) {
+				ImageElement imageEl = ImageElement.as(image.getElement());
 				cardCanvas.getContext2d().drawImage(imageEl, 5, 5);
 				cardCanvas.getContext2d().fillText(rapidity, 10, 55);
 			}
 		});
-		cardImg.setVisible(false);
-		RootPanel.get().add(cardImg);
 		
 		cardCanvas.addDragStartHandler(new DragStartHandler() {
 			@Override

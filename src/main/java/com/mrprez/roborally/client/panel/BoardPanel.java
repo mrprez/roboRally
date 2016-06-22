@@ -6,11 +6,10 @@ import java.util.Map;
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.dom.client.ImageElement;
-import com.google.gwt.event.dom.client.LoadEvent;
-import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.RootPanel;
+import com.mrprez.roborally.client.ImageLoader;
+import com.mrprez.roborally.client.ImageLoaderCallback;
 import com.mrprez.roborally.shared.GameGwt;
 import com.mrprez.roborally.shared.RobotGwt;
 import com.mrprez.roborally.shared.SquareGwt;
@@ -44,28 +43,22 @@ public class BoardPanel extends AbsolutePanel {
 	
 	
 	private void loadSquare(final Context2d context2d, SquareGwt square, final int x, final int y) {
-		final Image img = new Image(square.getImageName());
-		img.addLoadHandler(new LoadHandler() {
+		ImageLoader.getInstance().loadImage(square.getImageName(), new ImageLoaderCallback() {
 			@Override
-			public void onLoad(LoadEvent event) {
-				ImageElement imageEl = ImageElement.as(img.getElement());
+			public void onImageLoaded(Image image) {
+				ImageElement imageEl = ImageElement.as(image.getElement());
 				context2d.drawImage(imageEl, x*97, y*97);
 			}
 		});
-		img.setVisible(false);
-		RootPanel.get().add(img);
 		
 		if(square.getTargetNumber()!=null){
-			final Image targetImg = new Image(square.getTargetImgName());
-			targetImg.addLoadHandler(new LoadHandler() {
+			ImageLoader.getInstance().loadImage(square.getTargetImgName(), new ImageLoaderCallback() {
 				@Override
-				public void onLoad(LoadEvent event) {
-					ImageElement imageEl = ImageElement.as(targetImg.getElement());
+				public void onImageLoaded(Image image) {
+					ImageElement imageEl = ImageElement.as(image.getElement());
 					context2d.drawImage(imageEl, x*97, y*97);
 				}
 			});
-			targetImg.setVisible(false);
-			RootPanel.get().add(targetImg);
 		}
 	}
 	
@@ -73,10 +66,9 @@ public class BoardPanel extends AbsolutePanel {
 	private void loadRobots(final GameGwt game) {
 		robotCanvaMap = new HashMap<Integer, Canvas>();
 		for(final RobotGwt robot : game.getRobotList()){
-			final Image img = new Image(robot.getImageName());
-			img.addLoadHandler(new LoadHandler() {
+			ImageLoader.getInstance().loadImage(robot.getImageName(), new ImageLoaderCallback() {
 				@Override
-				public void onLoad(LoadEvent event) {
+				public void onImageLoaded(Image image) {
 					Canvas robotCanvas = Canvas.createIfSupported();
 					robotCanvas.setCoordinateSpaceWidth(97);
 					robotCanvas.setCoordinateSpaceHeight(97);
@@ -86,13 +78,11 @@ public class BoardPanel extends AbsolutePanel {
 						robotCanvas.getCanvasElement().getStyle().setOpacity(0.5);
 					}
 					add(robotCanvas, robot.getX()*97, robot.getY()*97);
-					ImageElement imageEl = ImageElement.as(img.getElement());
+					ImageElement imageEl = ImageElement.as(image.getElement());
 					robotCanvas.getContext2d().drawImage(imageEl, 25, 25);
 					robotCanvaMap.put(robot.getNumber(), robotCanvas);
 				}
 			});
-			img.setVisible(false);
-			RootPanel.get().add(img);
 		}
 	}
 	
