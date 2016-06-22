@@ -61,6 +61,14 @@
 		<result property="health" column="HEALTH" />
 		<collection property="cards" resultMap="card" ofType="com.mrprez.roborally.model.Card"/>
 	</resultMap>
+	<resultMap id="robotState" type="com.mrprez.roborally.dto.RobotStateDto">
+		<result property="robotNb" column="ROBOT_NB"/>
+		<result property="roundNb" column="ROUND_NB"/>
+		<result property="health" column="HEALTH"/>
+		<result property="direction" column="DIRECTION" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
+		<result property="x" column="X"/>
+		<result property="y" column="Y"/>
+	</resultMap>
 
 	<select id="checkUser" resultMap="userResultMap">
 		select USERNAME from ACCOUNT where
@@ -93,6 +101,10 @@
 		left join MOVE on  ACTION.GAME_ID=MOVE.GAME_ID and ACTION.ROUND_NB=MOVE.ROUND_NB and ACTION.STAGE_NB=MOVE.STAGE_NB and ACTION.ACTION_NB=MOVE.ACTION_NB 
 		where ACTION.GAME_ID=#{gameId}
 		order by ACTION.ROUND_NB, ACTION.STAGE_NB, ACTION.ACTION_NB, MOVE.STEP_NB, MOVE.MOVE_NB asc
+	</select>
+	<select id="selectState" resultMap="robotState">
+		select ROBOT_NB, ROUND_NB, X, Y, DIRECTION, HEALTH, GHOST from ROBOT_STATE where GAME_ID=#{gameId}
+		order by ROUND_NB, ROBOT_NB
 	</select>
 	
 	<insert id="updateHandCard">

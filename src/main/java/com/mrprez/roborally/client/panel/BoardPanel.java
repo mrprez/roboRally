@@ -79,6 +79,9 @@ public class BoardPanel extends AbsolutePanel {
 					}
 					add(robotCanvas, robot.getX()*97, robot.getY()*97);
 					ImageElement imageEl = ImageElement.as(image.getElement());
+					robotCanvas.getContext2d().translate(robotCanvas.getCoordinateSpaceWidth()/2, robotCanvas.getCoordinateSpaceHeight()/2);
+					robotCanvas.getContext2d().rotate(robot.getAngle());
+					robotCanvas.getContext2d().translate(-robotCanvas.getCoordinateSpaceWidth()/2, -robotCanvas.getCoordinateSpaceHeight()/2);
 					robotCanvas.getContext2d().drawImage(imageEl, 25, 25);
 					robotCanvaMap.put(robot.getNumber(), robotCanvas);
 				}

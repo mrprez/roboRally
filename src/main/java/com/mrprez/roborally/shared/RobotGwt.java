@@ -14,8 +14,6 @@ public class RobotGwt implements IsSerializable {
 	public String getImageName(){
 		StringBuilder imageName= new StringBuilder("img/robot/robot");
 		imageName.append(number);
-		imageName.append("_");
-		imageName.append(direction);
 		imageName.append(".gif");
 		return imageName.toString();
 	}
@@ -54,6 +52,18 @@ public class RobotGwt implements IsSerializable {
 	}
 	public void setGhost(boolean ghost) {
 		this.ghost = ghost;
+	}
+	public double getAngle(){
+		switch (direction) {
+		case 'D':
+			return Math.PI/2;
+		case 'B':
+			return Math.PI;
+		case 'G':
+			return -Math.PI/2;
+		default:
+			return 0;
+		}
 	}
 	
 

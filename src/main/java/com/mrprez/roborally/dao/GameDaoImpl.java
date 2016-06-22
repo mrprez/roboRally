@@ -9,15 +9,17 @@ import java.util.Map;
 
 import org.dozer.DozerBeanMapper;
 
+import com.mrprez.roborally.dto.ActionDto;
 import com.mrprez.roborally.dto.GameBoardDto;
 import com.mrprez.roborally.dto.MoveDto;
 import com.mrprez.roborally.dto.RobotDto;
+import com.mrprez.roborally.dto.RobotStateDto;
 import com.mrprez.roborally.dto.SquareDto;
 import com.mrprez.roborally.dto.TargetDto;
-import com.mrprez.roborally.dto.ActionDto;
 import com.mrprez.roborally.model.Card;
 import com.mrprez.roborally.model.Game;
 import com.mrprez.roborally.model.Robot;
+import com.mrprez.roborally.model.RobotState;
 import com.mrprez.roborally.model.Square;
 import com.mrprez.roborally.model.board.Board;
 import com.mrprez.roborally.model.board.GameBoard;
@@ -89,6 +91,17 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 	}
 	
 	private List<Round> loadHistory(Game game){
+		List<Round> roundList = loadRounds(game);
+		for(RobotStateDto robotStateDto : getSession().<RobotStateDto>selectList("selectState", game.getId())){
+			Round round = roundList.get(robotStateDto.getRoundNb());
+			RobotState robotState = new RobotState();
+			dozerMapper.map(robotStateDto, robotState);
+			round.setState(game.getRobot(robotStateDto.getRobotNb()), robotState);
+		}
+		return roundList;
+	}
+	
+	private List<Round> loadRounds(Game game){
 		List<Round> history = new ArrayList<Round>();
 		Round round = null;
 		for(ActionDto actionDto : getSession().<ActionDto>selectList("selectHistory", game.getId())){
