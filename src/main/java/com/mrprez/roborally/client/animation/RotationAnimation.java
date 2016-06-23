@@ -32,6 +32,12 @@ public class RotationAnimation extends MoveAnimation {
 	}
 	
 	
+	public void onComplete(){
+		int direction = Integer.valueOf(robotCanvas.getCanvasElement().getAttribute("direction")) + rotation;
+		direction = (direction + 4) % 4;
+		robotCanvas.getCanvasElement().setAttribute("direction", String.valueOf(direction));
+	}
+	
 
 	
 

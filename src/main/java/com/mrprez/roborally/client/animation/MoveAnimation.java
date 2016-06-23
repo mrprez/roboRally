@@ -43,6 +43,8 @@ public abstract class MoveAnimation {
 	public void setRobotNb(int robotNb) {
 		this.robotNb = robotNb;
 	}
+
+	public void onComplete() {}
 	
 
 

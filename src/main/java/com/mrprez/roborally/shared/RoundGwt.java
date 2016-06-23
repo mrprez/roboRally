@@ -1,14 +1,13 @@
 package com.mrprez.roborally.shared;
 
 import java.util.List;
-import java.util.Map;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class RoundGwt implements IsSerializable {
 	private int number;
 	private List<StageGwt> stageList;
-	private Map<Integer,RobotStateGwt> robotStateMap;
+	private List<RobotStateGwt> robotStateList;
 
 	
 	public int getNumber() {
@@ -27,12 +26,13 @@ public class RoundGwt implements IsSerializable {
 		this.stageList = stageList;
 	}
 
-	public Map<Integer,RobotStateGwt> getRobotStateMap() {
-		return robotStateMap;
+	public List<RobotStateGwt> getRobotStateList() {
+		return robotStateList;
 	}
 
-	public void setRobotStateMap(Map<Integer,RobotStateGwt> robotStateMap) {
-		this.robotStateMap = robotStateMap;
+	public void setRobotStateList(List<RobotStateGwt> robotStateList) {
+		this.robotStateList = robotStateList;
 	}
+	
 	
 }

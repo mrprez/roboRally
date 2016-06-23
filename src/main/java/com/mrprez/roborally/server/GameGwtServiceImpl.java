@@ -13,9 +13,12 @@ import com.mrprez.roborally.model.Direction;
 import com.mrprez.roborally.model.Game;
 import com.mrprez.roborally.model.Robot;
 import com.mrprez.roborally.model.Square;
+import com.mrprez.roborally.model.history.Round;
 import com.mrprez.roborally.shared.CardGwt;
 import com.mrprez.roborally.shared.GameGwt;
 import com.mrprez.roborally.shared.RobotGwt;
+import com.mrprez.roborally.shared.RobotStateGwt;
+import com.mrprez.roborally.shared.RoundGwt;
 import com.mrprez.roborally.shared.SquareGwt;
 import com.mrprez.roborally.shared.UserGwt;
 
@@ -63,6 +66,17 @@ public class GameGwtServiceImpl extends AbstractGwtService implements GameGwtSer
 			RobotGwt robotGwt = dozerMapper.map(robot, RobotGwt.class);
 			robotGwt.setDirection(getDirectionChar(robot.getDirection()));
 			gameGwt.getRobotList().add(robotGwt);
+		}
+		
+		for(Round round : game.getHistory()){
+			RoundGwt roundGwt = gameGwt.getHistory().get(round.getNumber());
+			roundGwt.setRobotStateList(new ArrayList<RobotStateGwt>());
+			for(Robot robot : round.getStateMap().keySet()){
+				RobotStateGwt stateGwt = dozerMapper.map(round.getStateMap().get(robot), RobotStateGwt.class);
+				stateGwt.setDirection(getDirectionChar(round.getStateMap().get(robot).getDirection()));
+				stateGwt.setRobotNb(robot.getNumber());
+				roundGwt.getRobotStateList().add(stateGwt);
+			}
 		}
 		
 		return gameGwt;

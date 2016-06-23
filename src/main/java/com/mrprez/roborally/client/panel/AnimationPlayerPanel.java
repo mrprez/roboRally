@@ -6,6 +6,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PushButton;
 import com.mrprez.roborally.client.animation.AnimationManager;
 import com.mrprez.roborally.shared.ActionGwt;
@@ -21,9 +22,13 @@ public class AnimationPlayerPanel extends FlexTable {
 	private PushButton playButton;
 	private PushButton pauseButton;
 	private PushButton stopButton;
+	private ListBox listBox;
+	private BoardPanel boardPanel;
+	
 	
 	public void init(List<RoundGwt> history, BoardPanel boardPanel){
 		this.history = history;
+		this.boardPanel = boardPanel;
 		animationManager = new AnimationManager(ANIMATION_DURATION, boardPanel);
 		Image playImg = new Image("img/media_playback_start.png");
 		Image pauseImg = new Image("img/media_playback_pause.png");
@@ -45,6 +50,14 @@ public class AnimationPlayerPanel extends FlexTable {
 		setWidget(0, 0, stopButton);
 		setWidget(0, 1, playButton);
 		setWidget(0, 2, pauseButton);
+		listBox = new ListBox();
+		listBox.setStyleName("roundListBox");
+		for(RoundGwt round : history){
+			listBox.addItem("Tour "+(round.getNumber()+1), String.valueOf(round.getNumber()));
+		}
+		listBox.setSelectedIndex(listBox.getItemCount()-1);
+		setWidget(1, 0, listBox);
+		getFlexCellFormatter().setColSpan(1, 0, 3);
 	}
 	
 	
@@ -53,7 +66,9 @@ public class AnimationPlayerPanel extends FlexTable {
 			@Override
 			public void onClick(ClickEvent event) {
 				if( ! animationManager.isPaused()){
-					loadRoundAnimation(history.get(history.size()-1));
+					int roundNb = Integer.valueOf(listBox.getSelectedValue());
+					boardPanel.setRoundState(history.get(roundNb));
+					loadRoundAnimation(history.get(roundNb));
 				}
 				animationManager.play();
 				playButton.setEnabled(false);

@@ -1,10 +1,11 @@
 package com.mrprez.roborally.shared;
 
-import com.mrprez.roborally.model.Direction;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class RobotStateGwt {
+public class RobotStateGwt implements IsSerializable {
+	private int robotNb;
 	private int health;
-	private Direction direction;
+	private char direction;
 	private int x;
 	private int y;
 	
@@ -15,10 +16,10 @@ public class RobotStateGwt {
 	public void setHealth(int health) {
 		this.health = health;
 	}
-	public Direction getDirection() {
+	public char getDirection() {
 		return direction;
 	}
-	public void setDirection(Direction direction) {
+	public void setDirection(char direction) {
 		this.direction = direction;
 	}
 	public int getX() {
@@ -32,5 +33,23 @@ public class RobotStateGwt {
 	}
 	public void setY(int y) {
 		this.y = y;
+	}
+	public int getRobotNb() {
+		return robotNb;
+	}
+	public void setRobotNb(int robotNb) {
+		this.robotNb = robotNb;
+	}
+	public double getAngle(){
+		switch (direction) {
+		case 'D':
+			return Math.PI/2;
+		case 'B':
+			return Math.PI;
+		case 'G':
+			return -Math.PI/2;
+		default:
+			return 0;
+		}
 	}
 }

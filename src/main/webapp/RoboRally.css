@@ -71,3 +71,7 @@ h1 {
 .playerButtonImg{
 	vertical-align: middle;
 }
+
+.roundListBox{
+	width: 100%;
+}

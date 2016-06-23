@@ -12,6 +12,8 @@ import com.mrprez.roborally.client.ImageLoader;
 import com.mrprez.roborally.client.ImageLoaderCallback;
 import com.mrprez.roborally.shared.GameGwt;
 import com.mrprez.roborally.shared.RobotGwt;
+import com.mrprez.roborally.shared.RobotStateGwt;
+import com.mrprez.roborally.shared.RoundGwt;
 import com.mrprez.roborally.shared.SquareGwt;
 
 public class BoardPanel extends AbsolutePanel {
@@ -78,14 +80,38 @@ public class BoardPanel extends AbsolutePanel {
 						robotCanvas.getCanvasElement().getStyle().setOpacity(0.5);
 					}
 					add(robotCanvas, robot.getX()*97, robot.getY()*97);
-					ImageElement imageEl = ImageElement.as(image.getElement());
-					robotCanvas.getContext2d().translate(robotCanvas.getCoordinateSpaceWidth()/2, robotCanvas.getCoordinateSpaceHeight()/2);
-					robotCanvas.getContext2d().rotate(robot.getAngle());
-					robotCanvas.getContext2d().translate(-robotCanvas.getCoordinateSpaceWidth()/2, -robotCanvas.getCoordinateSpaceHeight()/2);
-					robotCanvas.getContext2d().drawImage(imageEl, 25, 25);
+					rotate(robotCanvas, image, robot.getAngle());
 					robotCanvaMap.put(robot.getNumber(), robotCanvas);
 				}
 			});
+		}
+	}
+	
+	
+	private void rotate(Canvas canvas, Image image, double angle){
+		int direction = 0;
+		if(canvas.getElement().getAttribute("direction")!=null && !canvas.getElement().getAttribute("direction").isEmpty()){
+			direction = Integer.valueOf(canvas.getElement().getAttribute("direction"));
+		}
+		ImageElement imageEl = ImageElement.as(image.getElement());
+		canvas.getContext2d().clearRect(0, 0, canvas.getCoordinateSpaceWidth(), canvas.getCoordinateSpaceHeight());
+		canvas.getContext2d().translate(canvas.getCoordinateSpaceWidth()/2, canvas.getCoordinateSpaceHeight()/2);
+		canvas.getContext2d().rotate(angle);
+		canvas.getContext2d().translate(-canvas.getCoordinateSpaceWidth()/2, -canvas.getCoordinateSpaceHeight()/2);
+		canvas.getContext2d().drawImage(imageEl, 25, 25);
+		direction = direction + (int) (angle / Math.PI * 2);
+		direction = (direction + 4) % 4;
+		canvas.getElement().setAttribute("direction", String.valueOf(direction));
+	}
+	
+	
+	public void setRoundState(RoundGwt round){
+		for(RobotStateGwt robotState : round.getRobotStateList()){
+			Canvas robotCanva = robotCanvaMap.get(robotState.getRobotNb());
+			setWidgetPosition(robotCanva, robotState.getX()*97, robotState.getY()*97);
+			Image image = new Image(robotCanva.getCanvasElement().getAttribute("imageName"));
+			rotate(robotCanva,image,  - Integer.parseInt(robotCanva.getCanvasElement().getAttribute("direction")) * Math.PI/2);
+			rotate(robotCanva, image, robotState.getAngle());
 		}
 	}
 	

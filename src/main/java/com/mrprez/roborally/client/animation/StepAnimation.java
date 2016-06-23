@@ -15,6 +15,7 @@ public class StepAnimation extends Animation {
 	private List<MoveAnimation> animationList = new ArrayList<MoveAnimation>();
 	private double timeCoefficient;
 	
+	
 	public StepAnimation(StepGwt step, BoardPanel boardPanel){
 		super();
 		double maxMoveCoefficient = 0;
@@ -34,6 +35,9 @@ public class StepAnimation extends Animation {
 	@Override
 	protected void onComplete() {
 		super.onComplete();
+		for(MoveAnimation moveAnimation : animationList){
+			moveAnimation.onComplete();
+		}
 		eventBus.fireEvent(new AnimationManager.StepAnimationEvent());
 	}
 
