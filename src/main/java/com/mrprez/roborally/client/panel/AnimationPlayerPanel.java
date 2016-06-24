@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PushButton;
 import com.mrprez.roborally.client.animation.AnimationManager;
+import com.mrprez.roborally.client.animation.AnimationManager.AnimationEndHandler;
 import com.mrprez.roborally.shared.ActionGwt;
 import com.mrprez.roborally.shared.RoundGwt;
 import com.mrprez.roborally.shared.StageGwt;
@@ -69,6 +70,14 @@ public class AnimationPlayerPanel extends FlexTable {
 					int roundNb = Integer.valueOf(listBox.getSelectedValue());
 					boardPanel.setRoundState(history.get(roundNb));
 					loadRoundAnimation(history.get(roundNb));
+					animationManager.addAnimationEndHandler(new AnimationEndHandler() {
+						@Override
+						public void onAnimationEnd() {
+							playButton.setEnabled(true);
+							pauseButton.setEnabled(false);
+							stopButton.setEnabled(false);
+						}
+					});
 				}
 				animationManager.play();
 				playButton.setEnabled(false);

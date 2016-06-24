@@ -1,6 +1,8 @@
 package com.mrprez.roborally.client.animation;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import com.google.web.bindery.event.shared.Event;
@@ -18,6 +20,8 @@ public class AnimationManager {
 	private int animationDuration;
 	private BoardPanel boardPanel;
 	private boolean pause = false;
+	private List<AnimationEndHandler> animationEndHandlers = new ArrayList<AnimationManager.AnimationEndHandler>();
+	
 	
 	
 	public AnimationManager(int animationDuration, BoardPanel boardPanel){
@@ -39,6 +43,10 @@ public class AnimationManager {
 					stepAnimationQueue.add(new StepAnimation(step, boardPanel));
 				}
 				eventBus.fireEvent(new StepAnimationEvent());
+			} else {
+				for(AnimationEndHandler animationEndHandler : animationEndHandlers){
+					animationEndHandler.onAnimationEnd();
+				}
 			}
 		}
 	}
@@ -51,6 +59,10 @@ public class AnimationManager {
 		}else{
 			eventBus.fireEvent(new ActionAnimationEvent());
 		}
+	}
+	
+	public void addAnimationEndHandler(AnimationEndHandler animationEndHandler){
+		animationEndHandlers.add(animationEndHandler);
 	}
 	
 	public void addAnimation(ActionGwt action){
@@ -104,6 +116,11 @@ public class AnimationManager {
 		protected void dispatch(AnimationManager handler) {
 			handler.onStepAnimationEvent();
 		}
+	}
+	
+	
+	public static interface AnimationEndHandler {
+		void onAnimationEnd();
 	}
 
 }
