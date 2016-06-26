@@ -10,6 +10,9 @@ import com.mrprez.roborally.dao.GameDao;
 import com.mrprez.roborally.model.Card;
 import com.mrprez.roborally.model.Game;
 import com.mrprez.roborally.model.Robot;
+import com.mrprez.roborally.model.board.BuildingBoard;
+import com.mrprez.roborally.model.board.GameBoard;
+import com.mrprez.roborally.model.history.Round;
 
 public class GameServiceImpl implements GameService {
 
@@ -61,6 +64,51 @@ public class GameServiceImpl implements GameService {
 		// TODO vérifier si les cartes modifiés sont cohhérentes vis à vis du health.
 		
 		gameDao.saveHandCards(gameId, robot.getNumber(), sortedCardList);
+	}
+
+	@Override
+	public Game createNewGame(String name, String username, int sizeX, int sizeY) {
+		Game game = new Game();
+		game.setName(name);
+		game.setOwnername(username);
+		GameBoard board = new GameBoard(new BuildingBoard("temp", sizeX, sizeY));
+		game.setBoard(board);
+		for(int i=0; i<5; i++){
+			int x=(int) (Math.random()*sizeX);
+			int y=(int) (Math.random()*sizeY);
+			while(board.getTargetSquares().contains(board.getSquare(x, y))){
+				x=(int) (Math.random()*sizeX);
+				y=(int) (Math.random()*sizeY);
+			}
+			board.getTargetSquares().add(board.getSquare(x, y));
+		}
+		
+		Robot playerRobot = game.addRobot();
+		playerRobot.setUsername(username);
+		
+		for(int i=2; i<=6;i++){
+			game.addRobot();
+		}
+		
+		game.start();
+		
+		gameDao.insertNewGame(game);
+		
+		return game;
+	}
+
+	@Override
+	public Round playRound(Integer gameId, String username) throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException {
+		Game game = gameDao.loadGame(gameId);
+		// TODO check user
+		
+		Round round = game.play();
+		
+		gameDao.updateGame(game);
+		
+		gameDao.saveRound(game.getId(), round);
+		
+		return round;
 	}
 	
 

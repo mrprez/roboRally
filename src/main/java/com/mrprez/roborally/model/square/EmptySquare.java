@@ -12,7 +12,7 @@ public class EmptySquare extends Square {
 
 	@Override
 	public Action play() {
-		return null;
+		return new Action(this);
 	}
 
 	@Override

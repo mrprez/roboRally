@@ -9,6 +9,7 @@ public class RobotStateDto {
 	private Direction direction;
 	private int x;
 	private int y;
+	private boolean ghost;
 	
 	
 	public int getHealth() {
@@ -46,5 +47,11 @@ public class RobotStateDto {
 	}
 	public void setRoundNb(int roundNb) {
 		this.roundNb = roundNb;
+	}
+	public boolean isGhost() {
+		return ghost;
+	}
+	public void setGhost(boolean ghost) {
+		this.ghost = ghost;
 	}
 }

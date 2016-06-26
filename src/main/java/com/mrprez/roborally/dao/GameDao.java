@@ -6,6 +6,7 @@ import java.util.List;
 import com.mrprez.roborally.model.Card;
 import com.mrprez.roborally.model.Game;
 import com.mrprez.roborally.model.Robot;
+import com.mrprez.roborally.model.history.Round;
 
 public interface GameDao {
 
@@ -16,5 +17,11 @@ public interface GameDao {
 	Robot loadPlayerRobot(Integer gameId, String username);
 
 	void saveHandCards(Integer gameId, int robotNumber, List<Card> cardList);
+
+	void insertNewGame(Game game);
+
+	void updateGame(Game game);
+
+	void saveRound(Integer gameId, Round round);
 
 }

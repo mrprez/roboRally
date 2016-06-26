@@ -5,6 +5,7 @@ public class RobotState {
 	private Direction direction;
 	private int x;
 	private int y;
+	private boolean ghost = false;
 	
 	
 	public int getHealth() {
@@ -30,5 +31,11 @@ public class RobotState {
 	}
 	public void setY(int y) {
 		this.y = y;
+	}
+	public boolean isGhost() {
+		return ghost;
+	}
+	public void setGhost(boolean ghost) {
+		this.ghost = ghost;
 	}
 }

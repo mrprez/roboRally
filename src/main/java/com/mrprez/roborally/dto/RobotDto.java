@@ -1,5 +1,7 @@
 package com.mrprez.roborally.dto;
 
+import java.util.List;
+
 import com.mrprez.roborally.model.Direction;
 
 public class RobotDto {
@@ -9,6 +11,7 @@ public class RobotDto {
 	private int health;
 	private boolean ghost;
 	private Direction direction;
+	private List<CardDto> cardList;
 	
 	
 	public int getNumber() {
@@ -47,8 +50,11 @@ public class RobotDto {
 	public void setGhost(boolean ghost) {
 		this.ghost = ghost;
 	}
-	
-	
-	
+	public List<CardDto> getCardList() {
+		return cardList;
+	}
+	public void setCardList(List<CardDto> cardList) {
+		this.cardList = cardList;
+	}
 
 }

@@ -7,6 +7,9 @@ import java.util.List;
 
 import com.mrprez.roborally.model.board.GameBoard;
 import com.mrprez.roborally.model.history.Action;
+import com.mrprez.roborally.model.history.Move;
+import com.mrprez.roborally.model.history.MoveType;
+import com.mrprez.roborally.model.history.Step;
 
 public class Robot {
 	private int number;
@@ -16,6 +19,7 @@ public class Robot {
 	private List<Card> cards = new ArrayList<Card>(9);
 	private boolean ghost = true;
 	private int targetNumber = 1;
+	private String username;
 	
 	
 	protected Robot(){
@@ -97,25 +101,32 @@ public class Robot {
 	}
 	
 	public Action playCard(int stageNb){
-//		List<Step> stepList = new ArrayList<Step>();
 		Card card = cards.get(stageNb);
-//		Step step = new Step(card);
-//		for(int i=0; i<card.getTranslation(); i++){
-//			if(canMove(direction)){
-//				step.addAllMove(move(direction));
-//			}else{
-//				step.addMove(new Move(this, direction, false));
-//			}
-//		}
-//		for(int i=0; i>card.getTranslation(); i--){
-//			if(canMove(direction.getOpposite())){
-//				step.addAllMove(move(direction.getOpposite()));
-//			}else{
-//				step.addMove(new Move(this, direction.getOpposite(), false));
-//			}
-//		}
-//		step.addMove(rotate(card.getRotation()));
-		return new Action(card);
+		Action action = new Action(card);
+		for(int i=0; i<card.getTranslation(); i++){
+			Step step = new Step();
+			if(canMove(direction)){
+				step.addAllMove(move(direction));
+			}else{
+				step.addMove(new Move(MoveType.FAILED_TRANSLATION, direction.name(), this));
+			}
+			action.addStep(step);
+		}
+		for(int i=0; i>card.getTranslation(); i--){
+			Step step = new Step();
+			if(canMove(direction.getOpposite())){
+				step.addAllMove(move(direction.getOpposite()));
+			}else{
+				step.addMove(new Move(MoveType.FAILED_TRANSLATION, direction.getOpposite().name(), this));
+			}
+			action.addStep(step);
+		}
+		if(card.getRotation()!=0){
+			Step step = new Step();
+			step.addMove(rotate(card.getRotation()));
+			action.addStep(step);
+		}
+		return action;
 	}
 	
 	public boolean canMove(Direction direction){
@@ -124,7 +135,8 @@ public class Robot {
 		}
 		Square destination = square.getNextSquare(direction);
 		if(destination == null){
-			return true;
+			// TODO return true et gérer la desctruction du robot dans la méthode move
+			return false;
 		}
 		if(destination.getWall(direction.getOpposite())){
 			return false;
@@ -135,22 +147,22 @@ public class Robot {
 		return true;
 	}
 	
-//	public List<Move> move(Direction direction){
-//		List<Move> moveList = new ArrayList<Move>(); 
-//		moveList.add(new Translation(this, direction));
-//		Square destination = square.getNextSquare(direction);
-//		if(destination.getRobot()!=null && !ghost){
-//			moveList.addAll(destination.getRobot().move(direction));
-//		}
-//		square.setRobot(null);
-//		setSquare(destination);
-//		return moveList;
-//	}
-//	
-//	public Move rotate(int r){
-//		direction = direction.rotate(r);
-//		return new Rotation(this, r);
-//	}
+	public List<Move> move(Direction direction){
+		List<Move> moveList = new ArrayList<Move>(); 
+		moveList.add(new Move(MoveType.TRANSLATION, direction.name(), this));
+		Square destination = square.getNextSquare(direction);
+		if(destination.getRobot()!=null && !ghost){
+			moveList.addAll(destination.getRobot().move(direction));
+		}
+		square.setRobot(null);
+		setSquare(destination);
+		return moveList;
+	}
+	
+	public Move rotate(int r){
+		direction = direction.rotate(r);
+		return new Move(MoveType.ROTATION, String.valueOf(r), this);
+	}
 	
 	public boolean isOnTarget(){
 		Square target = getTarget();
@@ -166,6 +178,24 @@ public class Robot {
 			return gameBoard.getTargetSquares().get(targetNumber);
 		}
 		return null;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public RobotState getState() {
+		RobotState state = new RobotState();
+		state.setDirection(direction);
+		state.setGhost(ghost);
+		state.setHealth(health);
+		state.setX(square.getX());
+		state.setY(square.getY());
+		return state;
 	}
 	
 	

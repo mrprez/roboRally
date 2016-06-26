@@ -8,6 +8,7 @@ public abstract class MoveAnimation {
 	private static final String TRANSLATION = "TRANSLATION";
 	private static final String ROTATION = "ROTATION";
 	private static final String FAILED_TRANSLATION = "FAILED_TRANSLATION";
+	private static final String UNGHOST = "UNGHOST";
 	private int robotNb;
 	protected Canvas robotCanvas;
 	
@@ -24,6 +25,8 @@ public abstract class MoveAnimation {
 			moveAnimation = new RotationAnimation(Integer.valueOf(move.getArgs()));
 		} else if(move.getType().equals(FAILED_TRANSLATION)){
 			moveAnimation = new FailedTranslationAnimation(move.getArgs());
+		} else if(move.getType().equals(UNGHOST)){
+			moveAnimation = new UnghostAnimation();
 		} else {
 			throw new IllegalStateException("Invalide Move.type: "+move.getType());
 		}

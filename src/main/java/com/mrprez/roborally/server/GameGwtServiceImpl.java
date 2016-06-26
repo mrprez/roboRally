@@ -3,6 +3,7 @@ package com.mrprez.roborally.server;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.dozer.DozerBeanMapper;
 
@@ -12,6 +13,7 @@ import com.mrprez.roborally.model.Card;
 import com.mrprez.roborally.model.Direction;
 import com.mrprez.roborally.model.Game;
 import com.mrprez.roborally.model.Robot;
+import com.mrprez.roborally.model.RobotState;
 import com.mrprez.roborally.model.Square;
 import com.mrprez.roborally.model.history.Round;
 import com.mrprez.roborally.shared.CardGwt;
@@ -70,13 +72,7 @@ public class GameGwtServiceImpl extends AbstractGwtService implements GameGwtSer
 		
 		for(Round round : game.getHistory()){
 			RoundGwt roundGwt = gameGwt.getHistory().get(round.getNumber());
-			roundGwt.setRobotStateList(new ArrayList<RobotStateGwt>());
-			for(Robot robot : round.getStateMap().keySet()){
-				RobotStateGwt stateGwt = dozerMapper.map(round.getStateMap().get(robot), RobotStateGwt.class);
-				stateGwt.setDirection(getDirectionChar(round.getStateMap().get(robot).getDirection()));
-				stateGwt.setRobotNb(robot.getNumber());
-				roundGwt.getRobotStateList().add(stateGwt);
-			}
+			mapStates(roundGwt, round.getStateMap());
 		}
 		
 		return gameGwt;
@@ -132,6 +128,34 @@ public class GameGwtServiceImpl extends AbstractGwtService implements GameGwtSer
 		gameService.saveRobotCards(gameId, user.getUsername(), cardList);
 	}
 
+	@Override
+	public int createNewGame(String name, int sizeX, int sizeY) {
+		UserGwt user = (UserGwt) getThreadLocalRequest().getSession().getAttribute(UserGwt.KEY);
+		Game game = gameService.createNewGame(name, user.getUsername(), sizeX, sizeY);
+		return game.getId();
+	}
+
+	@Override
+	public RoundGwt playNewRound(Integer gameId) throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException {
+		UserGwt user = (UserGwt) getThreadLocalRequest().getSession().getAttribute(UserGwt.KEY);
+		Round newRound = gameService.playRound(gameId, user.getUsername());
+		
+		RoundGwt newRoundGwt = dozerMapper.map(newRound, RoundGwt.class);
+		mapStates(newRoundGwt, newRound.getStateMap());
+		
+		return newRoundGwt;
+	}
+
+	
+	private void mapStates(RoundGwt roundGwt, Map<Robot, RobotState> stateMap){
+		roundGwt.setRobotStateList(new ArrayList<RobotStateGwt>());
+		for(Robot robot : stateMap.keySet()){
+			RobotStateGwt stateGwt = dozerMapper.map(stateMap.get(robot), RobotStateGwt.class);
+			stateGwt.setDirection(getDirectionChar(stateMap.get(robot).getDirection()));
+			stateGwt.setRobotNb(robot.getNumber());
+			roundGwt.getRobotStateList().add(stateGwt);
+		}
+	}
 	
 	
 }

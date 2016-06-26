@@ -28,7 +28,7 @@
 			<b>y</b>
 		</field>
 	</mapping>
-
+	
 	<mapping>
 		<class-a>com.mrprez.roborally.model.history.Round</class-a>
 		<class-b>com.mrprez.roborally.shared.RoundGwt</class-b>

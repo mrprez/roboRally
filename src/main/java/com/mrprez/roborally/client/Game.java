@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.mrprez.roborally.client.panel.AdminPanel;
 import com.mrprez.roborally.client.panel.AnimationPlayerPanel;
 import com.mrprez.roborally.client.panel.BoardPanel;
 import com.mrprez.roborally.client.panel.HandCardsPanel;
@@ -24,6 +25,7 @@ public class Game implements EntryPoint {
 	private BoardPanel boardPanel = new BoardPanel();
 	private HandCardsPanel handCardsPanel = new HandCardsPanel();
 	private AnimationPlayerPanel animationPlayerPanel = new AnimationPlayerPanel();
+	private AdminPanel adminPanel = new AdminPanel();
 	
 	@Override
 	public void onModuleLoad() {
@@ -40,6 +42,8 @@ public class Game implements EntryPoint {
 			public void onSuccess(GameGwt loadedGame) {
 				boardPanel.init(loadedGame);
 				animationPlayerPanel.init(loadedGame.getHistory(), boardPanel);
+				adminPanel.init(loadedGame, animationPlayerPanel);
+				eastPanel.add(adminPanel);
 			}
 		});
 		

@@ -8,6 +8,7 @@ public class RobotStateGwt implements IsSerializable {
 	private char direction;
 	private int x;
 	private int y;
+	private boolean ghost;
 	
 	
 	public int getHealth() {
@@ -51,5 +52,11 @@ public class RobotStateGwt implements IsSerializable {
 		default:
 			return 0;
 		}
+	}
+	public boolean isGhost() {
+		return ghost;
+	}
+	public void setGhost(boolean ghost) {
+		this.ghost = ghost;
 	}
 }

@@ -10,6 +10,7 @@ import java.util.Map;
 import org.dozer.DozerBeanMapper;
 
 import com.mrprez.roborally.dto.ActionDto;
+import com.mrprez.roborally.dto.CardDto;
 import com.mrprez.roborally.dto.GameBoardDto;
 import com.mrprez.roborally.dto.MoveDto;
 import com.mrprez.roborally.dto.RobotDto;
@@ -17,6 +18,7 @@ import com.mrprez.roborally.dto.RobotStateDto;
 import com.mrprez.roborally.dto.SquareDto;
 import com.mrprez.roborally.dto.TargetDto;
 import com.mrprez.roborally.model.Card;
+import com.mrprez.roborally.model.CardStock;
 import com.mrprez.roborally.model.Game;
 import com.mrprez.roborally.model.Robot;
 import com.mrprez.roborally.model.RobotState;
@@ -57,12 +59,28 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 		}
 		
 		// Robot
-		game.getRobotList().addAll(loadRobots(gameBoard));
+		game.getRobotList().addAll(loadRobots(game));
 		
 		// History
 		game.getHistory().addAll(loadHistory(game));
 		
+		// CardStock
+		game.setCardStock(loadCardStock(game.getId()));
+		
 		return game;
+	}
+	
+	
+	private CardStock loadCardStock(int gameId){
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("gameId", gameId);
+		params.put("discarded", false);
+		List<Card> cardList = getSession().selectList("selectCardList", params);
+		
+		params.put("discarded", true);
+		List<Card> discard = getSession().selectList("selectCardList", params);
+		
+		return new CardStock(cardList, discard);
 	}
 	
 	
@@ -78,13 +96,16 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 		}
 	}
 	
-	private List<Robot> loadRobots(GameBoard gameBoard){
+	private List<Robot> loadRobots(Game game){
 		List<Robot> robotList = new ArrayList<Robot>();
-		List<RobotDto> robotDtoList = getSession().selectList("selectRobotList", gameBoard.getId());
+		List<RobotDto> robotDtoList = getSession().selectList("selectRobotList", game.getId());
 		for(RobotDto robotDto : robotDtoList){
-			Square square = gameBoard.getSquare(robotDto.getX(), robotDto.getY());
+			Square square = game.getBoard().getSquare(robotDto.getX(), robotDto.getY());
 			Robot robot = new Robot(square);
 			dozerMapper.map(robotDto, robot);
+			for(CardDto cardDto : robotDto.getCardList()){
+				robot.getCards().add(cardDto.buildCard());
+			}
 			robotList.add(robot);
 		}
 		return robotList;
@@ -148,6 +169,121 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 			params.put("rapidity", cardList.get(index).getRapidity());
 			params.put("index", index);
 			getSession().update("updateHandCard", params);
+		}
+	}
+
+	@Override
+	public void insertNewGame(Game game) {
+		getSession().insert("insertGameBoard", game.getBoard());
+		for(int x=0; x<game.getBoard().getSizeX(); x++){
+			for(int y=0; y<game.getBoard().getSizeY(); y++){
+				getSession().insert("insertSquare", new SquareDto(game.getBoard().getSquare(x, y)));
+			}
+		}
+		int targetNb = 0;
+		for(Square target : game.getBoard().getTargetSquares()){
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("boardId", game.getBoard().getId());
+			params.put("targetNb", targetNb++);
+			params.put("x", target.getX());
+			params.put("y", target.getY());
+			getSession().insert("insertTarget", params);
+		}
+		getSession().insert("insertGame", game);
+		int index = 0;
+		for(Card card : game.getCardStock().getStock()){
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("gameId", game.getId());
+			params.put("card", card);
+			params.put("index", index++);
+			getSession().insert("insertCard", params);
+		}	
+		for(Robot robot : game.getRobotList()){
+			Map<String, Object> robotParams = new HashMap<String, Object>();
+			robotParams.put("gameId", game.getId());
+			robotParams.put("robot", robot);
+			getSession().insert("insertRobot", robotParams);
+			index = 0;
+			for(Card card : robot.getCards()){
+				Map<String, Object> params = new HashMap<String, Object>();
+				params.put("gameId", game.getId());
+				params.put("card", card);
+				params.put("index", index++);
+				params.put("robotNb", robot.getNumber());
+				getSession().insert("insertCard", params);
+			}
+		}
+	}
+
+	@Override
+	public void updateGame(Game game) {
+		for(Robot robot : game.getRobotList()){
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("robot", robot);
+			params.put("gameId", game.getId());
+			getSession().update("updateRobot", params);
+		}
+		getSession().update("deleteCards", game);
+		int index=0;
+		for(Card card : game.getCardStock().getStock()){
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("gameId", game.getId());
+			params.put("index", index++);
+			params.put("card", card);
+			getSession().update("insertCard", params);
+		}
+		for(Card card : game.getCardStock().getDiscard()){
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("gameId", game.getId());
+			params.put("index", index++);
+			params.put("card", card);
+			params.put("discarded", true);
+			getSession().update("insertCard", params);
+		}
+		for(Robot robot : game.getRobotList()){
+			index=0;
+			for(Card card : robot.getCards()){
+				Map<String, Object> params = new HashMap<String, Object>();
+				params.put("gameId", game.getId());
+				params.put("index", index++);
+				params.put("card", card);
+				params.put("robotNb", robot.getNumber());
+				getSession().update("insertCard", params);
+			}
+		}
+		
+	}
+
+	@Override
+	public void saveRound(Integer gameId, Round round) {
+		for(Stage stage : round.getStageList()){
+			int actionIndex = 0;
+			for(Action action : stage.getActionList()){
+				Map<String, Object> actionParams = new HashMap<String, Object>();
+				actionParams.put("gameId", gameId);
+				actionParams.put("roundNb", round.getNumber());
+				actionParams.put("stageNb", stage.getNumber());
+				actionParams.put("actionIndex", actionIndex);
+				actionParams.put("action", action);
+				getSession().insert("insertAction", actionParams);
+				int stepIndex = 0;
+				for(Step step : action.getStepList()){
+					int moveIndex = 0;
+					for(Move move : step.getMoveList()){
+						Map<String, Object> moveParams = new HashMap<String, Object>();
+						moveParams.put("gameId", gameId);
+						moveParams.put("roundNb", round.getNumber());
+						moveParams.put("stageNb", stage.getNumber());
+						moveParams.put("actionIndex", actionIndex);
+						moveParams.put("stepIndex", stepIndex);
+						moveParams.put("moveIndex", moveIndex++);
+						moveParams.put("move", move);
+						getSession().insert("insertMove", moveParams);
+					}
+					stepIndex++;
+				}
+				actionIndex++;
+			}
 		}
 	}
 

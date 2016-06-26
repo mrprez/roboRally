@@ -30,7 +30,6 @@ public class AnimationPlayerPanel extends FlexTable {
 	public void init(List<RoundGwt> history, BoardPanel boardPanel){
 		this.history = history;
 		this.boardPanel = boardPanel;
-		animationManager = new AnimationManager(ANIMATION_DURATION, boardPanel);
 		Image playImg = new Image("img/media_playback_start.png");
 		Image pauseImg = new Image("img/media_playback_pause.png");
 		Image stopImg = new Image("img/media_playback_stop.png");
@@ -43,6 +42,15 @@ public class AnimationPlayerPanel extends FlexTable {
 		playButton.addStyleName("playerButton");
 		pauseButton.addStyleName("playerButton");
 		stopButton.addStyleName("playerButton");
+		animationManager = new AnimationManager(ANIMATION_DURATION, boardPanel);
+		animationManager.addAnimationEndHandler(new AnimationEndHandler() {
+			@Override
+			public void onAnimationEnd() {
+				playButton.setEnabled(true);
+				pauseButton.setEnabled(false);
+				stopButton.setEnabled(false);
+			}
+		});
 		playButton.addClickHandler(buildPlayClickHandler());
 		pauseButton.addClickHandler(buildPauseClickHandler());
 		stopButton.addClickHandler(buildStopClickHandler());
@@ -61,6 +69,17 @@ public class AnimationPlayerPanel extends FlexTable {
 		getFlexCellFormatter().setColSpan(1, 0, 3);
 	}
 	
+	public void addAndPlay(RoundGwt round){
+		history.add(round);
+		listBox.addItem("Tour "+(round.getNumber()+1), String.valueOf(round.getNumber()));
+		listBox.setSelectedIndex(listBox.getItemCount()-1);
+		loadRoundAnimation(round);
+		animationManager.play();
+		playButton.setEnabled(false);
+		pauseButton.setEnabled(true);
+		stopButton.setEnabled(true);
+	}
+	
 	
 	private ClickHandler buildPlayClickHandler(){
 		return new ClickHandler() {
@@ -70,14 +89,6 @@ public class AnimationPlayerPanel extends FlexTable {
 					int roundNb = Integer.valueOf(listBox.getSelectedValue());
 					boardPanel.setRoundState(history.get(roundNb));
 					loadRoundAnimation(history.get(roundNb));
-					animationManager.addAnimationEndHandler(new AnimationEndHandler() {
-						@Override
-						public void onAnimationEnd() {
-							playButton.setEnabled(true);
-							pauseButton.setEnabled(false);
-							stopButton.setEnabled(false);
-						}
-					});
 				}
 				animationManager.play();
 				playButton.setEnabled(false);

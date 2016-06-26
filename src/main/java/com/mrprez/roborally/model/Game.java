@@ -6,10 +6,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.TreeSet;
 
-import com.mrprez.roborally.ai.AIRobot;
 import com.mrprez.roborally.model.board.GameBoard;
+import com.mrprez.roborally.model.history.Action;
+import com.mrprez.roborally.model.history.Move;
+import com.mrprez.roborally.model.history.MoveType;
 import com.mrprez.roborally.model.history.Round;
 import com.mrprez.roborally.model.history.Stage;
+import com.mrprez.roborally.model.history.Step;
 
 
 public class Game {
@@ -17,25 +20,22 @@ public class Game {
 	
 	private Integer id;
 	private String name;
+	private String ownername;
 	private GameBoard board;
 	private List<Robot> robotList = new ArrayList<Robot>();
-	private CardStock cardStock = new CardStock();
+	private CardStock cardStock;
 	private List<Round> history = new ArrayList<Round>();
 	
 	
-	public void addRobot(){
+	public Robot addRobot(){
 		Robot robot = new Robot(board.getStartSquare());
 		robot.setNumber(robotList.size());
 		robotList.add(robot);
-	}
-
-	public void addAIRobot(){
-		Robot robot = new AIRobot(board.getStartSquare());
-		robot.setNumber(robotList.size());
-		robotList.add(robot);
+		return robot;
 	}
 	
 	public void start(){
+		cardStock = new CardStock();
 		for(Robot robot: robotList){
 			List<Card> initCards = new ArrayList<Card>();
 			for(int i=0; i<robot.getHealth(); i++){
@@ -72,6 +72,7 @@ public class Game {
 					if(!ghost){
 						robot.setGhost(false);
 						robot.getSquare().setRobot(robot);
+						stage.addAction(buildUnghostAction(robot));
 					}
 				}
 			}
@@ -102,6 +103,15 @@ public class Game {
 		history.add(round);
 		
 		return round;
+	}
+	
+	private Action buildUnghostAction(Robot robot){
+		Move move = new Move(MoveType.UNGHOST, null, robot);
+		Step step = new Step();
+		step.addMove(move);
+		Action action = new Action();
+		action.addStep(step);
+		return action;
 	}
 	
 	public List<Robot> getRobotList(){
@@ -138,6 +148,30 @@ public class Game {
 
 	public Robot getRobot(int robotNb) {
 		return robotList.get(robotNb);
+	}
+
+	public String getOwnername() {
+		return ownername;
+	}
+
+	public void setOwnername(String ownername) {
+		this.ownername = ownername;
+	}
+
+	public CardStock getCardStock() {
+		return cardStock;
+	}
+	
+	public List<RobotState> getCurrentState(){
+		List<RobotState> stateList = new ArrayList<RobotState>();
+		for(Robot robot : robotList){
+			stateList.add(robot.getState());
+		}
+		return stateList;
+	}
+
+	public void setCardStock(CardStock cardStock) {
+		this.cardStock = cardStock;
 	}
 
 	

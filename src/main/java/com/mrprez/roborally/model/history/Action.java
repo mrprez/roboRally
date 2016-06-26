@@ -9,10 +9,14 @@ import com.mrprez.roborally.model.Square;
 public class Action {
 	
 	private List<Step> stepList = new ArrayList<Step>();
-	private int cardRapidity;
-	private int squareX;
-	private int squareY;
+	private Integer cardRapidity;
+	private Integer squareX;
+	private Integer squareY;
 	
+	
+	public Action(){
+		super();
+	}
 	
 	public Action(Card card){
 		super();
@@ -46,15 +50,15 @@ public class Action {
 		return stepList;
 	}
 	
-	public int getCardRapidity() {
+	public Integer getCardRapidity() {
 		return cardRapidity;
 	}
 
-	public int getSquareX() {
+	public Integer getSquareX() {
 		return squareX;
 	}
 
-	public int getSquareY() {
+	public Integer getSquareY() {
 		return squareY;
 	}
 

@@ -34,11 +34,17 @@
 		<result property="args" column="ARGS" />
 	</resultMap>
 	<resultMap id="robotDto" type="com.mrprez.roborally.dto.RobotDto">
+		<result property="number" column="NUMBER" />
 		<result property="x" column="X" />
 		<result property="y" column="Y" />
 		<result property="direction" column="DIRECTION" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
 		<result property="health" column="HEALTH" />
 		<result property="ghost" column="GHOST" />
+		<collection property="cardList" ofType="com.mrprez.roborally.dto.CardDto">
+			<result property="rapidity" column="RAPIDITY" />
+			<result property="translation" column="TRANSLATION"/>
+			<result property="rotation" column="ROTATION"/>
+		</collection>
 	</resultMap>
 	<resultMap id="action" type="com.mrprez.roborally.dto.ActionDto">
 		<result property="roundNb" column="ROUND_NB" />
@@ -68,6 +74,7 @@
 		<result property="direction" column="DIRECTION" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
 		<result property="x" column="X"/>
 		<result property="y" column="Y"/>
+		<result property="ghost" column="GHOST"/>
 	</resultMap>
 
 	<select id="checkUser" resultMap="userResultMap">
@@ -87,13 +94,17 @@
 		select X,Y,CLASS,ARGS from SQUARE where BOARD_ID=#{boardId}
 	</select>
 	<select id="selectRobotList" resultMap="robotDto">
-		select NUMBER,X,Y,DIRECTION,HEALTH,GHOST from ROBOT where GAME_ID=#{gameId}
+		select NUMBER,X,Y,DIRECTION,HEALTH,GHOST,RAPIDITY,TRANSLATION,ROTATION
+		from ROBOT
+		join CARD on ROBOT.GAME_ID=CARD.GAME_ID and ROBOT.NUMBER=CARD.ROBOT_NB 
+		where ROBOT.GAME_ID=#{gameId}
+		order by NUMBER, INDEX
 	</select>
 	<select id="selectPlayerRobot" resultMap="playerRobot">
 		select NUMBER,HEALTH,DIRECTION,RAPIDITY,TRANSLATION,ROTATION from CARD
 		join ROBOT on CARD.ROBOT_NB=ROBOT.NUMBER and CARD.GAME_ID=ROBOT.GAME_ID
 		where ROBOT.GAME_ID=#{gameId} and ROBOT.USER_NAME=#{username}
-		order by HAND_INDEX asc
+		order by INDEX asc
 	</select>
 	<select id="selectHistory" resultMap="action">
 		select ACTION.ROUND_NB, ACTION.STAGE_NB, ACTION.ACTION_NB, MOVE.STEP_NB, MOVE.MOVE_NB, ACTION.CARD_RAPIDITY, ACTION.SQUARE_X, ACTION.SQUARE_Y, MOVE.ROBOT_NB, MOVE.TYPE, MOVE.ARGS
@@ -106,9 +117,53 @@
 		select ROBOT_NB, ROUND_NB, X, Y, DIRECTION, HEALTH, GHOST from ROBOT_STATE where GAME_ID=#{gameId}
 		order by ROUND_NB, ROBOT_NB
 	</select>
+	<select id="selectCardList" resultMap="card">
+		select RAPIDITY,TRANSLATION,ROTATION from CARD 
+		where GAME_ID=#{gameId} and DISCARDED=#{discarded} and ROBOT_NB is null
+		order by INDEX
+	</select>
 	
-	<insert id="updateHandCard">
-		update CARD set HAND_INDEX=#{index} where GAME_ID=#{gameId} and RAPIDITY=#{rapidity}
+	<insert id="insertGameBoard" keyProperty="id" keyColumn="ID" useGeneratedKeys="true">
+		insert into BOARD (TYPE, SIZE_X, SIZE_Y) values ('Game', #{sizeX}, #{sizeY})
 	</insert>
+	<insert id="insertSquare">
+		insert into SQUARE (BOARD_ID, X, Y, CLASS, ARGS) values (#{boardId}, #{x}, #{y}, #{clazz}, #{args})
+	</insert>
+	<insert id="insertTarget">
+		insert into TARGET (BOARD_ID, TARGET_NB, X, Y) values (#{boardId}, #{targetNb}, #{x}, #{y})
+	</insert>
+	<insert id="insertGame" keyProperty="id" keyColumn="ID" useGeneratedKeys="true">
+		insert into GAME (OWNER, NAME, BOARD_ID) values (#{ownername}, #{name}, #{board.id})
+	</insert>
+	<insert id="insertCard">
+		insert into CARD (GAME_ID, RAPIDITY, TRANSLATION, ROTATION, INDEX, ROBOT_NB, DISCARDED) 
+		values (#{gameId}, #{card.rapidity}, #{card.translation}, #{card.rotation}, #{index}, #{robotNb}, 
+			<if test="discarded!=null">#{discarded}</if><if test="discarded==null">false</if>
+		)
+	</insert>
+	<insert id="insertRobot">
+		insert into ROBOT (NUMBER, GAME_ID, X, Y, DIRECTION, HEALTH, GHOST, USER_NAME)
+		values (#{robot.number}, #{gameId}, #{robot.square.x}, #{robot.square.y}, #{robot.direction}, #{robot.health}, #{robot.ghost}, #{robot.username})
+	</insert>
+	<insert id="insertAction">
+		insert into ACTION (GAME_ID, ROUND_NB, STAGE_NB, ACTION_NB, CARD_RAPIDITY, SQUARE_X, SQUARE_Y)
+		values (#{gameId}, #{roundNb}, #{stageNb}, #{actionIndex}, #{action.cardRapidity}, #{action.squareX}, #{action.squareY} )
+	</insert>
+	<insert id="insertMove">
+		insert into MOVE (GAME_ID, ROUND_NB, STAGE_NB, ACTION_NB, STEP_NB, MOVE_NB, ROBOT_NB, TYPE, ARGS)
+		values (#{gameId}, #{roundNb}, #{stageNb}, #{actionIndex}, #{stepIndex}, #{moveIndex}, #{move.robot.number},  #{move.type}, #{move.args} )
+	</insert>
+	
+	<update id="updateHandCard">
+		update CARD set INDEX=#{index} where GAME_ID=#{gameId} and RAPIDITY=#{rapidity}
+	</update>
+	<update id="updateRobot">
+		update ROBOT set X=#{robot.square.x}, Y=#{robot.square.y}, DIRECTION=#{robot.direction}, HEALTH=#{robot.health}, GHOST=#{robot.ghost}
+		where NUMBER=#{robot.number} and GAME_ID=#{gameId}
+	</update>
+	
+	<delete id="deleteCards">
+		delete from CARD where GAME_ID=#{id}
+	</delete>
 	
 </mapper>
