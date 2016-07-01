@@ -134,8 +134,10 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 			Action action;
 			if(actionDto.getCardRapidity()!=null){
 				action = new Action(actionDto.getCardRapidity());
-			} else {
+			} else if(actionDto.getSquareX()!=null && actionDto.getSquareY()!=null) {
 				action = new Action(actionDto.getSquareX(), actionDto.getSquareY());
+			} else {
+				action = new Action();
 			}
 			stage.addAction(action);
 			Step step = null;
@@ -223,7 +225,7 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 			params.put("gameId", game.getId());
 			getSession().update("updateRobot", params);
 		}
-		getSession().update("deleteCards", game);
+		getSession().delete("deleteCards", game);
 		int index=0;
 		for(Card card : game.getCardStock().getStock()){
 			Map<String, Object> params = new HashMap<String, Object>();

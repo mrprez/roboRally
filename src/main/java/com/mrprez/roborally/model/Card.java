@@ -22,5 +22,12 @@ public class Card {
 	public int getRotation() {
 		return rotation;
 	}
+	@Override
+	public String toString(){
+		if(rotation!=0){
+			return "Rotation "+rotation+" (rapidity "+rapidity+")";
+		}
+		return "Translation "+translation+" (rapidity "+rapidity+")";
+	}
 
 }

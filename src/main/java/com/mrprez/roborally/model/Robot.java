@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import org.slf4j.LoggerFactory;
+
 import com.mrprez.roborally.model.board.GameBoard;
 import com.mrprez.roborally.model.history.Action;
 import com.mrprez.roborally.model.history.Move;
@@ -152,6 +154,7 @@ public class Robot {
 		moveList.add(new Move(MoveType.TRANSLATION, direction.name(), this));
 		Square destination = square.getNextSquare(direction);
 		if(destination.getRobot()!=null && !ghost){
+			LoggerFactory.getLogger(getClass()).debug("Robot "+number+" push robot "+destination.getRobot().getNumber());
 			moveList.addAll(destination.getRobot().move(direction));
 		}
 		square.setRobot(null);

@@ -6,6 +6,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.TreeSet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mrprez.roborally.model.board.GameBoard;
 import com.mrprez.roborally.model.history.Action;
 import com.mrprez.roborally.model.history.Move;
@@ -46,14 +49,21 @@ public class Game {
 	}
 	
 	public Round play(){
+		Logger logger = LoggerFactory.getLogger(getClass());
 		Round round = new Round(history.size());
+		for(Robot robot : robotList){
+			round.setState(robot, robot.getState());
+		}
+		logger.debug("Start play round "+round.getNumber());
 		for(int stageNb=0; stageNb<STAGE_NB; stageNb++){
+			logger.debug("Start stage "+stageNb);
 			Stage stage = round.getStage(stageNb);
 			
 			// On joue les cartes
 			TreeSet<Robot> robotOrderedList = new TreeSet<Robot>(new InitComparator(stageNb));
 			robotOrderedList.addAll(robotList);
 			for(Robot robot : robotOrderedList){
+				logger.debug("Robot "+robot.getNumber()+" play card "+robot.getCard(stageNb));
 				stage.addAction(robot.playCard(stageNb));
 			}
 			
@@ -70,6 +80,7 @@ public class Game {
 						}
 					}
 					if(!ghost){
+						logger.debug("Robot "+robot.getNumber()+" is no more ghost");
 						robot.setGhost(false);
 						robot.getSquare().setRobot(robot);
 						stage.addAction(buildUnghostAction(robot));
@@ -85,6 +96,7 @@ public class Game {
 			// on vérifie si les robot ont atteind une cible
 			for(Robot robot : robotOrderedList){
 				if(robot.isOnTarget()){
+					logger.debug("Robot "+robot.getNumber()+" has reached its target");
 					robot.setTargetNumber(robot.getTargetNumber()+1);
 				}
 			}
@@ -160,14 +172,6 @@ public class Game {
 
 	public CardStock getCardStock() {
 		return cardStock;
-	}
-	
-	public List<RobotState> getCurrentState(){
-		List<RobotState> stateList = new ArrayList<RobotState>();
-		for(Robot robot : robotList){
-			stateList.add(robot.getState());
-		}
-		return stateList;
 	}
 
 	public void setCardStock(CardStock cardStock) {
