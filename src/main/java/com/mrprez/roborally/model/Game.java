@@ -31,7 +31,7 @@ public class Game {
 	
 	
 	public Robot addRobot(){
-		Robot robot = new Robot(board.getStartSquare());
+		Robot robot = new Robot(board.getStartSquare(), true);
 		robot.setNumber(robotList.size());
 		robotList.add(robot);
 		return robot;
@@ -49,7 +49,7 @@ public class Game {
 	}
 	
 	public Round play(){
-		Logger logger = LoggerFactory.getLogger(getClass());
+		Logger logger = LoggerFactory.getLogger("GamePlay");
 		Round round = new Round(history.size());
 		for(Robot robot : robotList){
 			round.setState(robot, robot.getState());
@@ -75,12 +75,13 @@ public class Game {
 						if(robot.getNumber() != otherRobot.getNumber()){
 							if(otherRobot.getSquare().getX() == robot.getSquare().getX()
 									&& otherRobot.getSquare().getY() == robot.getSquare().getY()){
+								logger.debug("Robot "+robot.getNumber()+" is still ghost due to robot "+otherRobot.getNumber());
 								ghost = true;
 							}
 						}
 					}
 					if(!ghost){
-						logger.debug("Robot "+robot.getNumber()+" is no more ghost");
+						logger.debug("Robot "+robot.getNumber()+" is no more ghost on square "+robot.getSquare());
 						robot.setGhost(false);
 						robot.getSquare().setRobot(robot);
 						stage.addAction(buildUnghostAction(robot));

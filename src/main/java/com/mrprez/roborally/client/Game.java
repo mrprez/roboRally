@@ -1,7 +1,5 @@
 package com.mrprez.roborally.client;
 
-import java.util.List;
-
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
@@ -14,7 +12,6 @@ import com.mrprez.roborally.client.panel.AdminPanel;
 import com.mrprez.roborally.client.panel.AnimationPlayerPanel;
 import com.mrprez.roborally.client.panel.BoardPanel;
 import com.mrprez.roborally.client.panel.HandCardsPanel;
-import com.mrprez.roborally.shared.CardGwt;
 import com.mrprez.roborally.shared.GameGwt;
 
 public class Game implements EntryPoint {
@@ -42,17 +39,12 @@ public class Game implements EntryPoint {
 			public void onSuccess(GameGwt loadedGame) {
 				boardPanel.init(loadedGame);
 				animationPlayerPanel.init(loadedGame.getHistory(), boardPanel);
-				adminPanel.init(loadedGame, animationPlayerPanel);
+				adminPanel.init(loadedGame, animationPlayerPanel, handCardsPanel);
 				eastPanel.add(adminPanel);
 			}
 		});
 		
-		gameGwtService.getCardList(gameId, new AbstractAsyncCallback<List<CardGwt>>(){
-			@Override
-			public void onSuccess(List<CardGwt> cardList) {
-				handCardsPanel.init(gameId, cardList);
-			}		
-		});
+		handCardsPanel.init(gameId);
 		
 	}
 	

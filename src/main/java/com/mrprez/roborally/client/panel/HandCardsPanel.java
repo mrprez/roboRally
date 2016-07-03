@@ -23,30 +23,36 @@ public class HandCardsPanel extends FlexTable {
 	private int gameId;
 	
 	
-	public void init(int gameId, List<CardGwt> cardList){
+	public void init(int gameId){
 		this.gameId = gameId;
-		loadCards(cardList);
-		this.getElement().getStyle().clearPosition();
-	}
-	
-	
-	public void loadCards(List<CardGwt> cardList){
 		addStyleName("cardPanel");
-		int index = 0;
-		for(CardGwt card : cardList){
-			Label label = new Label(index<5 ? String.valueOf(index+1) : "X");
-			label.addStyleName("cardTurnNb");
-			setWidget(1, index, label);
-			Canvas cardCanvas = CardCanvasFactory.build(card, index);
-			setWidget(0, index, cardCanvas);
-			index++;
-		}
-		
+		this.getElement().getStyle().clearPosition();
 		Button saveButton = new Button("Sauvegarder");
 		saveButton.addClickHandler(buildSaveHandHandler());
 		setWidget(2, 0, saveButton);
 		getFlexCellFormatter().setColSpan(2, 0, 9);
 		getFlexCellFormatter().addStyleName(2, 0, "saveCardsLine");
+		
+		reloadCards();
+	}
+	
+	
+	public void reloadCards(){
+		gameGwtService.getCardList(gameId, new AbstractAsyncCallback<List<CardGwt>>() {
+			@Override
+			public void onSuccess(List<CardGwt> cardList) {
+				int index = 0;
+				for(CardGwt card : cardList){
+					Label label = new Label(index<5 ? String.valueOf(index+1) : "X");
+					label.addStyleName("cardTurnNb");
+					setWidget(1, index, label);
+					Canvas cardCanvas = CardCanvasFactory.build(card, index);
+					setWidget(0, index, cardCanvas);
+					index++;
+				}
+				
+			}
+		});
 	}
 	
 	

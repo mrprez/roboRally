@@ -64,7 +64,7 @@ public abstract class Square {
 			case LEFT : return board.getSquare(x-1, y);
 			case RIGHT: return board.getSquare(x+1, y);
 		}
-		return null;
+		throw new IllegalArgumentException("Unknown directrion: "+direction);
 	}
 	public boolean getWall(Direction direction){
 		return walls.contains(direction);

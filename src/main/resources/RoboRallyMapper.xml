@@ -40,6 +40,7 @@
 		<result property="direction" column="DIRECTION" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
 		<result property="health" column="HEALTH" />
 		<result property="ghost" column="GHOST" />
+		<result property="username" column="USER_NAME"/>
 		<collection property="cardList" ofType="com.mrprez.roborally.dto.CardDto">
 			<result property="rapidity" column="RAPIDITY" />
 			<result property="translation" column="TRANSLATION"/>
@@ -94,7 +95,7 @@
 		select X,Y,CLASS,ARGS from SQUARE where BOARD_ID=#{boardId}
 	</select>
 	<select id="selectRobotList" resultMap="robotDto">
-		select NUMBER,X,Y,DIRECTION,HEALTH,GHOST,RAPIDITY,TRANSLATION,ROTATION
+		select NUMBER,X,Y,DIRECTION,HEALTH,GHOST,RAPIDITY,TRANSLATION,ROTATION,USER_NAME
 		from ROBOT
 		join CARD on ROBOT.GAME_ID=CARD.GAME_ID and ROBOT.NUMBER=CARD.ROBOT_NB 
 		where ROBOT.GAME_ID=#{gameId}
@@ -153,6 +154,10 @@
 		insert into MOVE (GAME_ID, ROUND_NB, STAGE_NB, ACTION_NB, STEP_NB, MOVE_NB, ROBOT_NB, TYPE, ARGS)
 		values (#{gameId}, #{roundNb}, #{stageNb}, #{actionIndex}, #{stepIndex}, #{moveIndex}, #{move.robot.number},  #{move.type}, #{move.args} )
 	</insert>
+	<insert id="insertRobotState">
+		insert into ROBOT_STATE (GAME_ID, ROBOT_NB, ROUND_NB, X, Y, DIRECTION, HEALTH, GHOST)
+		values (#{gameId}, #{robotNb}, #{roundNb}, #{state.x}, #{state.y}, #{state.direction}, #{state.health}, #{state.ghost})
+	</insert>
 	
 	<update id="updateHandCard">
 		update CARD set INDEX=#{index} where GAME_ID=#{gameId} and RAPIDITY=#{rapidity}
@@ -161,9 +166,9 @@
 		update ROBOT set X=#{robot.square.x}, Y=#{robot.square.y}, DIRECTION=#{robot.direction}, HEALTH=#{robot.health}, GHOST=#{robot.ghost}
 		where NUMBER=#{robot.number} and GAME_ID=#{gameId}
 	</update>
-	
-	<delete id="deleteCards">
-		delete from CARD where GAME_ID=#{id}
-	</delete>
+	<update id="updateCard">
+		update CARD set INDEX=#{index}, ROBOT_NB=#{robotNb}, DISCARDED=#{discarded}
+		where GAME_ID=#{gameId} and RAPIDITY=#{card.rapidity}
+	</update>
 	
 </mapper>

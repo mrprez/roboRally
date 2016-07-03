@@ -49,6 +49,9 @@ public class AnimationPlayerPanel extends FlexTable {
 				playButton.setEnabled(true);
 				pauseButton.setEnabled(false);
 				stopButton.setEnabled(false);
+				if(listBox.getSelectedIndex()<listBox.getItemCount()-1){
+					listBox.setSelectedIndex(listBox.getSelectedIndex()+1);
+				}
 			}
 		});
 		playButton.addClickHandler(buildPlayClickHandler());

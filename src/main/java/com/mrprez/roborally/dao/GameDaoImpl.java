@@ -101,7 +101,7 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 		List<RobotDto> robotDtoList = getSession().selectList("selectRobotList", game.getId());
 		for(RobotDto robotDto : robotDtoList){
 			Square square = game.getBoard().getSquare(robotDto.getX(), robotDto.getY());
-			Robot robot = new Robot(square);
+			Robot robot = new Robot(square, robotDto.getGhost());
 			dozerMapper.map(robotDto, robot);
 			for(CardDto cardDto : robotDto.getCardList()){
 				robot.getCards().add(cardDto.buildCard());
@@ -225,22 +225,21 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 			params.put("gameId", game.getId());
 			getSession().update("updateRobot", params);
 		}
-		getSession().delete("deleteCards", game);
 		int index=0;
 		for(Card card : game.getCardStock().getStock()){
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("gameId", game.getId());
 			params.put("index", index++);
 			params.put("card", card);
-			getSession().update("insertCard", params);
+			params.put("discarded", false);
+			getSession().update("updateCard", params);
 		}
 		for(Card card : game.getCardStock().getDiscard()){
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("gameId", game.getId());
-			params.put("index", index++);
 			params.put("card", card);
 			params.put("discarded", true);
-			getSession().update("insertCard", params);
+			getSession().update("updateCard", params);
 		}
 		for(Robot robot : game.getRobotList()){
 			index=0;
@@ -250,7 +249,8 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 				params.put("index", index++);
 				params.put("card", card);
 				params.put("robotNb", robot.getNumber());
-				getSession().update("insertCard", params);
+				params.put("discarded", false);
+				getSession().update("updateCard", params);
 			}
 		}
 		
@@ -258,6 +258,16 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 
 	@Override
 	public void saveRound(Integer gameId, Round round) {
+		for(Robot robot : round.getStateMap().keySet()){
+			RobotState robotState = round.getStateMap().get(robot);
+			Map<String, Object> stateParam = new HashMap<String, Object>();
+			stateParam.put("gameId", gameId);
+			stateParam.put("roundNb", round.getNumber());
+			stateParam.put("robotNb", robot.getNumber());
+			stateParam.put("state", robotState);
+			getSession().insert("insertRobotState", stateParam);
+		}
+		
 		for(Stage stage : round.getStageList()){
 			int actionIndex = 0;
 			for(Action action : stage.getActionList()){

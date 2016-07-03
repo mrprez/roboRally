@@ -16,11 +16,13 @@ public class AdminPanel extends FlowPanel {
 	private GameGwtServiceAsync gameGwtService = GWT.create(GameGwtService.class);
 	private Integer gameId;
 	private AnimationPlayerPanel animationPlayerPanel;
+	private HandCardsPanel handCardsPanel;
 	
 	
-	public void init(GameGwt game, AnimationPlayerPanel animationPlayerPanel){
+	public void init(GameGwt game, AnimationPlayerPanel animationPlayerPanel, HandCardsPanel handCardsPanel){
 		this.gameId = game.getId();
 		this.animationPlayerPanel = animationPlayerPanel;
+		this.handCardsPanel = handCardsPanel;
 		Button playButton = new Button("Jouer un tour !");
 		add(playButton);
 		playButton.addClickHandler(new ClickHandler() {
@@ -37,6 +39,7 @@ public class AdminPanel extends FlowPanel {
 			@Override
 			public void onSuccess(RoundGwt round) {
 				animationPlayerPanel.addAndPlay(round);
+				handCardsPanel.reloadCards();
 			}
 		};
 	}

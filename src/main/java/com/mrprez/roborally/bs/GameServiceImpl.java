@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
+import com.mrprez.roborally.ai.IARobot;
 import com.mrprez.roborally.dao.GameDao;
 import com.mrprez.roborally.model.Card;
 import com.mrprez.roborally.model.Game;
@@ -98,9 +100,18 @@ public class GameServiceImpl implements GameService {
 	}
 
 	@Override
-	public Round playRound(Integer gameId, String username) throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException {
+	public Round playRound(Integer gameId, String username) throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InterruptedException, ExecutionException {
 		Game game = gameDao.loadGame(gameId);
 		// TODO check user
+		
+		for(Robot robot : game.getRobotList()){
+			if(robot.getUsername()==null){
+				List<Card> orderedCards = new IARobot(robot).orderCard();
+				robot.getCards().clear();
+				robot.getCards().addAll(orderedCards);
+			}
+		}
+		
 		
 		Round round = game.play();
 		

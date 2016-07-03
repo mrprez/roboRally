@@ -14,9 +14,10 @@ public enum Direction {
 			return UP;
 		case LEFT:
 			return RIGHT;
-		default:
+		case RIGHT:
 			return LEFT;
 		}
+		throw new IllegalStateException("Unknown direction: "+this);
 	}
 	
 	public Direction rotate(int r){

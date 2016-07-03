@@ -28,9 +28,10 @@ public class Robot {
 		super();
 	}
 	
-	public Robot(Square square) {
+	public Robot(Square square, boolean ghost) {
 		super();
-		this.square = square;
+		this.ghost = ghost;
+		setSquare(square);
 	}
 
 
@@ -153,8 +154,9 @@ public class Robot {
 		List<Move> moveList = new ArrayList<Move>(); 
 		moveList.add(new Move(MoveType.TRANSLATION, direction.name(), this));
 		Square destination = square.getNextSquare(direction);
+		LoggerFactory.getLogger("GamePlay").debug("Robot "+number+" move from "+getSquare()+"("+getSquare().getX()+"-"+getSquare().getY()+") to "+destination+"("+destination.getX()+"-"+destination.getY()+")");
 		if(destination.getRobot()!=null && !ghost){
-			LoggerFactory.getLogger(getClass()).debug("Robot "+number+" push robot "+destination.getRobot().getNumber());
+			LoggerFactory.getLogger("GamePlay").debug("Robot "+number+" push robot "+destination.getRobot().getNumber());
 			moveList.addAll(destination.getRobot().move(direction));
 		}
 		square.setRobot(null);
