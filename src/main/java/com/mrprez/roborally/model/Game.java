@@ -97,8 +97,15 @@ public class Game {
 			// on vérifie si les robot ont atteind une cible
 			for(Robot robot : robotOrderedList){
 				if(robot.isOnTarget()){
-					logger.debug("Robot "+robot.getNumber()+" has reached its target");
+					logger.info("Robot "+robot.getNumber()+" has reached its target");
 					robot.setTargetNumber(robot.getTargetNumber()+1);
+					
+					Action targetAction = new Action();
+					stage.addAction(targetAction);
+					Step targetStep = new Step();
+					targetAction.addStep(targetStep);
+					Move targetMove = new Move(MoveType.REACHED_TARGET, null, robot);
+					targetStep.addMove(targetMove);
 				}
 			}
 		}

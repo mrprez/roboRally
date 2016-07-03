@@ -12,6 +12,7 @@ public class RobotDto {
 	private boolean ghost;
 	private Direction direction;
 	private List<CardDto> cardList;
+	private Integer targetNumber;
 	private String username;
 	
 	
@@ -62,6 +63,12 @@ public class RobotDto {
 	}
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	public Integer getTargetNumber() {
+		return targetNumber;
+	}
+	public void setTargetNumber(Integer targetNumber) {
+		this.targetNumber = targetNumber;
 	}
 
 }

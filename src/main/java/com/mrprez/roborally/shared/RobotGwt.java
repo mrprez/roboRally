@@ -9,6 +9,7 @@ public class RobotGwt implements IsSerializable {
 	private int health;
 	private char direction;
 	private boolean ghost;
+	private Integer targetNb;
 	
 	
 	public String getImageName(){
@@ -52,6 +53,12 @@ public class RobotGwt implements IsSerializable {
 	}
 	public void setGhost(boolean ghost) {
 		this.ghost = ghost;
+	}
+	public Integer getTargetNb() {
+		return targetNb;
+	}
+	public void setTargetNb(Integer targetNb) {
+		this.targetNb = targetNb;
 	}
 	public double getAngle(){
 		switch (direction) {

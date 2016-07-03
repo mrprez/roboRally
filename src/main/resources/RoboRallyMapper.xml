@@ -40,6 +40,7 @@
 		<result property="direction" column="DIRECTION" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
 		<result property="health" column="HEALTH" />
 		<result property="ghost" column="GHOST" />
+		<result property="targetNumber" column="TARGET_NB" />
 		<result property="username" column="USER_NAME"/>
 		<collection property="cardList" ofType="com.mrprez.roborally.dto.CardDto">
 			<result property="rapidity" column="RAPIDITY" />
@@ -66,6 +67,7 @@
 		<id property="number" column="NUMBER" />
 		<result property="direction" column="DIRECTION" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
 		<result property="health" column="HEALTH" />
+		<result property="targetNumber" column="TARGET_NB" />
 		<collection property="cards" resultMap="card" ofType="com.mrprez.roborally.model.Card"/>
 	</resultMap>
 	<resultMap id="robotState" type="com.mrprez.roborally.dto.RobotStateDto">
@@ -95,14 +97,14 @@
 		select X,Y,CLASS,ARGS from SQUARE where BOARD_ID=#{boardId}
 	</select>
 	<select id="selectRobotList" resultMap="robotDto">
-		select NUMBER,X,Y,DIRECTION,HEALTH,GHOST,RAPIDITY,TRANSLATION,ROTATION,USER_NAME
+		select NUMBER,X,Y,DIRECTION,HEALTH,GHOST,RAPIDITY,TRANSLATION,ROTATION,TARGET_NB,USER_NAME
 		from ROBOT
 		join CARD on ROBOT.GAME_ID=CARD.GAME_ID and ROBOT.NUMBER=CARD.ROBOT_NB 
 		where ROBOT.GAME_ID=#{gameId}
 		order by NUMBER, INDEX
 	</select>
 	<select id="selectPlayerRobot" resultMap="playerRobot">
-		select NUMBER,HEALTH,DIRECTION,RAPIDITY,TRANSLATION,ROTATION from CARD
+		select NUMBER,HEALTH,DIRECTION,TARGET_NB,RAPIDITY,TRANSLATION,ROTATION from CARD
 		join ROBOT on CARD.ROBOT_NB=ROBOT.NUMBER and CARD.GAME_ID=ROBOT.GAME_ID
 		where ROBOT.GAME_ID=#{gameId} and ROBOT.USER_NAME=#{username}
 		order by INDEX asc
@@ -163,7 +165,8 @@
 		update CARD set INDEX=#{index} where GAME_ID=#{gameId} and RAPIDITY=#{rapidity}
 	</update>
 	<update id="updateRobot">
-		update ROBOT set X=#{robot.square.x}, Y=#{robot.square.y}, DIRECTION=#{robot.direction}, HEALTH=#{robot.health}, GHOST=#{robot.ghost}
+		update ROBOT set X=#{robot.square.x}, Y=#{robot.square.y}, DIRECTION=#{robot.direction}, 
+			HEALTH=#{robot.health}, GHOST=#{robot.ghost}, TARGET_NB=#{robot.targetNumber}
 		where NUMBER=#{robot.number} and GAME_ID=#{gameId}
 	</update>
 	<update id="updateCard">

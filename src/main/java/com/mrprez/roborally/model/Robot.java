@@ -20,7 +20,7 @@ public class Robot {
 	private Direction direction = Direction.UP;
 	private List<Card> cards = new ArrayList<Card>(9);
 	private boolean ghost = true;
-	private int targetNumber = 1;
+	private Integer targetNumber = 1;
 	private String username;
 	
 	
@@ -68,10 +68,10 @@ public class Robot {
 	public void setGhost(boolean ghost) {
 		this.ghost = ghost;
 	}
-	public int getTargetNumber() {
+	public Integer getTargetNumber() {
 		return targetNumber;
 	}
-	public void setTargetNumber(int targetNumber) {
+	public void setTargetNumber(Integer targetNumber) {
 		this.targetNumber = targetNumber;
 	}
 

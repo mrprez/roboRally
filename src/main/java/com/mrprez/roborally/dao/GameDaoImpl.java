@@ -142,7 +142,7 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 			stage.addAction(action);
 			Step step = null;
 			for(MoveDto moveDto : actionDto.getMoveList()){
-				if(step==null || moveDto.getStepNb()==step.getMoveList().size()){
+				if(step==null || moveDto.getStepNb()==action.getStepList().size()){
 					step = new Step();
 					action.addStep(step);
 				}
