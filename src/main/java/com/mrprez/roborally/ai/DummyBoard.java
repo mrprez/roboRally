@@ -50,6 +50,15 @@ public class DummyBoard extends GameBoard implements Callable<Double> {
 		for(int turn=0; turn<Game.STAGE_NB; turn++){
 			robot.playCard(turn);
 			robot.getSquare().play();
+			if(robot.isOnTarget()){
+				robot.setTargetNumber(robot.getTargetNumber()+1);
+				if(robot.getTarget() != null){
+					targetNumber = robot.getTargetNumber();
+					return evaluate() / (Math.pow(getSizeX(), 2) + Math.pow(getSizeY(), 2));
+				}else{
+					return 0.0;
+				}
+			}
 		}
 		double result =  Math.pow(robot.getTarget().getX() - robot.getSquare().getX(), 2)
 				+ Math.pow(robot.getTarget().getY() - robot.getSquare().getY(), 2);

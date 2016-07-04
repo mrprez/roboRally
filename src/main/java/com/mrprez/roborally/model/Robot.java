@@ -40,7 +40,7 @@ public class Robot {
 	}
 	public void setSquare(Square square) {
 		this.square = square;
-		if(square.getRobot()!=this && !ghost){
+		if(square!=null  && square.getRobot()!=this && !ghost){
 			square.setRobot(this);
 		}
 	}
@@ -159,7 +159,9 @@ public class Robot {
 			LoggerFactory.getLogger("GamePlay").debug("Robot "+number+" push robot "+destination.getRobot().getNumber());
 			moveList.addAll(destination.getRobot().move(direction));
 		}
-		square.setRobot(null);
+		if(square.getRobot()==this){
+			square.setRobot(null);
+		}
 		setSquare(destination);
 		return moveList;
 	}

@@ -10,6 +10,7 @@ public abstract class MoveAnimation {
 	private static final String FAILED_TRANSLATION = "FAILED_TRANSLATION";
 	private static final String UNGHOST = "UNGHOST";
 	private static final String REACHED_TARGET = "REACHED_TARGET";
+	private static final String WIN = "WIN";
 	private int robotNb;
 	protected Canvas robotCanvas;
 	
@@ -29,6 +30,8 @@ public abstract class MoveAnimation {
 		} else if(move.getType().equals(UNGHOST)){
 			moveAnimation = new UnghostAnimation();
 		} else if(move.getType().equals(REACHED_TARGET)){
+			moveAnimation = new ReachedTargetAnimation();
+		} else if(move.getType().equals(WIN)){
 			moveAnimation = new ReachedTargetAnimation();
 		} else {
 			throw new IllegalStateException("Invalide Move.type: "+move.getType());

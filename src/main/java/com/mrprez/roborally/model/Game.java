@@ -59,9 +59,15 @@ public class Game {
 			logger.debug("Start stage "+stageNb);
 			Stage stage = round.getStage(stageNb);
 			
-			// On joue les cartes
+			// On filtre et ordonne les robots  en fonction de leur health (pour le filtre) et de l'initiative des cartes (pour les ordonner)
 			TreeSet<Robot> robotOrderedList = new TreeSet<Robot>(new InitComparator(stageNb));
-			robotOrderedList.addAll(robotList);
+			for(Robot robot : robotList){
+				if(robot.getHealth()>0){
+					robotOrderedList.add(robot);
+				}
+			}
+			
+			// On joue les cartes
 			for(Robot robot : robotOrderedList){
 				logger.debug("Robot "+robot.getNumber()+" play card "+robot.getCard(stageNb));
 				stage.addAction(robot.playCard(stageNb));
@@ -97,15 +103,18 @@ public class Game {
 			// on vérifie si les robot ont atteind une cible
 			for(Robot robot : robotOrderedList){
 				if(robot.isOnTarget()){
-					logger.info("Robot "+robot.getNumber()+" has reached its target");
+					logger.info("Robot "+robot.getNumber()+" has reached its target number "+robot.getTargetNumber());
 					robot.setTargetNumber(robot.getTargetNumber()+1);
-					
-					Action targetAction = new Action();
-					stage.addAction(targetAction);
-					Step targetStep = new Step();
-					targetAction.addStep(targetStep);
-					Move targetMove = new Move(MoveType.REACHED_TARGET, null, robot);
-					targetStep.addMove(targetMove);
+					if(robot.getTarget()==null){
+						if(robot.getSquare().getRobot()==robot){
+							robot.getSquare().setRobot(null);
+						}
+						robot.setSquare(null);
+						robot.setHealth(0);
+						stage.addAction(buildWinAction(robot));
+					}else{
+						stage.addAction(buildReachedTargetAction(robot));
+					}
 				}
 			}
 		}
@@ -124,6 +133,27 @@ public class Game {
 		
 		return round;
 	}
+	
+	
+	private Action buildWinAction(Robot robot){
+		Action winAction = new Action();
+		Step targetStep = new Step();
+		winAction.addStep(targetStep);
+		Move targetMove = new Move(MoveType.WIN, null, robot);
+		targetStep.addMove(targetMove);
+		return winAction;
+	}
+	
+	
+	private Action buildReachedTargetAction(Robot robot){
+		Action targetAction = new Action();
+		Step targetStep = new Step();
+		targetAction.addStep(targetStep);
+		Move targetMove = new Move(MoveType.REACHED_TARGET, null, robot);
+		targetStep.addMove(targetMove);
+		return targetAction;
+	}
+	
 	
 	private Action buildUnghostAction(Robot robot){
 		Move move = new Move(MoveType.UNGHOST, null, robot);
