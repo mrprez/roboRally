@@ -6,6 +6,7 @@ import java.util.Map;
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.dom.client.ImageElement;
+import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Image;
 import com.mrprez.roborally.client.ImageLoader;
@@ -79,6 +80,9 @@ public class BoardPanel extends AbsolutePanel {
 					if(robot.isGhost()){
 						robotCanvas.getCanvasElement().getStyle().setOpacity(0.5);
 					}
+					if(robot.getHealth()==0){
+						robotCanvas.getCanvasElement().getStyle().setDisplay(Display.NONE);
+					}
 					add(robotCanvas, robot.getX()*97, robot.getY()*97);
 					rotate(robotCanvas, image, robot.getAngle());
 					robotCanvaMap.put(robot.getNumber(), robotCanvas);
@@ -109,6 +113,7 @@ public class BoardPanel extends AbsolutePanel {
 		for(RobotStateGwt robotState : round.getRobotStateList()){
 			Canvas robotCanva = robotCanvaMap.get(robotState.getRobotNb());
 			robotCanva.getCanvasElement().getStyle().setOpacity(robotState.isGhost() ? 0.5 : 1);
+			robotCanva.getCanvasElement().getStyle().setDisplay(robotState.getHealth()==0 ? Display.NONE : Display.INITIAL);
 			setWidgetPosition(robotCanva, robotState.getX()*97, robotState.getY()*97);
 			Image image = new Image(robotCanva.getCanvasElement().getAttribute("imageName"));
 			rotate(robotCanva,image,  - Integer.parseInt(robotCanva.getCanvasElement().getAttribute("direction")) * Math.PI/2);

@@ -145,8 +145,9 @@
 		)
 	</insert>
 	<insert id="insertRobot">
-		insert into ROBOT (NUMBER, GAME_ID, X, Y, DIRECTION, HEALTH, GHOST, USER_NAME)
-		values (#{robot.number}, #{gameId}, #{robot.square.x}, #{robot.square.y}, #{robot.direction}, #{robot.health}, #{robot.ghost}, #{robot.username})
+		insert into ROBOT (NUMBER, GAME_ID, X, Y, DIRECTION, HEALTH, GHOST, TARGET_NB, USER_NAME)
+		values (#{robot.number}, #{gameId}, #{robot.square.x}, #{robot.square.y}, #{robot.direction}, 
+				#{robot.health}, #{robot.ghost}, #{robot.targetNumber}, #{robot.username})
 	</insert>
 	<insert id="insertAction">
 		insert into ACTION (GAME_ID, ROUND_NB, STAGE_NB, ACTION_NB, CARD_RAPIDITY, SQUARE_X, SQUARE_Y)

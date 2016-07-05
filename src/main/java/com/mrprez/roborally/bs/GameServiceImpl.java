@@ -105,7 +105,7 @@ public class GameServiceImpl implements GameService {
 		// TODO check user
 		
 		for(Robot robot : game.getRobotList()){
-			if(robot.getUsername()==null){
+			if(robot.getUsername()==null && robot.getTarget()!=null){
 				List<Card> orderedCards = new IARobot(robot).orderCard();
 				robot.getCards().clear();
 				robot.getCards().addAll(orderedCards);

@@ -35,14 +35,15 @@ public class WinAnimation extends MoveAnimation {
 				absolutePanel.getOffsetHeight()/2-robotCanvas.getOffsetHeight()/2+scrollPanel.getVerticalScrollPosition()-10);
 	}
 	
+	@Override
+	public double getTimeCoefficient(){
+		return 4.0;
+	}
 	
+	@Override
 	public void onComplete(){
 		robotCanvas.getCanvasElement().getStyle().setDisplay(Display.NONE);
 		label.removeFromParent();
 	}
 	
-
-	
-
-
 }

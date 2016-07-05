@@ -32,7 +32,7 @@ public abstract class MoveAnimation {
 		} else if(move.getType().equals(REACHED_TARGET)){
 			moveAnimation = new ReachedTargetAnimation();
 		} else if(move.getType().equals(WIN)){
-			moveAnimation = new ReachedTargetAnimation();
+			moveAnimation = new WinAnimation();
 		} else {
 			throw new IllegalStateException("Invalide Move.type: "+move.getType());
 		}
