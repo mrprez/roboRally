@@ -88,3 +88,13 @@ h1 {
 .yellowWinMessage{
 	color: yellow;
 }
+
+.redBackGround{
+	border-radius: 10px;
+	background-color: red;
+}
+
+.yellowBackGround{
+	border-radius: 10px;
+	background-color: yellow;
+}

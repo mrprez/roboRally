@@ -23,20 +23,29 @@ public class WinAnimation extends MoveAnimation {
 		label.addStyleName("winMessage");
 		absolutePanel.setWidgetPosition(robotCanvas, 
 				scrollPanel.getOffsetWidth()/2-robotCanvas.getOffsetWidth()/2+scrollPanel.getHorizontalScrollPosition(),
-				scrollPanel.getOffsetHeight()/2-robotCanvas.getOffsetHeight()/2+scrollPanel.getVerticalScrollPosition()+15);
+				scrollPanel.getOffsetHeight()/2-robotCanvas.getOffsetHeight()/2+scrollPanel.getVerticalScrollPosition()+30);
 		absolutePanel.add(label,
 				scrollPanel.getOffsetWidth()/2-label.getOffsetWidth()/2+scrollPanel.getHorizontalScrollPosition(),
-				scrollPanel.getOffsetHeight()/2-label.getOffsetHeight()/2+scrollPanel.getVerticalScrollPosition()-10);
+				scrollPanel.getOffsetHeight()/2-label.getOffsetHeight()/2+scrollPanel.getVerticalScrollPosition()-30);
+		label.addStyleName("redWinMessage");
+		absolutePanel.setWidgetPosition(label,
+				scrollPanel.getOffsetWidth()/2-label.getOffsetWidth()/2+scrollPanel.getHorizontalScrollPosition(),
+				scrollPanel.getOffsetHeight()/2-label.getOffsetHeight()/2+scrollPanel.getVerticalScrollPosition()-30);
 	}
 
 	@Override
 	public void update(double progress) {
-		if(label.getStyleName().contains("redWinMessage")){
+		int intProgress = (int) (progress*10);
+		if(intProgress%2==0){
 			label.removeStyleName("redWinMessage");
 			label.addStyleName("yellowWinMessage");
+			robotCanvas.removeStyleName("redBackGround");
+			robotCanvas.addStyleName("yellowBackGround");
 		}else{
 			label.removeStyleName("yellowWinMessage");
 			label.addStyleName("redWinMessage");
+			robotCanvas.removeStyleName("yellowBackGround");
+			robotCanvas.addStyleName("redBackGround");
 		}
 	}
 	
