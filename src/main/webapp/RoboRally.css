@@ -75,3 +75,16 @@ h1 {
 .roundListBox{
 	width: 100%;
 }
+
+.winMessage{
+	font-size: x-large;
+	font-weight: bold;
+}
+
+.redWinMessage{
+	color: red;
+}
+
+.yellowWinMessage{
+	color: yellow;
+}

@@ -20,19 +20,24 @@ public class WinAnimation extends MoveAnimation {
 		absolutePanel = (AbsolutePanel) robotCanvas.getParent();
 		scrollPanel = (ScrollPanel) absolutePanel.getParent();
 		label = new Label("A Robot has reached the last Target! AMAZING!");
+		label.addStyleName("winMessage");
 		absolutePanel.setWidgetPosition(robotCanvas, 
-				absolutePanel.getOffsetWidth()/2-robotCanvas.getOffsetWidth()/2+scrollPanel.getHorizontalScrollPosition(),
-				absolutePanel.getOffsetHeight()/2-robotCanvas.getOffsetHeight()/2+scrollPanel.getVerticalScrollPosition()+15);
+				scrollPanel.getOffsetWidth()/2-robotCanvas.getOffsetWidth()/2+scrollPanel.getHorizontalScrollPosition(),
+				scrollPanel.getOffsetHeight()/2-robotCanvas.getOffsetHeight()/2+scrollPanel.getVerticalScrollPosition()+15);
 		absolutePanel.add(label,
-				absolutePanel.getOffsetWidth()/2-robotCanvas.getOffsetWidth()/2+scrollPanel.getHorizontalScrollPosition(),
-				absolutePanel.getOffsetHeight()/2-robotCanvas.getOffsetHeight()/2+scrollPanel.getVerticalScrollPosition()-10);
+				scrollPanel.getOffsetWidth()/2-label.getOffsetWidth()/2+scrollPanel.getHorizontalScrollPosition(),
+				scrollPanel.getOffsetHeight()/2-label.getOffsetHeight()/2+scrollPanel.getVerticalScrollPosition()-10);
 	}
 
 	@Override
 	public void update(double progress) {
-		absolutePanel.add(label,
-				absolutePanel.getOffsetWidth()/2-robotCanvas.getOffsetWidth()/2+scrollPanel.getHorizontalScrollPosition(),
-				absolutePanel.getOffsetHeight()/2-robotCanvas.getOffsetHeight()/2+scrollPanel.getVerticalScrollPosition()-10);
+		if(label.getStyleName().contains("redWinMessage")){
+			label.removeStyleName("redWinMessage");
+			label.addStyleName("yellowWinMessage");
+		}else{
+			label.removeStyleName("yellowWinMessage");
+			label.addStyleName("redWinMessage");
+		}
 	}
 	
 	@Override
