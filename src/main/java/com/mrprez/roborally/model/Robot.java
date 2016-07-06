@@ -229,7 +229,9 @@ public class Robot {
 	}
 
 	private void decreaseHealth() {
-		health--;
+		if(health>0){
+			health--;
+		}
 	}
 	
 	

@@ -6,14 +6,21 @@ public class CardGwt implements IsSerializable{
 	private int rapidity;
 	private int translation;
 	private int rotation;
+	private boolean blocked = false;
 	
 	
 	public String getImageName(){
+		StringBuilder imageName = new StringBuilder("img/card/");
 		if(translation!=0){
-			return "img/card/translation"+translation+".gif";
+			imageName.append("translation"+translation);
 		}else{
-			return "img/card/rotation"+rotation+".gif";
+			imageName.append("rotation"+rotation);
 		}
+		if(blocked){
+			imageName.append("-blocked");
+		}
+		imageName.append(".gif");
+		return imageName.toString();
 	}
 	
 	public int getRapidity() {
@@ -33,5 +40,13 @@ public class CardGwt implements IsSerializable{
 	}
 	public void setRotation(int rotation) {
 		this.rotation = rotation;
+	}
+
+	public boolean isBlocked() {
+		return blocked;
+	}
+
+	public void setBlocked(boolean blocked) {
+		this.blocked = blocked;
 	}
 }

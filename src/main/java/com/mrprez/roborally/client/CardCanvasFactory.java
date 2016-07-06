@@ -27,7 +27,6 @@ public class CardCanvasFactory implements IsSerializable {
 		cardCanvas.setCoordinateSpaceWidth(50);
 		cardCanvas.setCoordinateSpaceHeight(80);
 		canvasCardMap.put(rapidity, cardCanvas);
-		cardCanvas.getElement().setAttribute("draggable", "true");
 		cardCanvas.getElement().setAttribute("rapidity", rapidity);
 		cardCanvas.getElement().setAttribute("index", String.valueOf(index));
 		ImageLoader.getInstance().loadImage(card.getImageName(), new ImageLoaderCallback() {
@@ -39,6 +38,11 @@ public class CardCanvasFactory implements IsSerializable {
 			}
 		});
 		
+		if(card.isBlocked()){
+			return cardCanvas;
+		}
+		
+		cardCanvas.getElement().setAttribute("draggable", "true");
 		cardCanvas.addDragStartHandler(new DragStartHandler() {
 			@Override
 			public void onDragStart(DragStartEvent event) {

@@ -91,7 +91,11 @@ public class GameGwtServiceImpl extends AbstractGwtService implements GameGwtSer
 		List<CardGwt> gwtCardList = new ArrayList<CardGwt>();
 		Robot robot = gameService.getPlayerRobot(gameId, user.getUsername());
 		for(Card card : robot.getCards()){
-			gwtCardList.add(dozerMapper.map(card, CardGwt.class));
+			CardGwt cardGwt = dozerMapper.map(card, CardGwt.class);
+			gwtCardList.add(cardGwt);
+			if(gwtCardList.size()>robot.getHealth()){
+				cardGwt.setBlocked(true);
+			}
 		}
 		return gwtCardList;
 	}

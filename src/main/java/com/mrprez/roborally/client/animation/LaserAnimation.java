@@ -2,7 +2,6 @@ package com.mrprez.roborally.client.animation;
 
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 
 public class LaserAnimation extends MoveAnimation {
