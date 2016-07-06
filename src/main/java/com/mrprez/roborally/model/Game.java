@@ -86,7 +86,9 @@ public class Game {
 			
 			// on tire des laser
 			for(Robot robot : robotOrderedList){
-				stage.addAction( robot.fireLaser() );
+				if( ! robot.isGhost()){
+					stage.addAction( robot.fireLaser() );
+				}
 			}
 						
 			// on vérifie si les robot ont atteind une cible
@@ -108,6 +110,13 @@ public class Game {
 			}
 		}
 		
+		// On repositionne les robot sans PV
+		for(Robot robot : robotList){
+			if(robot.getHealth()==0 && robot.getTarget()!=null){
+				round.getStage(STAGE_NB-1).addAction(setRobotOnCheckpoint(robot));
+			}
+		}
+		
 		// On redistribue les cartes
 		for(Robot robot : robotList){
 			Collection<Card> newCards = new HashSet<Card>();
@@ -121,6 +130,18 @@ public class Game {
 		history.add(round);
 		
 		return round;
+	}
+	
+	private Action setRobotOnCheckpoint(Robot robot){
+		Action action = new Action();
+		action.addStep(new Step(new Move(MoveType.DISAPPEAR, null, robot)));
+		robot.setGhost(true);
+		int checkPointNb = robot.getTargetNumber()-1;
+		Square checkpointSquare = board.getTargetSquares().get(checkPointNb);
+		robot.setSquare(checkpointSquare);
+		robot.setHealth(9);
+		action.addStep(new Step(new Move(MoveType.APPEAR, checkpointSquare.getX()+","+checkpointSquare.getY(), robot)));
+		return action;
 	}
 	
 	

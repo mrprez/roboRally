@@ -104,6 +104,9 @@ public class Robot {
 	}
 	
 	public Action playCard(int stageNb){
+		if(health==0){
+			return null;
+		}
 		Card card = cards.get(stageNb);
 		Action action = new Action(card);
 		for(int i=0; i<card.getTranslation(); i++){

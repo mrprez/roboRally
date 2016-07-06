@@ -12,6 +12,8 @@ public abstract class MoveAnimation {
 	private static final String REACHED_TARGET = "REACHED_TARGET";
 	private static final String WIN = "WIN";
 	private static final String LASER = "LASER";
+	private static final String DISAPPEAR = "DISAPPEAR";
+	private static final String APPEAR = "APPEAR";
 	private int robotNb;
 	protected Canvas robotCanvas;
 	
@@ -36,6 +38,10 @@ public abstract class MoveAnimation {
 			moveAnimation = new WinAnimation();
 		} else if(move.getType().equals(LASER)){
 			moveAnimation = new LaserAnimation(move.getArgs());
+		} else if(move.getType().equals(DISAPPEAR)){
+			moveAnimation = new DisappearAnimation();
+		} else if(move.getType().equals(APPEAR)){
+			moveAnimation = new AppearAnimation(move.getArgs());
 		} else {
 			throw new IllegalStateException("Invalide Move.type: "+move.getType());
 		}
