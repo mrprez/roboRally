@@ -74,32 +74,21 @@ public class Game {
 			}
 			
 			// on vérifie les fantomes
-			for(Robot robot : robotList){
-				if(robot.isGhost()){
-					boolean ghost = false;
-					for(Robot otherRobot : robotList){
-						if(robot.getNumber() != otherRobot.getNumber()){
-							if(otherRobot.getSquare().getX() == robot.getSquare().getX()
-									&& otherRobot.getSquare().getY() == robot.getSquare().getY()){
-								logger.debug("Robot "+robot.getNumber()+" is still ghost due to robot "+otherRobot.getNumber());
-								ghost = true;
-							}
-						}
-					}
-					if(!ghost){
-						logger.debug("Robot "+robot.getNumber()+" is no more ghost on square "+robot.getSquare());
-						robot.setGhost(false);
-						robot.getSquare().setRobot(robot);
-						stage.addAction(buildUnghostAction(robot));
-					}
-				}
-			}
+			checkGhosts(stage);
 			
 			// On joue le terrain
 			for(Robot robot : robotOrderedList){
 				stage.addAction( robot.getSquare().play());
 			}
 			
+			// on vérifie les fantomes
+			checkGhosts(stage);
+			
+			// on tire des laser
+			for(Robot robot : robotOrderedList){
+				stage.addAction( robot.fireLaser() );
+			}
+						
 			// on vérifie si les robot ont atteind une cible
 			for(Robot robot : robotOrderedList){
 				if(robot.isOnTarget()){
@@ -132,6 +121,31 @@ public class Game {
 		history.add(round);
 		
 		return round;
+	}
+	
+	
+	private void checkGhosts(Stage stage){
+		Logger logger = LoggerFactory.getLogger("GamePlay");
+		for(Robot robot : robotList){
+			if(robot.isGhost()){
+				boolean ghost = false;
+				for(Robot otherRobot : robotList){
+					if(robot.getNumber() != otherRobot.getNumber()){
+						if(otherRobot.getSquare().getX() == robot.getSquare().getX()
+								&& otherRobot.getSquare().getY() == robot.getSquare().getY()){
+							logger.debug("Robot "+robot.getNumber()+" is still ghost due to robot "+otherRobot.getNumber());
+							ghost = true;
+						}
+					}
+				}
+				if(!ghost){
+					logger.debug("Robot "+robot.getNumber()+" is no more ghost on square "+robot.getSquare());
+					robot.setGhost(false);
+					robot.getSquare().setRobot(robot);
+					stage.addAction(buildUnghostAction(robot));
+				}
+			}
+		}
 	}
 	
 	

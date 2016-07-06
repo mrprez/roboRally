@@ -1,6 +1,7 @@
 package com.mrprez.roborally.model.history;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.mrprez.roborally.model.Card;
@@ -16,6 +17,11 @@ public class Action {
 	
 	public Action(){
 		super();
+	}
+	
+	public Action(Step... steps){
+		super();
+		stepList.addAll(Arrays.asList(steps));
 	}
 	
 	public Action(Card card){

@@ -204,6 +204,33 @@ public class Robot {
 		state.setY(square.getY());
 		return state;
 	}
+
+	public Action fireLaser() {
+		Square currentSquare = square;
+		while(currentSquare!=null){
+			if(currentSquare.getWall(direction)){
+				return null;
+			}
+			Square nextSquare = currentSquare.getNextSquare(direction);
+			if(nextSquare==null){
+				return null;
+			}
+			if(nextSquare.getWall(direction.getOpposite())){
+				return null;
+			}
+			if(nextSquare.getRobot()!=null){
+				nextSquare.getRobot().decreaseHealth();
+				return new Action(new Step(new Move(MoveType.LASER, square.getX()+","+square.getY()+"->"+nextSquare.getX()+","+nextSquare.getY(), this)));
+				
+			}
+			currentSquare = nextSquare;
+		}
+		return null;
+	}
+
+	private void decreaseHealth() {
+		health--;
+	}
 	
 	
 

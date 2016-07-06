@@ -11,6 +11,7 @@ public abstract class MoveAnimation {
 	private static final String UNGHOST = "UNGHOST";
 	private static final String REACHED_TARGET = "REACHED_TARGET";
 	private static final String WIN = "WIN";
+	private static final String LASER = "LASER";
 	private int robotNb;
 	protected Canvas robotCanvas;
 	
@@ -33,6 +34,8 @@ public abstract class MoveAnimation {
 			moveAnimation = new ReachedTargetAnimation();
 		} else if(move.getType().equals(WIN)){
 			moveAnimation = new WinAnimation();
+		} else if(move.getType().equals(LASER)){
+			moveAnimation = new LaserAnimation(move.getArgs());
 		} else {
 			throw new IllegalStateException("Invalide Move.type: "+move.getType());
 		}
