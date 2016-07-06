@@ -19,6 +19,7 @@ import com.mrprez.roborally.dto.SquareDto;
 import com.mrprez.roborally.dto.TargetDto;
 import com.mrprez.roborally.model.Card;
 import com.mrprez.roborally.model.CardStock;
+import com.mrprez.roborally.model.Direction;
 import com.mrprez.roborally.model.Game;
 import com.mrprez.roborally.model.Robot;
 import com.mrprez.roborally.model.RobotState;
@@ -91,7 +92,10 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 			Constructor<Square> squareConstructor = (Constructor<Square>) Class.forName(squareDto.getClazz()).getConstructor(Integer.class, Integer.class, Board.class);;
 			Square square = squareConstructor.newInstance(squareDto.getX(), squareDto.getY(), gameBoard);
 			square.setArgs(squareDto.getArgs());
-			dozerMapper.map(squareDto, square);
+			square.setWall(Direction.DOWN, squareDto.isWallDown());
+			square.setWall(Direction.UP, squareDto.isWallUp());
+			square.setWall(Direction.LEFT, squareDto.isWallLeft());
+			square.setWall(Direction.RIGHT, squareDto.isWallRight());
 			gameBoard.addSquare(square);
 		}
 	}

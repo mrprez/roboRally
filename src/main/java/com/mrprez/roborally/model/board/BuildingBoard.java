@@ -3,6 +3,7 @@ package com.mrprez.roborally.model.board;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+import com.mrprez.roborally.model.Direction;
 import com.mrprez.roborally.model.Square;
 import com.mrprez.roborally.model.square.EmptySquare;
 
@@ -19,6 +20,11 @@ public class BuildingBoard extends Board {
 		for(int x=0; x<sizeX; x++){
 			for(int y=0; y<sizeY; y++){
 				squares[x][y] = new EmptySquare(x, y, this);
+				for(Direction direction : Direction.values()){
+					if(Math.random()*6<1.0){
+						squares[x][y].setWall(direction, true);
+					}
+				}
 			}
 		}
 	}

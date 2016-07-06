@@ -53,7 +53,12 @@ public class GameGwtServiceImpl extends AbstractGwtService implements GameGwtSer
 		for(int y=0; y<game.getBoard().getSizeY(); y++){
 			for(int x=0; x<game.getBoard().getSizeX(); x++){
 				squareGwtTab[x][y] = new SquareGwt();
-				squareGwtTab[x][y].setImageName(game.getBoard().getSquare(x, y).getImageName());
+				Square square = game.getBoard().getSquare(x, y);
+				squareGwtTab[x][y].setImageName(square.getImageName());
+				squareGwtTab[x][y].setWallUp(square.getWall(Direction.UP));
+				squareGwtTab[x][y].setWallDown(square.getWall(Direction.DOWN));
+				squareGwtTab[x][y].setWallLeft(square.getWall(Direction.LEFT));
+				squareGwtTab[x][y].setWallRight(square.getWall(Direction.RIGHT));
 			}
 		}
 		gameGwt.getBoard().setSquares(squareGwtTab);

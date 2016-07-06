@@ -32,6 +32,10 @@
 		<result property="y" column="Y" />
 		<result property="clazz" column="CLASS" />
 		<result property="args" column="ARGS" />
+		<result property="wallTop" column="WALL_TOP" />
+		<result property="wallDown" column="WALL_DOWN" />
+		<result property="wallLeft" column="WALL_LEFT" />
+		<result property="wallRight" column="WALL_RIGHT" />
 	</resultMap>
 	<resultMap id="robotDto" type="com.mrprez.roborally.dto.RobotDto">
 		<result property="number" column="NUMBER" />
@@ -94,7 +98,7 @@
 		where GAME.ID=#{id}
 	</select>
 	<select id="selectSquareList" resultMap="square">
-		select X,Y,CLASS,ARGS from SQUARE where BOARD_ID=#{boardId}
+		select X,Y,CLASS,ARGS,WALL_UP,WALL_DOWN,WALL_LEFT,WALL_RIGHT from SQUARE where BOARD_ID=#{boardId}
 	</select>
 	<select id="selectRobotList" resultMap="robotDto">
 		select NUMBER,X,Y,DIRECTION,HEALTH,GHOST,RAPIDITY,TRANSLATION,ROTATION,TARGET_NB,USER_NAME
@@ -130,7 +134,8 @@
 		insert into BOARD (TYPE, SIZE_X, SIZE_Y) values ('Game', #{sizeX}, #{sizeY})
 	</insert>
 	<insert id="insertSquare">
-		insert into SQUARE (BOARD_ID, X, Y, CLASS, ARGS) values (#{boardId}, #{x}, #{y}, #{clazz}, #{args})
+		insert into SQUARE (BOARD_ID, X, Y, CLASS, ARGS, WALL_UP, WALL_DOWN, WALL_LEFT, WALL_RIGHT)
+		values (#{boardId}, #{x}, #{y}, #{clazz}, #{args}, #{wallUp}, #{wallDown}, #{wallLeft}, #{wallRight})
 	</insert>
 	<insert id="insertTarget">
 		insert into TARGET (BOARD_ID, TARGET_NB, X, Y) values (#{boardId}, #{targetNb}, #{x}, #{y})
