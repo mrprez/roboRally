@@ -10,6 +10,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.UIObject;
 import com.mrprez.roborally.client.AbstractAsyncCallback;
@@ -32,6 +33,9 @@ public class HandCardsPanel extends FlexTable {
 		setWidget(2, 0, saveButton);
 		getFlexCellFormatter().setColSpan(2, 0, 9);
 		getFlexCellFormatter().addStyleName(2, 0, "saveCardsLine");
+		
+		setWidget(0,9, new Image("img/PowerDownOff.png"));
+		getFlexCellFormatter().setRowSpan(0, 9, 3);
 		
 		reloadCards();
 	}
@@ -62,7 +66,7 @@ public class HandCardsPanel extends FlexTable {
 			@Override
 			public void onClick(ClickEvent event) {
 				List<Integer> cardRapidityList = new ArrayList<Integer>();
-				for(int i=0; i<getCellCount(0); i++){
+				for(int i=0; i<9; i++){
 					Integer rapidity = Integer.valueOf(getWidget(0, i).getElement().getAttribute("rapidity"));
 					cardRapidityList.add(rapidity);
 				}
