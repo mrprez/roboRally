@@ -181,6 +181,9 @@ public class Robot {
 	}
 	
 	public Square getTarget(){
+		if(square==null){
+			return null;
+		}
 		GameBoard gameBoard = (GameBoard)square.getBoard();
 		if(targetNumber < gameBoard.getTargetSquares().size()){
 			return gameBoard.getTargetSquares().get(targetNumber);
