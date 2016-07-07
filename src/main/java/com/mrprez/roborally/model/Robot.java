@@ -222,19 +222,23 @@ public class Robot {
 				return null;
 			}
 			if(nextSquare.getRobot()!=null){
-				nextSquare.getRobot().decreaseHealth();
-				return new Action(new Step(new Move(MoveType.LASER, square.getX()+","+square.getY()+"->"+nextSquare.getX()+","+nextSquare.getY(), this)));
-				
+				Step step = new Step(new Move(MoveType.LASER, square.getX()+","+square.getY()+"->"+nextSquare.getX()+","+nextSquare.getY(), this));
+				step.addMove(nextSquare.getRobot().decreaseHealth());
+				return new Action(step);
 			}
 			currentSquare = nextSquare;
 		}
 		return null;
 	}
 
-	private void decreaseHealth() {
+	private Move decreaseHealth() {
 		if(health>0){
 			health--;
+			if(health==0){
+				return new Move(MoveType.DIE, null, this);
+			}
 		}
+		return null;
 	}
 	
 	
