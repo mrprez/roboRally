@@ -157,9 +157,7 @@ public class Robot {
 		List<Move> moveList = new ArrayList<Move>(); 
 		moveList.add(new Move(MoveType.TRANSLATION, direction.name(), this));
 		Square destination = square.getNextSquare(direction);
-		LoggerFactory.getLogger("GamePlay").debug("Robot "+number+" move from "+getSquare()+"("+getSquare().getX()+"-"+getSquare().getY()+") to "+destination+"("+destination.getX()+"-"+destination.getY()+")");
 		if(destination.getRobot()!=null && !ghost){
-			LoggerFactory.getLogger("GamePlay").debug("Robot "+number+" push robot "+destination.getRobot().getNumber());
 			moveList.addAll(destination.getRobot().move(direction));
 		}
 		if(square.getRobot()==this){
@@ -222,20 +220,22 @@ public class Robot {
 				return null;
 			}
 			if(nextSquare.getRobot()!=null){
-				Step step = new Step(new Move(MoveType.LASER, square.getX()+","+square.getY()+"->"+nextSquare.getX()+","+nextSquare.getY(), this));
-				step.addMove(nextSquare.getRobot().decreaseHealth());
-				return new Action(step);
+				Action fireAction = new Action();
+				fireAction.addStep(new Step(new Move(MoveType.LASER, square.getX()+","+square.getY()+"->"+nextSquare.getX()+","+nextSquare.getY(), this)));
+				fireAction.addStep(nextSquare.getRobot().decreaseHealth());
+				return fireAction;
 			}
 			currentSquare = nextSquare;
 		}
 		return null;
 	}
 
-	private Move decreaseHealth() {
+	private Step decreaseHealth() {
 		if(health>0){
+			LoggerFactory.getLogger("GamePlay").trace("Robot "+number+" ("+health+"PV) is injuried");
 			health--;
 			if(health==0){
-				return new Move(MoveType.DIE, null, this);
+				return new Step(new Move(MoveType.DIE, null, this));
 			}
 		}
 		return null;

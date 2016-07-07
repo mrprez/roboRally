@@ -52,6 +52,9 @@ public class Game {
 		Logger logger = LoggerFactory.getLogger("GamePlay");
 		Round round = new Round(history.size());
 		for(Robot robot : robotList){
+			logger.debug("Robot "+robot.getNumber()+" is on "
+					+robot.getSquare().getX()+","+robot.getSquare().getY()+"("+robot.getDirection()+") "
+					+"with "+robot.getHealth()+"PV");
 			round.setState(robot, robot.getState());
 		}
 		logger.debug("Start play round "+round.getNumber());
@@ -77,16 +80,18 @@ public class Game {
 			checkGhosts(stage);
 			
 			// On joue le terrain
-			for(Robot robot : robotOrderedList){
-				stage.addAction( robot.getSquare().play());
+			for(Robot robot : robotList){
+				if(robot.getSquare()!=null && !robot.isGhost()){
+					stage.addAction( robot.getSquare().play());
+				}
 			}
 			
 			// on vérifie les fantomes
 			checkGhosts(stage);
 			
 			// on tire des laser
-			for(Robot robot : robotOrderedList){
-				if( ! robot.isGhost()){
+			for(Robot robot : robotList){
+				if( ! robot.isGhost() && robot.getHealth()>0){
 					stage.addAction( robot.fireLaser() );
 				}
 			}
@@ -113,6 +118,7 @@ public class Game {
 		// On repositionne les robot sans PV
 		for(Robot robot : robotList){
 			if(robot.getHealth()==0 && robot.getTarget()!=null){
+				logger.debug("Robot "+robot.getNumber()+" is dead");
 				round.getStage(STAGE_NB-1).addAction(setRobotOnCheckpoint(robot));
 			}
 		}

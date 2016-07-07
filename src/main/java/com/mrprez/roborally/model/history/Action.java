@@ -49,7 +49,9 @@ public class Action {
 	
 	
 	public void addStep(Step step){
-		stepList.add(step);
+		if(step!=null){
+			stepList.add(step);
+		}
 	}
 
 	public List<Step> getStepList() {

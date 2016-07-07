@@ -6,7 +6,7 @@
 		</encoder>
 	</appender>
 	
-	<logger name="GamePlay" level="info" additivity="false">
+	<logger name="GamePlay" level="trace" additivity="false">
 		<appender-ref ref="STDOUT" />
 	</logger>
 

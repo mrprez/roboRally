@@ -17,6 +17,7 @@ public class AppearAnimation extends MoveAnimation {
 	@Override
 	public void onStart(){
 		robotCanvas.getCanvasElement().getStyle().setDisplay(Display.NONE);
+		robotCanvas.getCanvasElement().getStyle().setOpacity(0.5);
 		AbsolutePanel absolutePanel = (AbsolutePanel) robotCanvas.getParent();
 		absolutePanel.setWidgetPosition(robotCanvas, 97*x, 97*y);
 	}

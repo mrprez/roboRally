@@ -2,38 +2,36 @@ package com.mrprez.roborally.client.animation;
 
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.user.client.ui.Image;
+import com.mrprez.roborally.client.ImageLoader;
+import com.mrprez.roborally.client.ImageLoaderCallback;
 
 public class DieAnimation extends MoveAnimation {
 	
-	public DieAnimation(int rotation){
+	
+	public DieAnimation(){
 		super();
 	}
 	
 	@Override
 	public void onStart(){
-		Image img = new Image(robotCanvas.getCanvasElement().getAttribute("imageName"));
-		imageEl = ImageElement.as(img.getElement());
+		String imageUri = robotCanvas.getCanvasElement().getAttribute("imageName");
+		ImageLoader.getInstance().loadImage(imageUri.replace(".gif", "M.gif"), new ImageLoaderCallback() {
+			@Override
+			public void onImageLoaded(Image image) {
+				ImageElement diedImageEl = ImageElement.as(image.getElement());
+				robotCanvas.getContext2d().clearRect(0, 0, robotCanvas.getCoordinateSpaceWidth(), robotCanvas.getCoordinateSpaceHeight());
+				robotCanvas.getContext2d().drawImage(diedImageEl, 25, 25);
+			}
+		});
 	}
 
+	public double getTimeCoefficient(){
+		return 0.1;
+	}
+	
 	@Override
-	public void update(double progress) {
-		robotCanvas.getContext2d().clearRect(0, 0, robotCanvas.getCoordinateSpaceWidth(), robotCanvas.getCoordinateSpaceHeight());
-		robotCanvas.getContext2d().translate(robotCanvas.getCoordinateSpaceWidth()/2, robotCanvas.getCoordinateSpaceHeight()/2);
-		robotCanvas.getContext2d().rotate(progress*Math.PI/2*rotation - currentAngle);
-		currentAngle = progress*Math.PI/2*rotation;
-		robotCanvas.getContext2d().translate(-robotCanvas.getCoordinateSpaceWidth()/2, -robotCanvas.getCoordinateSpaceHeight()/2);
-		robotCanvas.getContext2d().drawImage(imageEl, 25, 25);
-	}
+	public void update(double progress) {}
 	
 	
-	public void onComplete(){
-		int direction = Integer.valueOf(robotCanvas.getCanvasElement().getAttribute("direction")) + rotation;
-		direction = (direction + 4) % 4;
-		robotCanvas.getCanvasElement().setAttribute("direction", String.valueOf(direction));
-	}
-	
-
-	
-
 
 }
