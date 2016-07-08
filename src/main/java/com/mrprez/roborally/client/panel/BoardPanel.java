@@ -45,27 +45,26 @@ public class BoardPanel extends AbsolutePanel {
 	}
 	
 	
-	private void loadSquare(final Context2d context2d, SquareGwt square, final int x, final int y) {
+	private void loadSquare(final Context2d context2d, final SquareGwt square, final int x, final int y) {
 		ImageLoader.getInstance().loadImage(square.getImageName(), new ImageLoaderCallback() {
 			@Override
 			public void onImageLoaded(Image image) {
 				ImageElement imageEl = ImageElement.as(image.getElement());
 				context2d.drawImage(imageEl, x*97, y*97);
+				if(square.isWallUp()){
+					drawWall("img/WallUp.gif", context2d, x, y);
+				}
+				if(square.isWallLeft()){
+					drawWall("img/WallLeft.gif", context2d, x, y);
+				}
+				if(square.isWallRight()){
+					drawWall("img/WallRight.gif", context2d, x, y);
+				}
+				if(square.isWallDown()){
+					drawWall("img/WallDown.gif", context2d, x, y);
+				}
 			}
 		});
-		
-		if(square.isWallUp()){
-			drawWall("img/WallUp.gif", context2d, x, y);
-		}
-		if(square.isWallLeft()){
-			drawWall("img/WallLeft.gif", context2d, x, y);
-		}
-		if(square.isWallRight()){
-			drawWall("img/WallRight.gif", context2d, x, y);
-		}
-		if(square.isWallDown()){
-			drawWall("img/WallDown.gif", context2d, x, y);
-		}
 		
 		if(square.getTargetNumber()!=null){
 			ImageLoader.getInstance().loadImage(square.getTargetImgName(), new ImageLoaderCallback() {
