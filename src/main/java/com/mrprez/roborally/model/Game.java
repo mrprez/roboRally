@@ -65,7 +65,7 @@ public class Game {
 			// On filtre et ordonne les robots  en fonction de leur health (pour le filtre) et de l'initiative des cartes (pour les ordonner)
 			TreeSet<Robot> robotOrderedList = new TreeSet<Robot>(new InitComparator(stageNb));
 			for(Robot robot : robotList){
-				if(robot.getHealth()>0){
+				if(robot.getHealth()>0 && robot.getPowerDownState()!=PowerDownState.ONGOING){
 					robotOrderedList.add(robot);
 				}
 			}
@@ -91,13 +91,13 @@ public class Game {
 			
 			// on tire des laser
 			for(Robot robot : robotList){
-				if( ! robot.isGhost() && robot.getHealth()>0){
+				if( ! robot.isGhost() && robot.getHealth()>0 && robot.getPowerDownState()!=PowerDownState.ONGOING){
 					stage.addAction( robot.fireLaser() );
 				}
 			}
 						
 			// on vérifie si les robot ont atteind une cible
-			for(Robot robot : robotOrderedList){
+			for(Robot robot : robotList){
 				if(robot.isOnTarget()){
 					logger.info("Robot "+robot.getNumber()+" has reached its target number "+robot.getTargetNumber());
 					robot.setTargetNumber(robot.getTargetNumber()+1);
@@ -115,7 +115,7 @@ public class Game {
 			}
 		}
 		
-		// On repositionne les robot sans PV
+		// On repositionne les robots sans PV
 		for(Robot robot : robotList){
 			if(robot.getHealth()==0 && robot.getTarget()!=null){
 				logger.debug("Robot "+robot.getNumber()+" is dead");
@@ -123,14 +123,30 @@ public class Game {
 			}
 		}
 		
+		// On gère le power down
+		for(Robot robot : robotList){
+			if(robot.getPowerDownState()==PowerDownState.ONGOING){
+				robot.setPowerDownState(PowerDownState.NONE);
+			}
+			if(robot.getPowerDownState()==PowerDownState.PLANNED){
+				robot.setHealth(9);
+				robot.setPowerDownState(PowerDownState.ONGOING);
+			}
+		}
+		
 		// On redistribue les cartes
 		for(Robot robot : robotList){
-			Collection<Card> newCards = new HashSet<Card>();
-			for(int i=0; i<robot.getHealth(); i++){
-				newCards.add(cardStock.takeCard());
+			if(robot.getTarget()==null){
+				cardStock.discard(robot.changeCards(new ArrayList<Card>()));
 			}
-			Collection<Card> discarded = robot.changeCards(newCards);
-			cardStock.discard(discarded);
+			if(robot.getTarget()!=null && robot.getPowerDownState()!=PowerDownState.ONGOING){
+				Collection<Card> newCards = new HashSet<Card>();
+				for(int i=0; i<robot.getHealth(); i++){
+					newCards.add(cardStock.takeCard());
+				}
+				Collection<Card> discarded = robot.changeCards(newCards);
+				cardStock.discard(discarded);
+			}
 		}
 		
 		history.add(round);
@@ -146,6 +162,7 @@ public class Game {
 		Square checkpointSquare = board.getTargetSquares().get(checkPointNb);
 		robot.setSquare(checkpointSquare);
 		robot.setHealth(9);
+		robot.setPowerDownState(PowerDownState.NONE);
 		action.addStep(new Step(new Move(MoveType.APPEAR, checkpointSquare.getX()+","+checkpointSquare.getY(), robot)));
 		return action;
 	}

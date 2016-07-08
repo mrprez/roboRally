@@ -17,11 +17,14 @@ import com.mrprez.roborally.client.AbstractAsyncCallback;
 import com.mrprez.roborally.client.CardCanvasFactory;
 import com.mrprez.roborally.client.GameGwtService;
 import com.mrprez.roborally.client.GameGwtServiceAsync;
-import com.mrprez.roborally.shared.CardGwt;
+import com.mrprez.roborally.shared.RobotGwt;
 
 public class HandCardsPanel extends FlexTable {
+	private static final int CARD_NUMBER = 9;
 	private GameGwtServiceAsync gameGwtService = GWT.create(GameGwtService.class);
 	private int gameId;
+	private Image powerDownOnImg = new Image("img/PowerDownOn.png");
+	private Image powerDownOffImg = new Image("img/PowerDownOff.png");
 	
 	
 	public void init(int gameId){
@@ -31,30 +34,42 @@ public class HandCardsPanel extends FlexTable {
 		Button saveButton = new Button("Sauvegarder");
 		saveButton.addClickHandler(buildSaveHandHandler());
 		setWidget(2, 0, saveButton);
-		getFlexCellFormatter().setColSpan(2, 0, 9);
+		getFlexCellFormatter().setColSpan(2, 0, CARD_NUMBER);
 		getFlexCellFormatter().addStyleName(2, 0, "saveCardsLine");
 		
-		setWidget(0,9, new Image("img/PowerDownOff.png"));
-		getFlexCellFormatter().setRowSpan(0, 9, 3);
+		for(int index=0; index<CARD_NUMBER; index++){
+			Label label = new Label(index<5 ? String.valueOf(index+1) : "X");
+			label.addStyleName("cardTurnNb");
+			setWidget(1, index, label);
+		}
 		
-		reloadCards();
+		powerDownOnImg.addStyleName("powerDownButton");
+		powerDownOffImg.addStyleName("powerDownButton");
+		setWidget(0,9, powerDownOffImg);
+		powerDownOffImg.addClickHandler(buildPowerDownOffHandler());
+		powerDownOnImg.addClickHandler(buildPowerDownOnHandler());
+		getFlexCellFormatter().setRowSpan(0, CARD_NUMBER, 3);
+		
+		reload();
 	}
 	
 	
-	public void reloadCards(){
-		gameGwtService.getCardList(gameId, new AbstractAsyncCallback<List<CardGwt>>() {
+	public void reload(){
+		gameGwtService.getPlayerRobot(gameId, new AbstractAsyncCallback<RobotGwt>() {
 			@Override
-			public void onSuccess(List<CardGwt> cardList) {
-				int index = 0;
-				for(CardGwt card : cardList){
-					Label label = new Label(index<5 ? String.valueOf(index+1) : "X");
-					label.addStyleName("cardTurnNb");
-					setWidget(1, index, label);
-					Canvas cardCanvas = CardCanvasFactory.build(card, index);
-					setWidget(0, index, cardCanvas);
-					index++;
+			public void onSuccess(RobotGwt robot) {
+				for(int index=0; index<CARD_NUMBER; index++){
+					clearCell(0, index);
+					if(index<robot.getCards().size()){
+						Canvas cardCanvas = CardCanvasFactory.build(robot.getCards().get(index), index);
+						setWidget(0, index, cardCanvas);
+					}
 				}
-				
+				if(robot.getPowerDownState().equals("NONE")){
+					setWidget(0, CARD_NUMBER, powerDownOffImg);
+				}else{
+					setWidget(0, CARD_NUMBER, powerDownOnImg);
+				}
 			}
 		});
 	}
@@ -66,7 +81,7 @@ public class HandCardsPanel extends FlexTable {
 			@Override
 			public void onClick(ClickEvent event) {
 				List<Integer> cardRapidityList = new ArrayList<Integer>();
-				for(int i=0; i<9; i++){
+				for(int i=0; i<CARD_NUMBER; i++){
 					Integer rapidity = Integer.valueOf(getWidget(0, i).getElement().getAttribute("rapidity"));
 					cardRapidityList.add(rapidity);
 				}
@@ -76,6 +91,40 @@ public class HandCardsPanel extends FlexTable {
 						final DialogBox dialogBox = new DialogBox(true);
 						dialogBox.setText("Votre programmation a été sauvegardée avec succés");
 						dialogBox.showRelativeTo(originElement);
+					}
+				});
+			}
+		};
+	}
+	
+	
+	private ClickHandler buildPowerDownOffHandler(){
+		final FlexTable flexTable = this;
+		return new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				gameGwtService.savePowerDownState(gameId, "PLANNED", new AbstractAsyncCallback<Void>() {
+					@Override
+					public void onSuccess(Void result) {
+						flexTable.remove(powerDownOffImg);
+						flexTable.setWidget(0, 9, powerDownOnImg);
+					}
+				});
+				
+			}
+		};
+	}
+	
+	private ClickHandler buildPowerDownOnHandler(){
+		final FlexTable flexTable = this;
+		return new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				gameGwtService.savePowerDownState(gameId, "NONE", new AbstractAsyncCallback<Void>() {
+					@Override
+					public void onSuccess(Void result) {
+						flexTable.remove(powerDownOnImg);
+						flexTable.setWidget(0, 9, powerDownOffImg);
 					}
 				});
 			}

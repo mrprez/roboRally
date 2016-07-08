@@ -45,6 +45,7 @@
 		<result property="health" column="HEALTH" />
 		<result property="ghost" column="GHOST" />
 		<result property="targetNumber" column="TARGET_NB" />
+		<result property="powerDownState" column="POWER_DOWN_STATE"/>
 		<result property="username" column="USER_NAME"/>
 		<collection property="cardList" ofType="com.mrprez.roborally.dto.CardDto">
 			<result property="rapidity" column="RAPIDITY" />
@@ -72,6 +73,7 @@
 		<result property="direction" column="DIRECTION" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
 		<result property="health" column="HEALTH" />
 		<result property="targetNumber" column="TARGET_NB" />
+		<result property="powerDownState" column="POWER_DOWN_STATE" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
 		<collection property="cards" resultMap="card" ofType="com.mrprez.roborally.model.Card"/>
 	</resultMap>
 	<resultMap id="robotState" type="com.mrprez.roborally.dto.RobotStateDto">
@@ -82,6 +84,7 @@
 		<result property="x" column="X"/>
 		<result property="y" column="Y"/>
 		<result property="ghost" column="GHOST"/>
+		<result property="powerDownState" column="POWER_DOWN_STATE"/>
 	</resultMap>
 
 	<select id="checkUser" resultMap="userResultMap">
@@ -101,14 +104,15 @@
 		select X,Y,CLASS,ARGS,WALL_UP,WALL_DOWN,WALL_LEFT,WALL_RIGHT from SQUARE where BOARD_ID=#{boardId}
 	</select>
 	<select id="selectRobotList" resultMap="robotDto">
-		select NUMBER,X,Y,DIRECTION,HEALTH,GHOST,RAPIDITY,TRANSLATION,ROTATION,TARGET_NB,USER_NAME
+		select NUMBER,X,Y,DIRECTION,HEALTH,GHOST,POWER_DOWN_STATE,
+				RAPIDITY,TRANSLATION,ROTATION,TARGET_NB,USER_NAME
 		from ROBOT
 		join CARD on ROBOT.GAME_ID=CARD.GAME_ID and ROBOT.NUMBER=CARD.ROBOT_NB 
 		where ROBOT.GAME_ID=#{gameId}
 		order by NUMBER, INDEX
 	</select>
 	<select id="selectPlayerRobot" resultMap="playerRobot">
-		select NUMBER,HEALTH,DIRECTION,TARGET_NB,RAPIDITY,TRANSLATION,ROTATION from CARD
+		select NUMBER,HEALTH,DIRECTION,TARGET_NB,POWER_DOWN_STATE,RAPIDITY,TRANSLATION,ROTATION from CARD
 		join ROBOT on CARD.ROBOT_NB=ROBOT.NUMBER and CARD.GAME_ID=ROBOT.GAME_ID
 		where ROBOT.GAME_ID=#{gameId} and ROBOT.USER_NAME=#{username}
 		order by INDEX asc
@@ -121,7 +125,7 @@
 		order by ACTION.ROUND_NB, ACTION.STAGE_NB, ACTION.ACTION_NB, MOVE.STEP_NB, MOVE.MOVE_NB asc
 	</select>
 	<select id="selectState" resultMap="robotState">
-		select ROBOT_NB, ROUND_NB, X, Y, DIRECTION, HEALTH, GHOST from ROBOT_STATE where GAME_ID=#{gameId}
+		select ROBOT_NB, ROUND_NB, X, Y, DIRECTION, HEALTH, GHOST, POWER_DOWN_STATE from ROBOT_STATE where GAME_ID=#{gameId}
 		order by ROUND_NB, ROBOT_NB
 	</select>
 	<select id="selectCardList" resultMap="card">
@@ -150,9 +154,9 @@
 		)
 	</insert>
 	<insert id="insertRobot">
-		insert into ROBOT (NUMBER, GAME_ID, X, Y, DIRECTION, HEALTH, GHOST, TARGET_NB, USER_NAME)
+		insert into ROBOT (NUMBER, GAME_ID, X, Y, DIRECTION, HEALTH, GHOST, POWER_DOWN_STATE, TARGET_NB, USER_NAME)
 		values (#{robot.number}, #{gameId}, #{robot.square.x}, #{robot.square.y}, #{robot.direction}, 
-				#{robot.health}, #{robot.ghost}, #{robot.targetNumber}, #{robot.username})
+				#{robot.health}, #{robot.ghost}, #{robot.powerDownState}, #{robot.targetNumber}, #{robot.username})
 	</insert>
 	<insert id="insertAction">
 		insert into ACTION (GAME_ID, ROUND_NB, STAGE_NB, ACTION_NB, CARD_RAPIDITY, SQUARE_X, SQUARE_Y)
@@ -163,8 +167,8 @@
 		values (#{gameId}, #{roundNb}, #{stageNb}, #{actionIndex}, #{stepIndex}, #{moveIndex}, #{move.robot.number},  #{move.type}, #{move.args} )
 	</insert>
 	<insert id="insertRobotState">
-		insert into ROBOT_STATE (GAME_ID, ROBOT_NB, ROUND_NB, X, Y, DIRECTION, HEALTH, GHOST)
-		values (#{gameId}, #{robotNb}, #{roundNb}, #{state.x}, #{state.y}, #{state.direction}, #{state.health}, #{state.ghost})
+		insert into ROBOT_STATE (GAME_ID, ROBOT_NB, ROUND_NB, X, Y, DIRECTION, HEALTH, GHOST, POWER_DOWN_STATE)
+		values (#{gameId}, #{robotNb}, #{roundNb}, #{state.x}, #{state.y}, #{state.direction}, #{state.health}, #{state.ghost}, #{robot.powerDownState})
 	</insert>
 	
 	<update id="updateHandCard">
@@ -178,6 +182,9 @@
 	<update id="updateCard">
 		update CARD set INDEX=#{index}, ROBOT_NB=#{robotNb}, DISCARDED=#{discarded}
 		where GAME_ID=#{gameId} and RAPIDITY=#{card.rapidity}
+	</update>
+	<update id="updateRobotPowerDownState">
+		update ROBOT set POWER_DOWN_STATE=#{powerDownState} where NUMBER=#{robotNb} and GAME_ID=#{gameId}
 	</update>
 	
 </mapper>

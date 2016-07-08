@@ -3,6 +3,7 @@ package com.mrprez.roborally.dto;
 import java.util.List;
 
 import com.mrprez.roborally.model.Direction;
+import com.mrprez.roborally.model.PowerDownState;
 
 public class RobotDto {
 	private int number;
@@ -14,6 +15,7 @@ public class RobotDto {
 	private List<CardDto> cardList;
 	private Integer targetNumber;
 	private String username;
+	private PowerDownState powerDownState;
 	
 	
 	public int getNumber() {
@@ -69,6 +71,12 @@ public class RobotDto {
 	}
 	public void setTargetNumber(Integer targetNumber) {
 		this.targetNumber = targetNumber;
+	}
+	public PowerDownState getPowerDownState() {
+		return powerDownState;
+	}
+	public void setPowerDownState(PowerDownState powerDownState) {
+		this.powerDownState = powerDownState;
 	}
 
 }

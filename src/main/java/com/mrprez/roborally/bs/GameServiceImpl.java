@@ -11,6 +11,7 @@ import com.mrprez.roborally.ai.IARobot;
 import com.mrprez.roborally.dao.GameDao;
 import com.mrprez.roborally.model.Card;
 import com.mrprez.roborally.model.Game;
+import com.mrprez.roborally.model.PowerDownState;
 import com.mrprez.roborally.model.Robot;
 import com.mrprez.roborally.model.board.BuildingBoard;
 import com.mrprez.roborally.model.board.GameBoard;
@@ -120,6 +121,15 @@ public class GameServiceImpl implements GameService {
 		gameDao.saveRound(game.getId(), round);
 		
 		return round;
+	}
+
+	@Override
+	public void updatePowerDownState(Integer gameId, String username, PowerDownState powerDownState) {
+		Robot robot = gameDao.loadPlayerRobot(gameId, username);
+		if(robot.getPowerDownState()==PowerDownState.ONGOING){
+			throw new IllegalArgumentException("Cannot change power down state during power down");
+		}
+		gameDao.updatePowerDownState(gameId, robot.getNumber(), powerDownState);
 	}
 	
 

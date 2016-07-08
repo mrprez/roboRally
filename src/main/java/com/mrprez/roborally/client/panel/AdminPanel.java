@@ -39,7 +39,7 @@ public class AdminPanel extends FlowPanel {
 			@Override
 			public void onSuccess(RoundGwt round) {
 				animationPlayerPanel.addAndPlay(round);
-				handCardsPanel.reloadCards();
+				handCardsPanel.reload();
 			}
 		};
 	}

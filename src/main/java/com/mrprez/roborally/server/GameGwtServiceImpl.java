@@ -13,6 +13,7 @@ import com.mrprez.roborally.client.GameGwtService;
 import com.mrprez.roborally.model.Card;
 import com.mrprez.roborally.model.Direction;
 import com.mrprez.roborally.model.Game;
+import com.mrprez.roborally.model.PowerDownState;
 import com.mrprez.roborally.model.Robot;
 import com.mrprez.roborally.model.RobotState;
 import com.mrprez.roborally.model.Square;
@@ -86,18 +87,20 @@ public class GameGwtServiceImpl extends AbstractGwtService implements GameGwtSer
 
 	
 	@Override
-	public List<CardGwt> getCardList(Integer gameId) {
+	public RobotGwt getPlayerRobot(Integer gameId) {
 		UserGwt user = (UserGwt) getThreadLocalRequest().getSession().getAttribute(UserGwt.KEY);
-		List<CardGwt> gwtCardList = new ArrayList<CardGwt>();
 		Robot robot = gameService.getPlayerRobot(gameId, user.getUsername());
+		
+		RobotGwt robotGwt = dozerMapper.map(robot, RobotGwt.class);
+		robotGwt.setDirection(getDirectionChar(robot.getDirection()));
 		for(Card card : robot.getCards()){
 			CardGwt cardGwt = dozerMapper.map(card, CardGwt.class);
-			gwtCardList.add(cardGwt);
-			if(gwtCardList.size()>robot.getHealth()){
+			robotGwt.getCards().add(cardGwt);
+			if(robotGwt.getCards().size()>robot.getHealth()){
 				cardGwt.setBlocked(true);
 			}
 		}
-		return gwtCardList;
+		return robotGwt;
 	}
 	
 	
@@ -165,6 +168,12 @@ public class GameGwtServiceImpl extends AbstractGwtService implements GameGwtSer
 			stateGwt.setRobotNb(robot.getNumber());
 			roundGwt.getRobotStateList().add(stateGwt);
 		}
+	}
+
+	@Override
+	public void savePowerDownState(Integer gameId, String powerDownState) {
+		UserGwt user = (UserGwt) getThreadLocalRequest().getSession().getAttribute(UserGwt.KEY);
+		gameService.updatePowerDownState(gameId, user.getUsername(), PowerDownState.valueOf(powerDownState));
 	}
 	
 	

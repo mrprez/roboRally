@@ -22,6 +22,7 @@ public class Robot {
 	private boolean ghost = true;
 	private Integer targetNumber = 1;
 	private String username;
+	private PowerDownState powerDownState = PowerDownState.NONE;
 	
 	
 	protected Robot(){
@@ -242,6 +243,14 @@ public class Robot {
 			}
 		}
 		return null;
+	}
+
+	public PowerDownState getPowerDownState() {
+		return powerDownState;
+	}
+
+	public void setPowerDownState(PowerDownState powerDownState) {
+		this.powerDownState = powerDownState;
 	}
 	
 	

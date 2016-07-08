@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.mrprez.roborally.model.Card;
 import com.mrprez.roborally.model.Game;
+import com.mrprez.roborally.model.PowerDownState;
 import com.mrprez.roborally.model.Robot;
 import com.mrprez.roborally.model.history.Round;
 
@@ -23,5 +24,7 @@ public interface GameDao {
 	void updateGame(Game game);
 
 	void saveRound(Integer gameId, Round round);
+	
+	void updatePowerDownState(Integer gameId, Integer robotNb, PowerDownState powerDownState);
 
 }

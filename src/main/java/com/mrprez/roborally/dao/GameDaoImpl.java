@@ -21,6 +21,7 @@ import com.mrprez.roborally.model.Card;
 import com.mrprez.roborally.model.CardStock;
 import com.mrprez.roborally.model.Direction;
 import com.mrprez.roborally.model.Game;
+import com.mrprez.roborally.model.PowerDownState;
 import com.mrprez.roborally.model.Robot;
 import com.mrprez.roborally.model.RobotState;
 import com.mrprez.roborally.model.Square;
@@ -301,6 +302,15 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 				actionIndex++;
 			}
 		}
+	}
+
+	@Override
+	public void updatePowerDownState(Integer gameId, Integer robotNb, PowerDownState powerDownState) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("gameId", gameId);
+		params.put("robotNb", robotNb);
+		params.put("powerDownState", powerDownState);
+		getSession().update("updateRobotPowerDownState", params);
 	}
 
 	

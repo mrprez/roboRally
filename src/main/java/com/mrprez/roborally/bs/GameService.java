@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import com.mrprez.roborally.model.Game;
+import com.mrprez.roborally.model.PowerDownState;
 import com.mrprez.roborally.model.Robot;
 import com.mrprez.roborally.model.history.Round;
 
@@ -22,5 +23,7 @@ public interface GameService {
 	Game createNewGame(String name, String username, int sizeX, int sizeY);
 
 	Round playRound(Integer gameId, String username) throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InterruptedException, ExecutionException;
+
+	void updatePowerDownState(Integer gameId, String username, PowerDownState valueOf);
 
 }

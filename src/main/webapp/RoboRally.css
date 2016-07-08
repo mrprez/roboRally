@@ -102,3 +102,7 @@ h1 {
 .laser{
 	background-color: red;
 }
+
+.powerDownButton{
+	cursor: pointer;
+}

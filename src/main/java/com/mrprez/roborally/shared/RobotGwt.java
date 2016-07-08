@@ -1,5 +1,8 @@
 package com.mrprez.roborally.shared;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class RobotGwt implements IsSerializable {
@@ -10,11 +13,16 @@ public class RobotGwt implements IsSerializable {
 	private char direction;
 	private boolean ghost;
 	private Integer targetNb;
+	private String powerDownState;
+	private List<CardGwt> cards = new ArrayList<CardGwt>();
 	
 	
 	public String getImageName(){
 		StringBuilder imageName= new StringBuilder("img/robot/robot");
 		imageName.append(number);
+		if(powerDownState.equals("ONGOING")){
+			imageName.append("HT");
+		}
 		imageName.append(".gif");
 		return imageName.toString();
 	}
@@ -60,6 +68,9 @@ public class RobotGwt implements IsSerializable {
 	public void setTargetNb(Integer targetNb) {
 		this.targetNb = targetNb;
 	}
+	public List<CardGwt> getCards() {
+		return cards;
+	}
 	public double getAngle(){
 		switch (direction) {
 		case 'D':
@@ -71,6 +82,12 @@ public class RobotGwt implements IsSerializable {
 		default:
 			return 0;
 		}
+	}
+	public String getPowerDownState() {
+		return powerDownState;
+	}
+	public void setPowerDownState(String powerDownState) {
+		this.powerDownState = powerDownState;
 	}
 	
 
