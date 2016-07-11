@@ -106,10 +106,14 @@ public class GameServiceImpl implements GameService {
 		// TODO check user
 		
 		for(Robot robot : game.getRobotList()){
-			if(robot.getUsername()==null && robot.getTarget()!=null){
-				List<Card> orderedCards = new IARobot(robot).orderCard();
+			if(robot.getUsername()==null && robot.getTarget()!=null && robot.getPowerDownState()!= PowerDownState.ONGOING){
+				IARobot ia = new IARobot(robot);
+				List<Card> orderedCards = ia.orderCard();
 				robot.getCards().clear();
 				robot.getCards().addAll(orderedCards);
+				if(ia.shouldPowerDown()){
+					robot.setPowerDownState(PowerDownState.PLANNED);
+				}
 			}
 		}
 		

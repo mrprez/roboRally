@@ -1,6 +1,7 @@
 package com.mrprez.roborally.dto;
 
 import com.mrprez.roborally.model.Direction;
+import com.mrprez.roborally.model.PowerDownState;
 
 public class RobotStateDto {
 	private int robotNb;
@@ -10,6 +11,7 @@ public class RobotStateDto {
 	private int x;
 	private int y;
 	private boolean ghost;
+	private PowerDownState powerDownState;
 	
 	
 	public int getHealth() {
@@ -53,5 +55,11 @@ public class RobotStateDto {
 	}
 	public void setGhost(boolean ghost) {
 		this.ghost = ghost;
+	}
+	public PowerDownState getPowerDownState() {
+		return powerDownState;
+	}
+	public void setPowerDownState(PowerDownState powerDownState) {
+		this.powerDownState = powerDownState;
 	}
 }

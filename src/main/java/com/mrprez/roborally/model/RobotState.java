@@ -6,6 +6,7 @@ public class RobotState {
 	private int x;
 	private int y;
 	private boolean ghost = false;
+	private PowerDownState powerDownState;
 	
 	
 	public int getHealth() {
@@ -37,5 +38,11 @@ public class RobotState {
 	}
 	public void setGhost(boolean ghost) {
 		this.ghost = ghost;
+	}
+	public PowerDownState getPowerDownState() {
+		return powerDownState;
+	}
+	public void setPowerDownState(PowerDownState powerDownState) {
+		this.powerDownState = powerDownState;
 	}
 }

@@ -93,16 +93,25 @@ public class Robot {
 		this.cards = cards;
 	}
 	
-	public Collection<Card> changeCards(Collection<Card> newCards){
-		Collection<Card> garbage = new HashSet<Card>();
-		int i=0;
-		for(Card newCard : newCards){
-			garbage.add(cards.get(i));
-			cards.set(i, newCard);
-			i++;
+	public void changeCards(CardStock cardStock){
+		for(int i=0; i<9; i++){
+			if(i<cards.size() && i<getHealth()){
+				cardStock.discard(cards.get(i));
+				cards.set(i, cardStock.takeCard());
+			}
+			if(i==cards.size()){
+				cards.add(cardStock.takeCard());
+			}
 		}
+	}
+	
+	
+	public Collection<Card> giveBackCards(){
+		Collection<Card> garbage = new HashSet<Card>(cards);
+		cards.clear();
 		return garbage;
 	}
+	
 	
 	public Action playCard(int stageNb){
 		if(health==0){
@@ -207,6 +216,7 @@ public class Robot {
 		state.setHealth(health);
 		state.setX(square.getX());
 		state.setY(square.getY());
+		state.setPowerDownState(powerDownState);
 		return state;
 	}
 
@@ -239,6 +249,7 @@ public class Robot {
 			LoggerFactory.getLogger("GamePlay").trace("Robot "+number+" ("+health+"PV) is injuried");
 			health--;
 			if(health==0){
+				powerDownState = PowerDownState.NONE;
 				return new Step(new Move(MoveType.DIE, null, this));
 			}
 		}

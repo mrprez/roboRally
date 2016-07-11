@@ -107,13 +107,13 @@
 		select NUMBER,X,Y,DIRECTION,HEALTH,GHOST,POWER_DOWN_STATE,
 				RAPIDITY,TRANSLATION,ROTATION,TARGET_NB,USER_NAME
 		from ROBOT
-		join CARD on ROBOT.GAME_ID=CARD.GAME_ID and ROBOT.NUMBER=CARD.ROBOT_NB 
+		left join CARD on ROBOT.GAME_ID=CARD.GAME_ID and ROBOT.NUMBER=CARD.ROBOT_NB 
 		where ROBOT.GAME_ID=#{gameId}
 		order by NUMBER, INDEX
 	</select>
 	<select id="selectPlayerRobot" resultMap="playerRobot">
-		select NUMBER,HEALTH,DIRECTION,TARGET_NB,POWER_DOWN_STATE,RAPIDITY,TRANSLATION,ROTATION from CARD
-		join ROBOT on CARD.ROBOT_NB=ROBOT.NUMBER and CARD.GAME_ID=ROBOT.GAME_ID
+		select NUMBER,HEALTH,DIRECTION,TARGET_NB,POWER_DOWN_STATE,RAPIDITY,TRANSLATION,ROTATION from ROBOT
+		left join CARD on CARD.ROBOT_NB=ROBOT.NUMBER and CARD.GAME_ID=ROBOT.GAME_ID
 		where ROBOT.GAME_ID=#{gameId} and ROBOT.USER_NAME=#{username}
 		order by INDEX asc
 	</select>
@@ -168,7 +168,7 @@
 	</insert>
 	<insert id="insertRobotState">
 		insert into ROBOT_STATE (GAME_ID, ROBOT_NB, ROUND_NB, X, Y, DIRECTION, HEALTH, GHOST, POWER_DOWN_STATE)
-		values (#{gameId}, #{robotNb}, #{roundNb}, #{state.x}, #{state.y}, #{state.direction}, #{state.health}, #{state.ghost}, #{robot.powerDownState})
+		values (#{gameId}, #{robotNb}, #{roundNb}, #{state.x}, #{state.y}, #{state.direction}, #{state.health}, #{state.ghost}, #{state.powerDownState})
 	</insert>
 	
 	<update id="updateHandCard">
@@ -176,7 +176,7 @@
 	</update>
 	<update id="updateRobot">
 		update ROBOT set X=#{robot.square.x}, Y=#{robot.square.y}, DIRECTION=#{robot.direction}, 
-			HEALTH=#{robot.health}, GHOST=#{robot.ghost}, TARGET_NB=#{robot.targetNumber}
+			HEALTH=#{robot.health}, GHOST=#{robot.ghost}, TARGET_NB=#{robot.targetNumber}, POWER_DOWN_STATE=#{robot.powerDownState}
 		where NUMBER=#{robot.number} and GAME_ID=#{gameId}
 	</update>
 	<update id="updateCard">

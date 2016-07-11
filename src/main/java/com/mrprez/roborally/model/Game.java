@@ -1,8 +1,6 @@
 package com.mrprez.roborally.model;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -126,9 +124,11 @@ public class Game {
 		// On gère le power down
 		for(Robot robot : robotList){
 			if(robot.getPowerDownState()==PowerDownState.ONGOING){
+				logger.debug("End of power down for robot "+robot.getNumber());
 				robot.setPowerDownState(PowerDownState.NONE);
 			}
 			if(robot.getPowerDownState()==PowerDownState.PLANNED){
+				logger.debug("Start of power down for robot "+robot.getNumber());
 				robot.setHealth(9);
 				robot.setPowerDownState(PowerDownState.ONGOING);
 			}
@@ -136,23 +136,28 @@ public class Game {
 		
 		// On redistribue les cartes
 		for(Robot robot : robotList){
-			if(robot.getTarget()==null){
-				cardStock.discard(robot.changeCards(new ArrayList<Card>()));
-			}
-			if(robot.getTarget()!=null && robot.getPowerDownState()!=PowerDownState.ONGOING){
-				Collection<Card> newCards = new HashSet<Card>();
-				for(int i=0; i<robot.getHealth(); i++){
-					newCards.add(cardStock.takeCard());
-				}
-				Collection<Card> discarded = robot.changeCards(newCards);
-				cardStock.discard(discarded);
-			}
+			changeCards(robot);
 		}
 		
 		history.add(round);
 		
 		return round;
 	}
+	
+	
+	private void changeCards(Robot robot){
+		if(robot.getTarget()==null){
+			cardStock.discard(robot.giveBackCards());
+			return;
+		}
+		if(robot.getPowerDownState()==PowerDownState.ONGOING){
+			cardStock.discard(robot.giveBackCards());
+			return;
+		}
+		
+		robot.changeCards(cardStock);
+	}
+	
 	
 	private Action setRobotOnCheckpoint(Robot robot){
 		Action action = new Action();
@@ -162,7 +167,6 @@ public class Game {
 		Square checkpointSquare = board.getTargetSquares().get(checkPointNb);
 		robot.setSquare(checkpointSquare);
 		robot.setHealth(9);
-		robot.setPowerDownState(PowerDownState.NONE);
 		action.addStep(new Step(new Move(MoveType.APPEAR, checkpointSquare.getX()+","+checkpointSquare.getY(), robot)));
 		return action;
 	}

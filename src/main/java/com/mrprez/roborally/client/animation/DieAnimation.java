@@ -15,7 +15,8 @@ public class DieAnimation extends MoveAnimation {
 	@Override
 	public void onStart(){
 		String imageUri = robotCanvas.getCanvasElement().getAttribute("imageName");
-		ImageLoader.getInstance().loadImage(imageUri.replace(".gif", "M.gif"), new ImageLoaderCallback() {
+		imageUri = imageUri.replace("HT.gif", ".gif").replace(".gif", "M.gif");
+		ImageLoader.getInstance().loadImage(imageUri, new ImageLoaderCallback() {
 			@Override
 			public void onImageLoaded(Image image) {
 				ImageElement diedImageEl = ImageElement.as(image.getElement());

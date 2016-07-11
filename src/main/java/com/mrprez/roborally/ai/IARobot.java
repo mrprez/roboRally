@@ -23,6 +23,7 @@ public class IARobot {
 	private Map<DummyBoard, FutureTask<Double>> dummyBoardMap = new HashMap<DummyBoard, FutureTask<Double>>();
 	private Robot robot;
 	private Executor executor;
+	private double bestNote = Double.MAX_VALUE;
 	
 	
 	public IARobot(Robot robot) {
@@ -43,7 +44,6 @@ public class IARobot {
 		}
 		variateOneCard(fixCards, possibilities );
 		
-		double bestNote = Double.MAX_VALUE;
 		DummyBoard bestEvaluation = null;
 		for(DummyBoard dummyBoard : dummyBoardMap.keySet()){
 			FutureTask<Double> futureTask = dummyBoardMap.get(dummyBoard);
@@ -58,6 +58,7 @@ public class IARobot {
 		
 		return bestEvaluation.getCardList();
 	}
+	
 	
 	private void variateOneCard(List<Card> fixCards, Collection<Card> possibilities){
 		if(fixCards.size()>=5){
@@ -78,6 +79,15 @@ public class IARobot {
 				fixCards.remove(0);
 			}
 		}
+	}
+	
+	
+	public boolean shouldPowerDown(){
+		if(Math.pow(robot.getSquare().getX()-robot.getTarget().getX(), 2) + Math.pow(robot.getSquare().getY()-robot.getTarget().getY(), 2) < bestNote
+				&& robot.getHealth()<7){
+			return true;
+		}
+		return false;
 	}
 	
 	
