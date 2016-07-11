@@ -83,7 +83,7 @@ public class IARobot {
 	
 	
 	public boolean shouldPowerDown(){
-		if(Math.pow(robot.getSquare().getX()-robot.getTarget().getX(), 2) + Math.pow(robot.getSquare().getY()-robot.getTarget().getY(), 2) < bestNote
+		if(Math.pow(robot.getSquare().getX()-robot.getTarget().getX(), 2) + Math.pow(robot.getSquare().getY()-robot.getTarget().getY(), 2) <= bestNote
 				&& robot.getHealth()<7){
 			return true;
 		}
