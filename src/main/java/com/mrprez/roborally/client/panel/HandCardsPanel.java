@@ -23,8 +23,9 @@ public class HandCardsPanel extends FlexTable {
 	private static final int CARD_NUMBER = 9;
 	private GameGwtServiceAsync gameGwtService = GWT.create(GameGwtService.class);
 	private int gameId;
-	private Image powerDownOnImg = new Image("img/PowerDownOn.png");
+	private Image powerDownPlannedImg = new Image("img/PowerDownPlanned.png");
 	private Image powerDownOffImg = new Image("img/PowerDownOff.png");
+	private Image powerDownOngoingImg = new Image("img/PowerDownOnGoing.png");
 	
 	
 	public void init(int gameId){
@@ -43,11 +44,10 @@ public class HandCardsPanel extends FlexTable {
 			setWidget(1, index, label);
 		}
 		
-		powerDownOnImg.addStyleName("powerDownButton");
+		powerDownPlannedImg.addStyleName("powerDownButton");
 		powerDownOffImg.addStyleName("powerDownButton");
-		setWidget(0,9, powerDownOffImg);
 		powerDownOffImg.addClickHandler(buildPowerDownOffHandler());
-		powerDownOnImg.addClickHandler(buildPowerDownOnHandler());
+		powerDownPlannedImg.addClickHandler(buildPowerDownOnHandler());
 		getFlexCellFormatter().setRowSpan(0, CARD_NUMBER, 3);
 		
 		reload();
@@ -65,10 +65,12 @@ public class HandCardsPanel extends FlexTable {
 						setWidget(0, index, cardCanvas);
 					}
 				}
-				if(robot.getPowerDownState().equals("NONE")){
-					setWidget(0, CARD_NUMBER, powerDownOffImg);
+				if(robot.getPowerDownState().equals("ONGOING")){
+					setWidget(0, CARD_NUMBER, powerDownOngoingImg);
+				}else if(robot.getPowerDownState().equals("PLANNED")){
+					setWidget(0, CARD_NUMBER, powerDownPlannedImg);
 				}else{
-					setWidget(0, CARD_NUMBER, powerDownOnImg);
+					setWidget(0, CARD_NUMBER, powerDownOffImg);
 				}
 			}
 		});
@@ -107,7 +109,7 @@ public class HandCardsPanel extends FlexTable {
 					@Override
 					public void onSuccess(Void result) {
 						flexTable.remove(powerDownOffImg);
-						flexTable.setWidget(0, 9, powerDownOnImg);
+						flexTable.setWidget(0, 9, powerDownPlannedImg);
 					}
 				});
 				
@@ -123,7 +125,7 @@ public class HandCardsPanel extends FlexTable {
 				gameGwtService.savePowerDownState(gameId, "NONE", new AbstractAsyncCallback<Void>() {
 					@Override
 					public void onSuccess(Void result) {
-						flexTable.remove(powerDownOnImg);
+						flexTable.remove(powerDownPlannedImg);
 						flexTable.setWidget(0, 9, powerDownOffImg);
 					}
 				});

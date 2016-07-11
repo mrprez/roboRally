@@ -88,8 +88,8 @@ public class Game {
 			checkGhosts(stage);
 			
 			// on tire des laser
-			for(Robot robot : robotList){
-				if( ! robot.isGhost() && robot.getHealth()>0 && robot.getPowerDownState()!=PowerDownState.ONGOING){
+			for(Robot robot : robotOrderedList){
+				if( ! robot.isGhost() ){
 					stage.addAction( robot.fireLaser() );
 				}
 			}
@@ -126,11 +126,13 @@ public class Game {
 			if(robot.getPowerDownState()==PowerDownState.ONGOING){
 				logger.debug("End of power down for robot "+robot.getNumber());
 				robot.setPowerDownState(PowerDownState.NONE);
+				round.getStage(STAGE_NB-1).addAction(new Action(new Step(new Move(MoveType.POWER_DOWN, PowerDownState.NONE.name(), robot))));
 			}
 			if(robot.getPowerDownState()==PowerDownState.PLANNED){
 				logger.debug("Start of power down for robot "+robot.getNumber());
 				robot.setHealth(9);
 				robot.setPowerDownState(PowerDownState.ONGOING);
+				round.getStage(STAGE_NB-1).addAction(new Action(new Step(new Move(MoveType.POWER_DOWN, PowerDownState.ONGOING.name(), robot))));
 			}
 		}
 		
