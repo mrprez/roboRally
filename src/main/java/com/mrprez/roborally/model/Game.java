@@ -105,6 +105,7 @@ public class Game {
 						}
 						robot.setSquare(null);
 						robot.setHealth(0);
+						robot.setPowerDownState(PowerDownState.NONE);
 						stage.addAction(buildWinAction(robot));
 					}else{
 						stage.addAction(buildReachedTargetAction(robot));
@@ -181,7 +182,7 @@ public class Game {
 				boolean ghost = false;
 				for(Robot otherRobot : robotList){
 					if(robot.getNumber() != otherRobot.getNumber()){
-						if(otherRobot.getSquare().getX() == robot.getSquare().getX()
+						if(otherRobot.getSquare()!=null && otherRobot.getSquare().getX() == robot.getSquare().getX()
 								&& otherRobot.getSquare().getY() == robot.getSquare().getY()){
 							logger.debug("Robot "+robot.getNumber()+" is still ghost due to robot "+otherRobot.getNumber());
 							ghost = true;
