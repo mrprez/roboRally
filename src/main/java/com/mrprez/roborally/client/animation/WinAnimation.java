@@ -57,6 +57,8 @@ public class WinAnimation extends MoveAnimation {
 	@Override
 	public void onComplete(){
 		robotCanvas.getCanvasElement().getStyle().setDisplay(Display.NONE);
+		robotCanvas.removeStyleName("redBackGround");
+		robotCanvas.removeStyleName("yellowBackGround");
 		label.removeFromParent();
 	}
 	
