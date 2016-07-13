@@ -201,12 +201,8 @@ public class Game {
 	
 	
 	private Action buildWinAction(Robot robot){
-		Action winAction = new Action();
-		Step targetStep = new Step();
-		winAction.addStep(targetStep);
 		Move targetMove = new Move(MoveType.WIN, null, robot);
-		targetStep.addMove(targetMove);
-		return winAction;
+		return new Action(new Step(targetMove));
 	}
 	
 	
