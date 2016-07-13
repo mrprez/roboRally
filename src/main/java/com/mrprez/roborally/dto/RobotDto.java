@@ -7,8 +7,8 @@ import com.mrprez.roborally.model.PowerDownState;
 
 public class RobotDto {
 	private int number;
-	private int x;
-	private int y;
+	private Integer x;
+	private Integer y;
 	private int health;
 	private boolean ghost;
 	private Direction direction;
@@ -24,16 +24,16 @@ public class RobotDto {
 	public void setNumber(int number) {
 		this.number = number;
 	}
-	public int getX() {
+	public Integer getX() {
 		return x;
 	}
-	public void setX(int x) {
+	public void setX(Integer x) {
 		this.x = x;
 	}
-	public int getY() {
+	public Integer getY() {
 		return y;
 	}
-	public void setY(int y) {
+	public void setY(Integer y) {
 		this.y = y;
 	}
 	public int getHealth() {

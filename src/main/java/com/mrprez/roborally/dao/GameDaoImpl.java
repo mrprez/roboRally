@@ -105,7 +105,10 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 		List<Robot> robotList = new ArrayList<Robot>();
 		List<RobotDto> robotDtoList = getSession().selectList("selectRobotList", game.getId());
 		for(RobotDto robotDto : robotDtoList){
-			Square square = game.getBoard().getSquare(robotDto.getX(), robotDto.getY());
+			Square square = null;
+			if(robotDto.getX()!=null && robotDto.getY()!=null){
+				square = game.getBoard().getSquare(robotDto.getX(), robotDto.getY());
+			}
 			Robot robot = new Robot(square, robotDto.getGhost());
 			dozerMapper.map(robotDto, robot);
 			for(CardDto cardDto : robotDto.getCardList()){
