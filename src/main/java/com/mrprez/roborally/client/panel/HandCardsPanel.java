@@ -35,20 +35,21 @@ public class HandCardsPanel extends FlexTable {
 		Button saveButton = new Button("Sauvegarder");
 		saveButton.addClickHandler(buildSaveHandHandler());
 		setWidget(2, 0, saveButton);
+		getFlexCellFormatter().setRowSpan(1, 0, 2);
 		getFlexCellFormatter().setColSpan(2, 0, CARD_NUMBER);
 		getFlexCellFormatter().addStyleName(2, 0, "saveCardsLine");
 		
 		for(int index=0; index<CARD_NUMBER; index++){
 			Label label = new Label(index<5 ? String.valueOf(index+1) : "X");
 			label.addStyleName("cardTurnNb");
-			setWidget(1, index, label);
+			setWidget(1, index+1, label);
 		}
 		
 		powerDownPlannedImg.addStyleName("powerDownButton");
 		powerDownOffImg.addStyleName("powerDownButton");
 		powerDownOffImg.addClickHandler(buildPowerDownOffHandler());
 		powerDownPlannedImg.addClickHandler(buildPowerDownOnHandler());
-		getFlexCellFormatter().setRowSpan(0, CARD_NUMBER, 3);
+		getFlexCellFormatter().setRowSpan(0, CARD_NUMBER+1, 3);
 		
 		reload();
 	}
@@ -58,21 +59,26 @@ public class HandCardsPanel extends FlexTable {
 		gameGwtService.getPlayerRobot(gameId, new AbstractAsyncCallback<RobotGwt>() {
 			@Override
 			public void onSuccess(RobotGwt robot) {
+				setWidget(0, 0, new Image(robot.getImageName()));
+				if(robot.getTargetNb()!=null){
+					setWidget(1, 0, new Image("img/Target"+robot.getTargetNb()+".png"));
+				}else{
+					clearCell(1, 0);
+				}
 				for(int index=0; index<CARD_NUMBER; index++){
-					clearCell(0, index);
 					if(index<robot.getCards().size()){
 						Canvas cardCanvas = CardCanvasFactory.build(robot.getCards().get(index), index);
-						setWidget(0, index, cardCanvas);
+						setWidget(0, index+1, cardCanvas);
 					}else{
-						setWidget(0, index, new Image("img/card/noCard.jpg"));
+						setWidget(0, index+1, new Image("img/card/noCard.jpg"));
 					}
 				}
 				if(robot.getPowerDownState().equals("ONGOING")){
-					setWidget(0, CARD_NUMBER, powerDownOngoingImg);
+					setWidget(0, CARD_NUMBER+1, powerDownOngoingImg);
 				}else if(robot.getPowerDownState().equals("PLANNED")){
-					setWidget(0, CARD_NUMBER, powerDownPlannedImg);
+					setWidget(0, CARD_NUMBER+1, powerDownPlannedImg);
 				}else{
-					setWidget(0, CARD_NUMBER, powerDownOffImg);
+					setWidget(0, CARD_NUMBER+1, powerDownOffImg);
 				}
 			}
 		});
@@ -85,7 +91,7 @@ public class HandCardsPanel extends FlexTable {
 			@Override
 			public void onClick(ClickEvent event) {
 				List<Integer> cardRapidityList = new ArrayList<Integer>();
-				for(int i=0; i<CARD_NUMBER; i++){
+				for(int i=1; i<=CARD_NUMBER; i++){
 					Integer rapidity = Integer.valueOf(getWidget(0, i).getElement().getAttribute("rapidity"));
 					cardRapidityList.add(rapidity);
 				}
@@ -111,7 +117,7 @@ public class HandCardsPanel extends FlexTable {
 					@Override
 					public void onSuccess(Void result) {
 						flexTable.remove(powerDownOffImg);
-						flexTable.setWidget(0, 9, powerDownPlannedImg);
+						flexTable.setWidget(0, CARD_NUMBER+1, powerDownPlannedImg);
 					}
 				});
 				
@@ -128,7 +134,7 @@ public class HandCardsPanel extends FlexTable {
 					@Override
 					public void onSuccess(Void result) {
 						flexTable.remove(powerDownPlannedImg);
-						flexTable.setWidget(0, 9, powerDownOffImg);
+						flexTable.setWidget(0, CARD_NUMBER+1, powerDownOffImg);
 					}
 				});
 			}

@@ -27,6 +27,10 @@
 			<a>square.y</a>
 			<b>y</b>
 		</field>
+		<field>
+			<a>targetNumber</a>
+			<b>targetNb</b>
+		</field>
 	</mapping>
 	
 	<mapping>

@@ -63,18 +63,24 @@ public class BoardPanel extends AbsolutePanel {
 				if(square.isWallDown()){
 					drawWall("img/WallDown.gif", context2d, x, y);
 				}
+				
+				if(square.getTargetNumber()!=null){
+					drawTarget(square.getTargetImgName(), context2d, x, y);
+				}
+				
 			}
 		});
-		
-		if(square.getTargetNumber()!=null){
-			ImageLoader.getInstance().loadImage(square.getTargetImgName(), new ImageLoaderCallback() {
-				@Override
-				public void onImageLoaded(Image image) {
-					ImageElement imageEl = ImageElement.as(image.getElement());
-					context2d.drawImage(imageEl, x*97, y*97);
-				}
-			});
-		}
+	}
+	
+	
+	private void drawTarget(String targetImgUrl, final Context2d context2d, final int x, final int y){
+		ImageLoader.getInstance().loadImage(targetImgUrl, new ImageLoaderCallback() {
+			@Override
+			public void onImageLoaded(Image image) {
+				ImageElement imageEl = ImageElement.as(image.getElement());
+				context2d.drawImage(imageEl, x*97, y*97);
+			}
+		});
 	}
 	
 	

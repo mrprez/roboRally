@@ -71,10 +71,10 @@ public class CardCanvasFactory implements IsSerializable {
 				int draggedIndex = Integer.parseInt(droppedCanvas.getElement().getAttribute("index"));
 				int droppedIndex = Integer.parseInt(receptionCanvas.getElement().getAttribute("index"));
 				FlexTable cardPanel = (FlexTable) droppedCanvas.getParent();
-				cardPanel.clearCell(0, draggedIndex);
-				cardPanel.clearCell(0, droppedIndex);
-				cardPanel.setWidget(0, droppedIndex, droppedCanvas);
-				cardPanel.setWidget(0, draggedIndex, receptionCanvas);
+				cardPanel.clearCell(0, draggedIndex+1);
+				cardPanel.clearCell(0, droppedIndex+1);
+				cardPanel.setWidget(0, droppedIndex+1, droppedCanvas);
+				cardPanel.setWidget(0, draggedIndex+1, receptionCanvas);
 				droppedCanvas.getElement().setAttribute("index", String.valueOf(droppedIndex));
 				receptionCanvas.getElement().setAttribute("index", String.valueOf(draggedIndex));
 			}
