@@ -10,6 +10,7 @@ import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FormPanel;
@@ -46,16 +47,29 @@ public class Home implements EntryPoint {
 					urlBuilder.setParameter("gameId", String.valueOf(game.getId()));
 					gameList.add(new Anchor(game.getName(), urlBuilder.buildString()));
 				}
-				gameList.add(buildNewGameFormPanel());
 			}
 		});
+		
+		final DialogBox newGameDialogBox = new DialogBox(false, true);
+		newGameDialogBox.setText("Nouvelle partie");
+		newGameDialogBox.add(buildNewGameFormPanel());
+		
+		Button newGameButton = new Button("Nouvelle partie");
+		newGameButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				newGameDialogBox.center();
+			}
+		});
+		verticalPanel.add(newGameButton);
+		
 	}
 	
 	
 	
 	private FormPanel buildNewGameFormPanel(){
 		final FormPanel formPanel = new FormPanel();
-		FlexTable flexTable = new FlexTable();
+		final FlexTable flexTable = new FlexTable();
 		formPanel.add(flexTable);
 		
 		flexTable.setWidget(0,0,new Label("Nom"));
@@ -66,13 +80,32 @@ public class Home implements EntryPoint {
 		FlowPanel sizePanel = new FlowPanel();
 		IntegerBox sizeXField = new IntegerBox();
 		sizeXField.getElement().setAttribute("type", "number");
+		sizeXField.addStyleName("sizeField");
 		IntegerBox sizeYField = new IntegerBox();
 		sizeYField.getElement().setAttribute("type", "number");
+		sizeYField.addStyleName("sizeField");
 		sizePanel.add(sizeXField);
 		sizePanel.add(new InlineLabel("x"));
 		sizePanel.add(sizeYField);
 		flexTable.setWidget(1, 1, sizePanel);
 		
+		FlowPanel newPlayerPanel = new FlowPanel();
+		final TextBox newPlayerTextBox = new TextBox();
+		Button addPlayerButton = new Button("+");
+		newPlayerPanel.add(newPlayerTextBox);
+		newPlayerPanel.add(addPlayerButton);
+		flexTable.getFlexCellFormatter().setColSpan(2, 0, 2);
+		flexTable.setWidget(2, 0, newPlayerPanel);
+		
+		addPlayerButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				flexTable.insertRow(3);
+				flexTable.getFlexCellFormatter().setColSpan(3, 0, 2);
+				flexTable.setWidget(3, 0, new Label(newPlayerTextBox.getText()));
+			}
+		});
+				
 		Button submitButton = new Button("Créer");
 		submitButton.addClickHandler(new ClickHandler() {
 			@Override
@@ -80,7 +113,7 @@ public class Home implements EntryPoint {
 				formPanel.submit();
 			}
 		});
-		flexTable.setWidget(2,1,submitButton);
+		flexTable.setWidget(3,1,submitButton);
 		
 		formPanel.addSubmitHandler(buildSubmitHandler(nameField, sizeXField, sizeYField));
 		

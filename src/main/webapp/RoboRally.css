@@ -38,6 +38,10 @@ h1 {
 	margin-right: auto;
 }
 
+.sizeField{
+	width: 50px;
+}
+
 .gameCanvas{
 	position: absolute;
 }
