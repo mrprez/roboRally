@@ -50,10 +50,12 @@ public class Game {
 		Logger logger = LoggerFactory.getLogger("GamePlay");
 		Round round = new Round(history.size());
 		for(Robot robot : robotList){
-			logger.debug("Robot "+robot.getNumber()+" is on "
-					+robot.getSquare().getX()+","+robot.getSquare().getY()+"("+robot.getDirection()+") "
-					+"with "+robot.getHealth()+"PV");
-			round.setState(robot, robot.getState());
+			if(robot.getSquare()!=null){
+				logger.debug("Robot "+robot.getNumber()+" is on "
+						+robot.getSquare().getX()+","+robot.getSquare().getY()+"("+robot.getDirection()+") "
+						+"with "+robot.getHealth()+"PV");
+				round.setState(robot, robot.getState());
+			}
 		}
 		logger.debug("Start play round "+round.getNumber());
 		for(int stageNb=0; stageNb<STAGE_NB; stageNb++){
