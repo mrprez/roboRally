@@ -38,8 +38,43 @@ h1 {
 	margin-right: auto;
 }
 
+.newGameDialogBox input{
+	margin: 2px;
+}
+
+.newGameFormLabel{
+	display: inline-block;
+	width: 80px;
+}
+
+.gameNameField{
+	width: 231px;
+}
+
+.newPlayerField{
+	width: 289px;
+}
+
 .sizeField{
-	width: 50px;
+	width: 110px;
+}
+
+.addPlayerButton{
+	width: 30px;
+}
+
+.removeInvitedPlayerButton{
+	width: 30px;
+}
+
+.invitedPlayerMailLabel{
+	display: inline-block;
+	width: 301px;
+}
+
+.createGameButton{
+	display: block;
+	margin: 5px auto !important;
 }
 
 .gameCanvas{
