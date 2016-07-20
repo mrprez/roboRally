@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import javax.mail.internet.AddressException;
+
 import org.dozer.DozerBeanMapper;
 
 import com.mrprez.roborally.bs.GameService;
@@ -142,9 +144,12 @@ public class GameGwtServiceImpl extends AbstractGwtService implements GameGwtSer
 	}
 
 	@Override
-	public int createNewGame(String name, int sizeX, int sizeY) {
+	public int createNewGame(String name, int sizeX, int sizeY, int aiNb, List<String> invitedPlayerEMails) throws AddressException, Exception {
+		if(sizeX<=0 || sizeY<=0 || sizeX*sizeY>1000 || aiNb<0 || aiNb+invitedPlayerEMails.size()>7){
+			throw new IllegalArgumentException();
+		}
 		UserGwt user = (UserGwt) getThreadLocalRequest().getSession().getAttribute(UserGwt.KEY);
-		Game game = gameService.createNewGame(name, user.getUsername(), sizeX, sizeY);
+		Game game = gameService.createNewGame(name, user.getUsername(), sizeX, sizeY, aiNb, invitedPlayerEMails);
 		return game.getId();
 	}
 

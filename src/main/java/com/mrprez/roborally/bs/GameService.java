@@ -4,6 +4,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import javax.mail.internet.AddressException;
+
 import com.mrprez.roborally.model.Game;
 import com.mrprez.roborally.model.PowerDownState;
 import com.mrprez.roborally.model.Robot;
@@ -20,7 +22,7 @@ public interface GameService {
 
 	void saveRobotCards(Integer gameId, String username, List<Integer> cardList);
 	
-	Game createNewGame(String name, String username, int sizeX, int sizeY);
+	Game createNewGame(String name, String username, int sizeX, int sizeY, int aiNb, List<String> invitedPlayerEMails) throws AddressException, Exception;
 
 	Round playRound(Integer gameId, String username) throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InterruptedException, ExecutionException;
 

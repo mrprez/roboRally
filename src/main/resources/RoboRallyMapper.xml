@@ -5,6 +5,7 @@
 <mapper namespace="com.mrprez.roborally.model">
 	<resultMap id="userResultMap" type="com.mrprez.roborally.model.User">
 		<id property="username" column="USERNAME" />
+		<result property="eMail" column="E_MAIL" />
 	</resultMap>
 	<resultMap id="game" type="com.mrprez.roborally.model.Game">
 		<id property="id" column="ID" />
@@ -88,8 +89,11 @@
 	</resultMap>
 
 	<select id="checkUser" resultMap="userResultMap">
-		select USERNAME from ACCOUNT where
+		select USERNAME, E_MAIL from ACCOUNT where
 		USERNAME=#{username} and PASSWORD=#{password}
+	</select>
+	<select id="getUserByEMail" resultMap="userResultMap">
+		select USERNAME, E_MAIL from ACCOUNT where E_MAIL=#{eMail}
 	</select>
 	<select id="selectUserGames" resultMap="game">
 		select ID, NAME from GAME where OWNER=#{username}
@@ -169,6 +173,9 @@
 	<insert id="insertRobotState">
 		insert into ROBOT_STATE (GAME_ID, ROBOT_NB, ROUND_NB, X, Y, DIRECTION, HEALTH, GHOST, POWER_DOWN_STATE)
 		values (#{gameId}, #{robotNb}, #{roundNb}, #{state.x}, #{state.y}, #{state.direction}, #{state.health}, #{state.ghost}, #{state.powerDownState})
+	</insert>
+	<insert id="saveInvitation">
+		insert into INVITATION (GAME_ID, E_MAIL, TOKEN) values (#{gameId}, #{eMail}, #{token})
 	</insert>
 	
 	<update id="updateHandCard">

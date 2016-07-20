@@ -7,12 +7,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import javax.mail.internet.AddressException;
+
 import com.mrprez.roborally.ai.IARobot;
 import com.mrprez.roborally.dao.GameDao;
+import com.mrprez.roborally.dao.MailResource;
+import com.mrprez.roborally.dao.UserDao;
 import com.mrprez.roborally.model.Card;
 import com.mrprez.roborally.model.Game;
 import com.mrprez.roborally.model.PowerDownState;
 import com.mrprez.roborally.model.Robot;
+import com.mrprez.roborally.model.User;
 import com.mrprez.roborally.model.board.BuildingBoard;
 import com.mrprez.roborally.model.board.GameBoard;
 import com.mrprez.roborally.model.history.Round;
@@ -20,6 +25,9 @@ import com.mrprez.roborally.model.history.Round;
 public class GameServiceImpl implements GameService {
 
 	private GameDao gameDao;
+	private UserDao userDao;
+	private MailResource mailResource;
+	
 	
 	@Override
 	public List<Game> getUserGames(String username) {
@@ -37,15 +45,6 @@ public class GameServiceImpl implements GameService {
 	@Override
 	public Robot getPlayerRobot(Integer gameId, String username) {
 		return gameDao.loadPlayerRobot(gameId, username);
-	}
-
-	
-	public GameDao getGameDao() {
-		return gameDao;
-	}
-
-	public void setGameDao(GameDao gameDao) {
-		this.gameDao = gameDao;
 	}
 
 	@Override
@@ -70,7 +69,7 @@ public class GameServiceImpl implements GameService {
 	}
 
 	@Override
-	public Game createNewGame(String name, String username, int sizeX, int sizeY) {
+	public Game createNewGame(String name, String username, int sizeX, int sizeY, int aiNb, List<String> invitedEMails) throws AddressException, Exception {
 		Game game = new Game();
 		game.setName(name);
 		game.setOwnername(username);
@@ -89,7 +88,18 @@ public class GameServiceImpl implements GameService {
 		Robot playerRobot = game.addRobot();
 		playerRobot.setUsername(username);
 		
-		for(int i=2; i<=6;i++){
+		for(String invitedEMail : invitedEMails){
+			User user = userDao.getUserByEMail(invitedEMail);
+			if(user==null){
+				
+			}else{
+				playerRobot = game.addRobot();
+				playerRobot.setUsername(user.getUsername());
+				mailResource.send(invitedEMail, "Nouvelle partie de RobotRally", username+" vous a invité à jouer à la partie "+name);
+			}
+		}
+		
+		for(int i=0; i<aiNb;i++){
 			game.addRobot();
 		}
 		
@@ -117,7 +127,6 @@ public class GameServiceImpl implements GameService {
 			}
 		}
 		
-		
 		Round round = game.play();
 		
 		gameDao.updateGame(game);
@@ -134,6 +143,30 @@ public class GameServiceImpl implements GameService {
 			throw new IllegalArgumentException("Cannot change power down state during power down");
 		}
 		gameDao.updatePowerDownState(gameId, robot.getNumber(), powerDownState);
+	}
+
+	public UserDao getUserDao() {
+		return userDao;
+	}
+
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
+	}
+	
+	public GameDao getGameDao() {
+		return gameDao;
+	}
+
+	public void setGameDao(GameDao gameDao) {
+		this.gameDao = gameDao;
+	}
+
+	public MailResource getMailResource() {
+		return mailResource;
+	}
+
+	public void setMailResource(MailResource mailResource) {
+		this.mailResource = mailResource;
 	}
 	
 

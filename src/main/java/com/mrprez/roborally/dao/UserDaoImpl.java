@@ -17,9 +17,19 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 		return getSession().selectOne("checkUser", parameters);
 	}
 
+	@Override
+	public void saveInvitation(int gameId, String eMail, String token) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("gameId", gameId);
+		parameters.put("eMail", eMail);
+		parameters.put("token", token);
+		getSession().insert("saveInvitation", parameters);
+	}
 
-	
-	
+	@Override
+	public User getUserByEMail(String eMail) {
+		return getSession().selectOne("getUserByEMail", eMail);
+	}
 	
 
 }
