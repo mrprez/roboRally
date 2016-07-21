@@ -32,4 +32,6 @@ public interface GameDao {
 
 	void insertHandCards(int gameId, int number, List<Card> cards);
 
+	void saveRobot(Robot robot, int gameId);
+
 }
