@@ -10,6 +10,7 @@
 	<resultMap id="game" type="com.mrprez.roborally.model.Game">
 		<id property="id" column="ID" />
 		<result property="name" column="NAME" />
+		<result property="state" column="STATE" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
 	</resultMap>
 	<resultMap id="card" type="com.mrprez.roborally.model.Card">
 		<constructor>
@@ -21,6 +22,7 @@
 	<resultMap id="gameBoard" type="com.mrprez.roborally.dto.GameBoardDto">
 		<result property="boardId" column="BOARD_ID" />
 		<result property="name" column="NAME" />
+		<result property="state" column="STATE" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
 		<result property="sizeX" column="SIZE_X" />
 		<result property="sizeY" column="SIZE_Y" />
 		<collection property="targetList" ofType="com.mrprez.roborally.dto.TargetDto">
@@ -99,7 +101,7 @@
 		select ID, NAME from GAME where OWNER=#{username}
 	</select>
 	<select id="selectGame" resultMap="gameBoard">
-		select GAME.BOARD_ID,NAME,SIZE_X,SIZE_Y,TARGET.X as TARGET_X,TARGET.Y as TARGET_Y from GAME
+		select GAME.BOARD_ID,NAME,STATE,SIZE_X,SIZE_Y,TARGET.X as TARGET_X,TARGET.Y as TARGET_Y from GAME
 		join BOARD on BOARD.ID=GAME.BOARD_ID
 		join TARGET on TARGET.BOARD_ID=BOARD.ID
 		where GAME.ID=#{id}
@@ -149,7 +151,7 @@
 		insert into TARGET (BOARD_ID, TARGET_NB, X, Y) values (#{boardId}, #{targetNb}, #{x}, #{y})
 	</insert>
 	<insert id="insertGame" keyProperty="id" keyColumn="ID" useGeneratedKeys="true">
-		insert into GAME (OWNER, NAME, BOARD_ID) values (#{ownername}, #{name}, #{board.id})
+		insert into GAME (OWNER, NAME, STATE, BOARD_ID) values (#{ownername}, #{name}, #{state}, #{board.id})
 	</insert>
 	<insert id="insertCard">
 		insert into CARD (GAME_ID, RAPIDITY, TRANSLATION, ROTATION, INDEX, ROBOT_NB, DISCARDED) 

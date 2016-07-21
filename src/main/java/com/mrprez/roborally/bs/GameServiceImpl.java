@@ -87,27 +87,33 @@ public class GameServiceImpl implements GameService {
 		
 		Robot playerRobot = game.addRobot();
 		playerRobot.setUsername(username);
-		
+		for(int i=0; i<aiNb;i++){
+			game.addRobot();
+		}
 		for(String invitedEMail : invitedEMails){
 			User user = userDao.getUserByEMail(invitedEMail);
-			if(user==null){
-				
-			}else{
+			if(user!=null){
 				playerRobot = game.addRobot();
 				playerRobot.setUsername(user.getUsername());
 				mailResource.send(invitedEMail, "Nouvelle partie de RobotRally", username+" vous a invité à jouer à la partie "+name);
 			}
 		}
 		
-		for(int i=0; i<aiNb;i++){
-			game.addRobot();
-		}
-		
-		game.start();
-		
 		gameDao.insertNewGame(game);
 		
 		return game;
+	}
+	
+	
+	public void initGame(int gameId) throws InstantiationException, IllegalAccessException, ClassNotFoundException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
+		Game game = gameDao.loadGame(gameId);
+		
+		game.start();
+		
+		gameDao.insertCardStock(game.getCardStock(), gameId);
+		for(Robot robot : game.getRobotList()){
+			gameDao.insertHandCards(gameId, robot.getNumber(), robot.getCards());
+		}
 	}
 
 	@Override

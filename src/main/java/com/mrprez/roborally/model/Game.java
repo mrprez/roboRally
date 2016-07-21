@@ -21,6 +21,7 @@ public class Game {
 	
 	private Integer id;
 	private String name;
+	private GameState state;
 	private String ownername;
 	private GameBoard board;
 	private List<Robot> robotList = new ArrayList<Robot>();
@@ -279,6 +280,16 @@ public class Game {
 		this.cardStock = cardStock;
 	}
 
-	
+	public GameState getState() {
+		return state;
+	}
+
+	public void setState(GameState state) {
+		this.state = state;
+	}
+
+	public static enum GameState{
+		INITIALIZATION, ONGOING, FINISHED
+	}
 	
 }

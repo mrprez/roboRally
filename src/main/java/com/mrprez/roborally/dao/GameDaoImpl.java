@@ -170,6 +170,19 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 		params.put("username", username);
 		return getSession().selectOne("selectPlayerRobot", params);
 	}
+	
+	@Override
+	public void insertHandCards(int gameId, int robotNumber, List<Card> cards){
+		int index = 0;
+		for(Card card : cards){
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("gameId", gameId);
+			params.put("card", card);
+			params.put("index", index++);
+			params.put("robotNb", robotNumber);
+			getSession().insert("insertCard", params);
+		}
+	}
 
 	@Override
 	public void saveHandCards(Integer gameId, int robotNumber, List<Card> cardList) {
@@ -200,30 +213,26 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 			getSession().insert("insertTarget", params);
 		}
 		getSession().insert("insertGame", game);
-		int index = 0;
-		for(Card card : game.getCardStock().getStock()){
-			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("gameId", game.getId());
-			params.put("card", card);
-			params.put("index", index++);
-			getSession().insert("insertCard", params);
-		}	
 		for(Robot robot : game.getRobotList()){
 			Map<String, Object> robotParams = new HashMap<String, Object>();
 			robotParams.put("gameId", game.getId());
 			robotParams.put("robot", robot);
 			getSession().insert("insertRobot", robotParams);
-			index = 0;
-			for(Card card : robot.getCards()){
-				Map<String, Object> params = new HashMap<String, Object>();
-				params.put("gameId", game.getId());
-				params.put("card", card);
-				params.put("index", index++);
-				params.put("robotNb", robot.getNumber());
-				getSession().insert("insertCard", params);
-			}
 		}
 	}
+	
+	@Override
+	public void insertCardStock(CardStock cardStock, int gameId){
+		int index = 0;
+		for(Card card : cardStock.getStock()){
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("gameId", gameId);
+			params.put("card", card);
+			params.put("index", index++);
+			getSession().insert("insertCard", params);
+		}
+	}
+	
 
 	@Override
 	public void updateGame(Game game) {
