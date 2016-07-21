@@ -30,6 +30,18 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 	public User getUserByEMail(String eMail) {
 		return getSession().selectOne("getUserByEMail", eMail);
 	}
+
+	@Override
+	public Map<Integer, String> getInvitations(String eMail) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void saveUser(User user, String buildMD5Digest) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 }

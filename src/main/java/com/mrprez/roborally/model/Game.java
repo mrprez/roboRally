@@ -21,7 +21,7 @@ public class Game {
 	
 	private Integer id;
 	private String name;
-	private GameState state;
+	private GameState state = GameState.INITIALIZATION;
 	private String ownername;
 	private GameBoard board;
 	private List<Robot> robotList = new ArrayList<Robot>();

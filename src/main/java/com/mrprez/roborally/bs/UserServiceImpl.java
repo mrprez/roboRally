@@ -3,6 +3,7 @@ package com.mrprez.roborally.bs;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.util.Map;
 
 import com.mrprez.roborally.dao.UserDao;
 import com.mrprez.roborally.model.User;
@@ -38,6 +39,23 @@ public class UserServiceImpl implements UserService {
 		return digestStringBuffer.toString();
 	}
 
+	@Override
+	public User register(String username, String password, String eMail, String token) {
+		String md5 = buildMD5Digest(password);
+		Map<Integer, String> tokens = userDao.getInvitations(eMail);
+		if( ! tokens.containsValue(token)){
+			return null;
+		}
+		User user = new User();
+		user.seteMail(eMail);
+		user.setUsername(username);
+		userDao.saveUser(user, buildMD5Digest(password));
+		for(int gameId : tokens.keySet()){
+			
+		}
+		return user;
+	}
+	
 
 	public UserDao getUserDao() {
 		return userDao;
@@ -46,6 +64,5 @@ public class UserServiceImpl implements UserService {
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
-	
 
 }

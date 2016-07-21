@@ -32,5 +32,17 @@ public class AuthenticationGwtServiceImpl extends AbstractGwtService implements 
 		this.userService = userService;
 	}
 
+	@Override
+	public UserGwt register(String username, String password, String eMail, String token) throws Exception {
+		User user = userService.register(username, password, eMail, token);
+		if(user==null){
+			throw new Exception("Enregistrement échoué - token invalide");
+		}
+		UserGwt userGwt = new UserGwt();
+		userGwt.setUsername(user.getUsername());
+		getThreadLocalRequest().getSession().setAttribute(UserGwt.KEY, userGwt);
+		return userGwt;
+	}
+
 
 }

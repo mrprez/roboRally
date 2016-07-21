@@ -9,6 +9,7 @@ import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.mrprez.roborally.client.ImageLoader;
 import com.mrprez.roborally.client.ImageLoaderCallback;
 import com.mrprez.roborally.shared.GameGwt;
@@ -153,6 +154,13 @@ public class BoardPanel extends AbsolutePanel {
 	
 	public Canvas getRobotCanvas(int robotNb){
 		return robotCanvaMap.get(robotNb);
+	}
+	
+	
+	public void disable(){
+		SimplePanel desactivatingFilm = new SimplePanel();
+		desactivatingFilm.addStyleName("desactivatingFilm");
+		add(desactivatingFilm, 0, 0);
 	}
 	
 }

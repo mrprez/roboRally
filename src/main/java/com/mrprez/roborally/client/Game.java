@@ -6,6 +6,7 @@ import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.mrprez.roborally.client.panel.AdminPanel;
@@ -38,9 +39,11 @@ public class Game implements EntryPoint {
 			@Override
 			public void onSuccess(GameGwt loadedGame) {
 				boardPanel.init(loadedGame);
-				animationPlayerPanel.init(loadedGame.getHistory(), boardPanel);
-				adminPanel.init(loadedGame, animationPlayerPanel, handCardsPanel);
-				eastPanel.add(adminPanel);
+				if(loadedGame.getState().equals("INITIALIZATION")){
+					initIntializingGmae();
+				}else if(loadedGame.getState().equals("ONGOING")){
+					initOngoingGame(loadedGame);
+				}
 			}
 		});
 		
@@ -49,8 +52,17 @@ public class Game implements EntryPoint {
 	}
 	
 	
+	private void initIntializingGmae(){
+		eastPanel.add(new Label("Partie en cours d'initialisation"));
+		boardPanel.disable();
+	}
 	
 	
+	private void initOngoingGame(GameGwt loadedGame){
+		animationPlayerPanel.init(loadedGame.getHistory(), boardPanel);
+		adminPanel.init(loadedGame, animationPlayerPanel, handCardsPanel);
+		eastPanel.add(adminPanel);
+	}
 	
-
+	
 }

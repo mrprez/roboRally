@@ -2,8 +2,11 @@ package com.mrprez.roborally.dto;
 
 import java.util.List;
 
+import com.mrprez.roborally.model.Game.GameState;
+
 public class GameBoardDto {
 	private String name;
+	private GameState gameState;
 	private int boardId;
 	private int sizeX;
 	private int sizeY;
@@ -41,9 +44,12 @@ public class GameBoardDto {
 	public void setTargetList(List<TargetDto> targetList) {
 		this.targetList = targetList;
 	}
-	
-	
-	
+	public GameState getGameState() {
+		return gameState;
+	}
+	public void setGameState(GameState gameState) {
+		this.gameState = gameState;
+	}
 	
 
 }

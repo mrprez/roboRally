@@ -7,6 +7,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 public class GameGwt implements IsSerializable{
 	private int id;
 	private String name;
+	private String state;
 	private GameBoardGwt board;
 	private List<RobotGwt> robotList;
 	private List<RoundGwt> history;
@@ -41,6 +42,12 @@ public class GameGwt implements IsSerializable{
 	}
 	public void setHistory(List<RoundGwt> history) {
 		this.history = history;
+	}
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
 	}
 	
 }

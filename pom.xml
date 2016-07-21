@@ -157,6 +157,7 @@
 				<configuration>
 					<modules>
 						<module>com.mrprez.roborally.Login</module>
+						<module>com.mrprez.roborally.Register</module>
 						<module>com.mrprez.roborally.Home</module>
 						<module>com.mrprez.roborally.Game</module>
 					</modules>

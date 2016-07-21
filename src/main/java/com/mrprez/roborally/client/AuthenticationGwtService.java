@@ -8,5 +8,7 @@ import com.mrprez.roborally.shared.UserGwt;
 public interface AuthenticationGwtService extends RemoteService {
 	
 	UserGwt authenticate(String username, String password) throws Exception;
+	
+	UserGwt register(String username, String password, String eMail, String token) throws Exception;
 
 }

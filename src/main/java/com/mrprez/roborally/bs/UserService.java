@@ -8,4 +8,6 @@ public interface UserService {
 	
 	User authenticate(String login, String password) throws SQLException;
 
+	User register(String username, String password, String eMail, String token);
+
 }

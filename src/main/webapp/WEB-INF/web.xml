@@ -29,6 +29,10 @@
 		<url-pattern>/Login/authenticationService</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
+		<servlet-name>authenticationServlet</servlet-name>
+		<url-pattern>/Register/authenticationService</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
 		<servlet-name>gameServlet</servlet-name>
 		<url-pattern>/Home/gameService</url-pattern>
 	</servlet-mapping>
