@@ -34,4 +34,6 @@ public interface GameDao {
 
 	void saveRobot(Robot robot, int gameId);
 
+	void saveGameState(Game game);
+
 }

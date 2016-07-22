@@ -45,6 +45,7 @@ public class Game {
 			}
 			robot.initCards(initCards);
 		}
+		state = GameState.ONGOING;
 	}
 	
 	public Round play(){

@@ -330,6 +330,13 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 		getSession().update("updateRobotPowerDownState", params);
 	}
 
+	@Override
+	public void saveGameState(Game game) {
+		getSession().update("updateGameState", game);
+	}
+
+	
+
 	
 
 }

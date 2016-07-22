@@ -6,11 +6,9 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -41,21 +39,12 @@ public class Login implements EntryPoint {
 			public void onClick(ClickEvent arg0) {
 				errorLabel.setVisible(false);
 				AuthenticationGwtServiceAsync authenticationGwtService = GWT.create(AuthenticationGwtService.class);
-				authenticationGwtService.authenticate(usernameTextBox.getText(), passwordTextBox.getText(), new AsyncCallback<UserGwt>() {
-					
+				authenticationGwtService.authenticate(usernameTextBox.getText(), passwordTextBox.getText(), new AbstractAsyncCallback<UserGwt>() {
 					@Override
 					public void onSuccess(UserGwt result) {
 						UrlBuilder urlBuilder = Window.Location.createUrlBuilder();
 						urlBuilder.setPath("roboRally/Home.html");
 						Window.Location.assign(urlBuilder.buildString());
-					}
-					
-					@Override
-					public void onFailure(Throwable caught) {
-						PopupPanel popupPanel = new PopupPanel(true, true);
-						popupPanel.add(new Label(caught.getMessage()));
-						popupPanel.setGlassEnabled(true);
-						popupPanel.center();
 					}
 				});
 				

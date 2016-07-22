@@ -4,6 +4,7 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
@@ -56,8 +57,9 @@ public class Register implements EntryPoint {
 				authenticationGwtService.register(usernameTextBox.getText(), passwordTextBox.getText(), eMail, token, new AbstractAsyncCallback<UserGwt>() {
 					@Override
 					public void onSuccess(UserGwt result) {
-						// TODO Auto-generated method stub
-						
+						UrlBuilder urlBuilder = Window.Location.createUrlBuilder();
+						urlBuilder.setPath("roboRally/Home.html");
+						Window.Location.assign(urlBuilder.buildString());
 					}
 				});
 			}

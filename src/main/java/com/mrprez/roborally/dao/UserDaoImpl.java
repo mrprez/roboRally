@@ -2,8 +2,10 @@ package com.mrprez.roborally.dao;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.mrprez.roborally.model.Invitation;
 import com.mrprez.roborally.model.User;
 
 public class UserDaoImpl extends AbstractDao implements UserDao {
@@ -18,12 +20,8 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 	}
 
 	@Override
-	public void saveInvitation(int gameId, String eMail, String token) {
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("gameId", gameId);
-		parameters.put("eMail", eMail);
-		parameters.put("token", token);
-		getSession().insert("saveInvitation", parameters);
+	public void saveInvitation(Invitation invitation) {
+		getSession().insert("insertInvitation", invitation);
 	}
 
 	@Override
@@ -32,15 +30,33 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 	}
 
 	@Override
-	public Map<Integer, String> getInvitations(String eMail) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Invitation> getInvitationsForEMail(String eMail) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("eMail", eMail);
+		return getSession().selectList("selectInvitations", parameters);
 	}
 
 	@Override
-	public void saveUser(User user, String buildMD5Digest) {
-		// TODO Auto-generated method stub
-		
+	public void saveUser(User user, String md5Digest) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("user", user);
+		parameters.put("password", md5Digest);
+		getSession().insert("insertUser", parameters);
+	}
+
+	@Override
+	public List<Invitation> getInvitationsForGame(Integer gameId) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("gameId", gameId);
+		return getSession().selectList("selectInvitations", parameters);
+	}
+
+	@Override
+	public void removeInvitation(Invitation invitation) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("gameId", invitation.getGameId());
+		parameters.put("eMail", invitation.getEMail());
+		getSession().insert("deleteInvitation", parameters);
 	}
 	
 

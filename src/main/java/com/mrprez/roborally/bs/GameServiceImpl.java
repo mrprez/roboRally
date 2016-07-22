@@ -15,6 +15,7 @@ import com.mrprez.roborally.dao.MailResource;
 import com.mrprez.roborally.dao.UserDao;
 import com.mrprez.roborally.model.Card;
 import com.mrprez.roborally.model.Game;
+import com.mrprez.roborally.model.Invitation;
 import com.mrprez.roborally.model.PowerDownState;
 import com.mrprez.roborally.model.Robot;
 import com.mrprez.roborally.model.User;
@@ -63,7 +64,7 @@ public class GameServiceImpl implements GameService {
 			}
 			sortedCardList.add(card);
 		}
-		// TODO vérifier si les cartes modifiés sont cohhérentes vis à vis du health.
+		// TODO vérifier si les cartes modifiés sont cohérentes vis à vis du health.
 		
 		gameDao.saveHandCards(gameId, robot.getNumber(), sortedCardList);
 	}
@@ -85,34 +86,61 @@ public class GameServiceImpl implements GameService {
 			board.getTargetSquares().add(board.getSquare(x, y));
 		}
 		
-		Robot playerRobot = game.addRobot();
-		playerRobot.setUsername(username);
+		gameDao.insertNewGame(game);
+		
+		Robot robot = game.addRobot();
+		robot.setUsername(username);
+		gameDao.saveRobot(robot, game.getId());
 		for(int i=0; i<aiNb;i++){
-			game.addRobot();
+			Robot aiRobot = game.addRobot();
+			gameDao.saveRobot(aiRobot, game.getId());
 		}
 		for(String invitedEMail : invitedEMails){
 			User user = userDao.getUserByEMail(invitedEMail);
 			if(user!=null){
-				playerRobot = game.addRobot();
-				playerRobot.setUsername(user.getUsername());
+				Robot invitedRobot = game.addRobot();
+				invitedRobot.setUsername(user.getUsername());
+				gameDao.saveRobot(invitedRobot, game.getId());
 				mailResource.send(invitedEMail, "Nouvelle partie de RobotRally", username+" vous a invité à jouer à la partie "+name);
+			}else{
+				Invitation invitation = Invitation.newInvitation(invitedEMail, game.getId());
+				userDao.saveInvitation(invitation);
+				mailResource.send(invitedEMail, "Invitation à RobotRally", username+" vous a invité à sur RobotRally en ligne."
+						+ " Pour valider votre inscription, cliquez sur le lien: <br/>"
+						+ " http://mrprez.fr/roboRally/Register.html?eMail="+invitedEMail+"&token="+invitation.getToken());
 			}
 		}
 		
-		gameDao.insertNewGame(game);
+		if(userDao.getInvitationsForGame(game.getId()).isEmpty()){
+			initGame(game);
+		}
 		
 		return game;
 	}
 	
 	
-	public void initGame(int gameId) throws InstantiationException, IllegalAccessException, ClassNotFoundException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
+	@Override
+	public void addRobotToGame(int gameId, String username) throws InstantiationException, IllegalAccessException, ClassNotFoundException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
 		Game game = gameDao.loadGame(gameId);
+		Robot robot = game.addRobot();
+		robot.setUsername(username);
+		gameDao.saveRobot(robot, game.getId());
+		
+		if(userDao.getInvitationsForGame(gameId).isEmpty()){
+			initGame(gameDao.loadGame(gameId));
+		}
+	}
+	
+	
+	private void initGame(Game game) throws InstantiationException, IllegalAccessException, ClassNotFoundException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
 		
 		game.start();
 		
-		gameDao.insertCardStock(game.getCardStock(), gameId);
+		gameDao.saveGameState(game);
+		
+		gameDao.insertCardStock(game.getCardStock(), game.getId());
 		for(Robot robot : game.getRobotList()){
-			gameDao.insertHandCards(gameId, robot.getNumber(), robot.getCards());
+			gameDao.insertHandCards(game.getId(), robot.getNumber(), robot.getCards());
 		}
 	}
 

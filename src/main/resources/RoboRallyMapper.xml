@@ -89,6 +89,13 @@
 		<result property="ghost" column="GHOST"/>
 		<result property="powerDownState" column="POWER_DOWN_STATE"/>
 	</resultMap>
+	<resultMap id="invitation" type="com.mrprez.roborally.model.Invitation">
+		<constructor>
+			<arg column="E_MAIL"/>
+			<arg column="TOKEN"/>
+			<arg column="GAME_ID"/>
+		</constructor>
+	</resultMap>
 
 	<select id="checkUser" resultMap="userResultMap">
 		select USERNAME, E_MAIL from ACCOUNT where
@@ -139,7 +146,17 @@
 		where GAME_ID=#{gameId} and DISCARDED=#{discarded} and ROBOT_NB is null
 		order by INDEX
 	</select>
+	<select id="selectInvitations" resultMap="invitation">
+		select GAME_ID, E_MAIL, TOKEN from INVITATION
+		<where>
+			<if test="eMail!=null">E_MAIL=#{eMail}</if>
+			<if test="gameId!=null">GAME_ID=#{gameId}</if>
+		</where>
+	</select>
 	
+	<insert id="insertUser">
+		insert into ACCOUNT (USERNAME, E_MAIL, PASSWORD) values (#{user.username}, #{user.eMail}, #{password})
+	</insert>
 	<insert id="insertGameBoard" keyProperty="id" keyColumn="ID" useGeneratedKeys="true">
 		insert into BOARD (TYPE, SIZE_X, SIZE_Y) values ('Game', #{sizeX}, #{sizeY})
 	</insert>
@@ -176,10 +193,13 @@
 		insert into ROBOT_STATE (GAME_ID, ROBOT_NB, ROUND_NB, X, Y, DIRECTION, HEALTH, GHOST, POWER_DOWN_STATE)
 		values (#{gameId}, #{robotNb}, #{roundNb}, #{state.x}, #{state.y}, #{state.direction}, #{state.health}, #{state.ghost}, #{state.powerDownState})
 	</insert>
-	<insert id="saveInvitation">
+	<insert id="insertInvitation">
 		insert into INVITATION (GAME_ID, E_MAIL, TOKEN) values (#{gameId}, #{eMail}, #{token})
 	</insert>
 	
+	<update id="updateGameState">
+		update GAME set STATE=#{state} where ID=#{id}
+	</update>
 	<update id="updateHandCard">
 		update CARD set INDEX=#{index} where GAME_ID=#{gameId} and RAPIDITY=#{rapidity}
 	</update>
@@ -196,4 +216,7 @@
 		update ROBOT set POWER_DOWN_STATE=#{powerDownState} where NUMBER=#{robotNb} and GAME_ID=#{gameId}
 	</update>
 	
+	<delete id="deleteInvitation">
+		delete from INVITATION where E_MAIL=#{eMail} and GAME_ID=#{gameId}
+	</delete>
 </mapper>
