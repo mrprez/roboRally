@@ -6,7 +6,7 @@ public class Invitation {
 	private int gameId;
 	
 	
-	public Invitation(String eMail, String token, int gameId) {
+	public Invitation(String eMail, String token, Integer gameId) {
 		super();
 		this.eMail = eMail;
 		this.token = token;

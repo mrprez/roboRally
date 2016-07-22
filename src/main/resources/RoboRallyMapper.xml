@@ -91,9 +91,9 @@
 	</resultMap>
 	<resultMap id="invitation" type="com.mrprez.roborally.model.Invitation">
 		<constructor>
-			<arg column="E_MAIL"/>
-			<arg column="TOKEN"/>
-			<arg column="GAME_ID"/>
+			<arg column="E_MAIL" javaType="string"/>
+			<arg column="TOKEN" javaType="string"/>
+			<arg column="GAME_ID" javaType="int"/>
 		</constructor>
 	</resultMap>
 

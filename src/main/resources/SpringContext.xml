@@ -49,7 +49,10 @@
 	<bean id="gameDao" class="com.mrprez.roborally.dao.GameDaoImpl" scope="singleton">
 		<property name="session" ref="sqlSession"/>
 	</bean>
-	
+	<jee:jndi-lookup id="mailSenderSession" jndi-name="java:comp/env/mail/SenderSession"/>
+	<bean id="mailResource" class="com.mrprez.roborally.dao.MailResourceImpl" scope="singleton">
+		<constructor-arg ref="mailSenderSession" />
+	</bean>
 
 	<!-- BS -->
 	<tx:advice id="bsTxAdvice" transaction-manager="txManager">
@@ -70,6 +73,7 @@
 	<bean id="gameService" class="com.mrprez.roborally.bs.GameServiceImpl" scope="singleton">
 		<property name="gameDao" ref="gameDao"/>
 		<property name="userDao" ref="userDao"/>
+		<property name="mailResource" ref="mailResource"/>
 	</bean>
 	
 
