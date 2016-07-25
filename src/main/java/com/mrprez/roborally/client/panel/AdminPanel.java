@@ -4,11 +4,14 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.mrprez.roborally.client.AbstractAsyncCallback;
 import com.mrprez.roborally.client.GameGwtService;
 import com.mrprez.roborally.client.GameGwtServiceAsync;
 import com.mrprez.roborally.shared.GameGwt;
+import com.mrprez.roborally.shared.RobotGwt;
 import com.mrprez.roborally.shared.RoundGwt;
 
 public class AdminPanel extends FlowPanel {
@@ -17,12 +20,15 @@ public class AdminPanel extends FlowPanel {
 	private Integer gameId;
 	private AnimationPlayerPanel animationPlayerPanel;
 	private HandCardsPanel handCardsPanel;
+	private FlexTable robotTable;
 	
 	
 	public void init(GameGwt game, AnimationPlayerPanel animationPlayerPanel, HandCardsPanel handCardsPanel){
 		this.gameId = game.getId();
 		this.animationPlayerPanel = animationPlayerPanel;
 		this.handCardsPanel = handCardsPanel;
+		initRobotTable(game);
+		add(robotTable);
 		Button playButton = new Button("Jouer un tour !");
 		add(playButton);
 		playButton.addClickHandler(new ClickHandler() {
@@ -32,6 +38,22 @@ public class AdminPanel extends FlowPanel {
 				
 			}
 		});
+	}
+	
+	
+	private void initRobotTable(GameGwt game){
+		robotTable = new FlexTable();
+		for(RobotGwt robot : game.getRobotList()){
+			robotTable.setWidget(robot.getNumber(), 0, new Image(robot.getImageName()));
+			robotTable.setWidget(robot.getNumber(), 1, new Image("img/Target"+robot.getTargetNb()+".png"));
+			FlowPanel damagePanel = new FlowPanel();
+			if(robot.getHealth()!=0){
+				for(int i=robot.getHealth(); i<RobotGwt.MAX_HEALTH; i++){
+					damagePanel.add(new Image("img/damage20Mark.jpg"));
+				}
+			}
+			robotTable.setWidget(robot.getNumber(), 2, damagePanel);
+		}
 	}
 	
 	private AbstractAsyncCallback<RoundGwt> playRoundCallback(){

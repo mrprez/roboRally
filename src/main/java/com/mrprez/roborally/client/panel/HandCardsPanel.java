@@ -20,7 +20,7 @@ import com.mrprez.roborally.client.GameGwtServiceAsync;
 import com.mrprez.roborally.shared.RobotGwt;
 
 public class HandCardsPanel extends FlexTable {
-	private static final int CARD_NUMBER = 9;
+	private int cardNumber = RobotGwt.MAX_HEALTH;
 	private GameGwtServiceAsync gameGwtService = GWT.create(GameGwtService.class);
 	private int gameId;
 	private Image powerDownPlannedImg = new Image("img/PowerDownPlanned.png");
@@ -36,10 +36,10 @@ public class HandCardsPanel extends FlexTable {
 		saveButton.addClickHandler(buildSaveHandHandler());
 		setWidget(2, 0, saveButton);
 		getFlexCellFormatter().setRowSpan(1, 0, 2);
-		getFlexCellFormatter().setColSpan(2, 0, CARD_NUMBER);
+		getFlexCellFormatter().setColSpan(2, 0, cardNumber);
 		getFlexCellFormatter().addStyleName(2, 0, "saveCardsLine");
 		
-		for(int index=0; index<CARD_NUMBER; index++){
+		for(int index=0; index<cardNumber; index++){
 			Label label = new Label(index<5 ? String.valueOf(index+1) : "X");
 			label.addStyleName("cardTurnNb");
 			setWidget(1, index+1, label);
@@ -49,7 +49,7 @@ public class HandCardsPanel extends FlexTable {
 		powerDownOffImg.addStyleName("powerDownButton");
 		powerDownOffImg.addClickHandler(buildPowerDownOffHandler());
 		powerDownPlannedImg.addClickHandler(buildPowerDownOnHandler());
-		getFlexCellFormatter().setRowSpan(0, CARD_NUMBER+1, 3);
+		getFlexCellFormatter().setRowSpan(0, cardNumber+1, 3);
 		
 		reload();
 	}
@@ -65,20 +65,20 @@ public class HandCardsPanel extends FlexTable {
 				}else{
 					clearCell(1, 0);
 				}
-				for(int index=0; index<CARD_NUMBER; index++){
+				for(int index=0; index<cardNumber; index++){
 					if(index<robot.getCards().size()){
 						Canvas cardCanvas = CardCanvasFactory.build(robot.getCards().get(index), index);
 						setWidget(0, index+1, cardCanvas);
 					}else{
-						setWidget(0, index+1, new Image("img/card/noCard.jpg"));
+						setWidget(0, index+1, new Image("img/card/noCard.gif"));
 					}
 				}
 				if(robot.getPowerDownState().equals("ONGOING")){
-					setWidget(0, CARD_NUMBER+1, powerDownOngoingImg);
+					setWidget(0, cardNumber+1, powerDownOngoingImg);
 				}else if(robot.getPowerDownState().equals("PLANNED")){
-					setWidget(0, CARD_NUMBER+1, powerDownPlannedImg);
+					setWidget(0, cardNumber+1, powerDownPlannedImg);
 				}else{
-					setWidget(0, CARD_NUMBER+1, powerDownOffImg);
+					setWidget(0, cardNumber+1, powerDownOffImg);
 				}
 			}
 		});
@@ -91,7 +91,7 @@ public class HandCardsPanel extends FlexTable {
 			@Override
 			public void onClick(ClickEvent event) {
 				List<Integer> cardRapidityList = new ArrayList<Integer>();
-				for(int i=1; i<=CARD_NUMBER; i++){
+				for(int i=1; i<=cardNumber; i++){
 					Integer rapidity = Integer.valueOf(getWidget(0, i).getElement().getAttribute("rapidity"));
 					cardRapidityList.add(rapidity);
 				}
@@ -117,7 +117,7 @@ public class HandCardsPanel extends FlexTable {
 					@Override
 					public void onSuccess(Void result) {
 						flexTable.remove(powerDownOffImg);
-						flexTable.setWidget(0, CARD_NUMBER+1, powerDownPlannedImg);
+						flexTable.setWidget(0, cardNumber+1, powerDownPlannedImg);
 					}
 				});
 				
@@ -134,7 +134,7 @@ public class HandCardsPanel extends FlexTable {
 					@Override
 					public void onSuccess(Void result) {
 						flexTable.remove(powerDownPlannedImg);
-						flexTable.setWidget(0, CARD_NUMBER+1, powerDownOffImg);
+						flexTable.setWidget(0, cardNumber+1, powerDownOffImg);
 					}
 				});
 			}

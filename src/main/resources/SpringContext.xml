@@ -69,6 +69,7 @@
 	
 	<bean id="userService" class="com.mrprez.roborally.bs.UserServiceImpl" scope="singleton">
 		<property name="userDao" ref="userDao"/>
+		<property name="gameService" ref="gameService"/>
 	</bean>
 	<bean id="gameService" class="com.mrprez.roborally.bs.GameServiceImpl" scope="singleton">
 		<property name="gameDao" ref="gameDao"/>

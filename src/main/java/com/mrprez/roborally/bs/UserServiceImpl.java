@@ -77,4 +77,12 @@ public class UserServiceImpl implements UserService {
 		this.userDao = userDao;
 	}
 
+	public GameService getGameService() {
+		return gameService;
+	}
+
+	public void setGameService(GameService gameService) {
+		this.gameService = gameService;
+	}
+
 }

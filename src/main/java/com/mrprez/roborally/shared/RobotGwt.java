@@ -6,6 +6,7 @@ import java.util.List;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class RobotGwt implements IsSerializable {
+	public final static int MAX_HEALTH = 9;
 	private int number;
 	private int x;
 	private int y;

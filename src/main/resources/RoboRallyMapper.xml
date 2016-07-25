@@ -105,7 +105,9 @@
 		select USERNAME, E_MAIL from ACCOUNT where E_MAIL=#{eMail}
 	</select>
 	<select id="selectUserGames" resultMap="game">
-		select ID, NAME from GAME where OWNER=#{username}
+		select ID, NAME from GAME 
+		join ROBOT on ROBOT.GAME_ID=GAME.ID
+		where ROBOT.USER_NAME=#{username}
 	</select>
 	<select id="selectGame" resultMap="gameBoard">
 		select GAME.BOARD_ID,NAME,STATE,SIZE_X,SIZE_Y,TARGET.X as TARGET_X,TARGET.Y as TARGET_Y from GAME
