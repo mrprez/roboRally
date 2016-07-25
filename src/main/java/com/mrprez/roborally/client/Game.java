@@ -66,8 +66,7 @@ public class Game implements EntryPoint {
 		return new RemoteEventListener() {
 			@Override
 			public void apply(Event event) {
-				// TODO Auto-generated method stub
-				
+				adminPanel.refreshRobotTable();
 			}
 		};
 	}

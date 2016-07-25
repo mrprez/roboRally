@@ -40,7 +40,7 @@ public class AdminPanel extends FlowPanel {
 	}
 	
 	
-	private void refreshRobotTable(){
+	public void refreshRobotTable(){
 		gameGwtService.getGame(gameId, new AbstractAsyncCallback<GameGwt>() {
 			@Override
 			public void onSuccess(GameGwt game) {
