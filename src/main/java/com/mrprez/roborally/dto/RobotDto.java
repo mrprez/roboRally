@@ -16,6 +16,7 @@ public class RobotDto {
 	private Integer targetNumber;
 	private String username;
 	private PowerDownState powerDownState;
+	private boolean hasPlayed;
 	
 	
 	public int getNumber() {
@@ -77,6 +78,12 @@ public class RobotDto {
 	}
 	public void setPowerDownState(PowerDownState powerDownState) {
 		this.powerDownState = powerDownState;
+	}
+	public boolean isHasPlayed() {
+		return hasPlayed;
+	}
+	public void setHasPlayed(boolean hasPlayed) {
+		this.hasPlayed = hasPlayed;
 	}
 
 }

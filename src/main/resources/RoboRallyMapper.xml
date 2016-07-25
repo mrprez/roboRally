@@ -50,6 +50,7 @@
 		<result property="targetNumber" column="TARGET_NB" />
 		<result property="powerDownState" column="POWER_DOWN_STATE"/>
 		<result property="username" column="USER_NAME"/>
+		<result property="hasPlayed" column="HAS_PLAYED"/>
 		<collection property="cardList" ofType="com.mrprez.roborally.dto.CardDto">
 			<result property="rapidity" column="RAPIDITY" />
 			<result property="translation" column="TRANSLATION"/>
@@ -120,7 +121,7 @@
 	</select>
 	<select id="selectRobotList" resultMap="robotDto">
 		select NUMBER,X,Y,DIRECTION,HEALTH,GHOST,POWER_DOWN_STATE,
-				RAPIDITY,TRANSLATION,ROTATION,TARGET_NB,USER_NAME
+				RAPIDITY,TRANSLATION,ROTATION,TARGET_NB,USER_NAME,HAS_PLAYED
 		from ROBOT
 		left join CARD on ROBOT.GAME_ID=CARD.GAME_ID and ROBOT.NUMBER=CARD.ROBOT_NB 
 		where ROBOT.GAME_ID=#{gameId}

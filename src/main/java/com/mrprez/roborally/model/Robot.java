@@ -23,6 +23,7 @@ public class Robot {
 	private Integer targetNumber = 1;
 	private String username;
 	private PowerDownState powerDownState = PowerDownState.NONE;
+	private boolean hasPlayed = false;
 	
 	
 	protected Robot(){
@@ -262,6 +263,14 @@ public class Robot {
 
 	public void setPowerDownState(PowerDownState powerDownState) {
 		this.powerDownState = powerDownState;
+	}
+
+	public boolean isHasPlayed() {
+		return hasPlayed;
+	}
+
+	public void setHasPlayed(boolean hasPlayed) {
+		this.hasPlayed = hasPlayed;
 	}
 	
 	

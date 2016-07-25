@@ -23,6 +23,10 @@
 		<servlet-name>gameServlet</servlet-name>
 		<servlet-class>com.mrprez.roborally.server.GameGwtServiceImpl</servlet-class>
 	</servlet>
+	<servlet> 
+         <servlet-name>EventService</servlet-name> 
+         <servlet-class>de.novanic.eventservice.service.EventServiceImpl</servlet-class> 
+    </servlet>
 
 	<servlet-mapping>
 		<servlet-name>authenticationServlet</servlet-name>
@@ -40,6 +44,10 @@
 		<servlet-name>gameServlet</servlet-name>
 		<url-pattern>/Game/gameService</url-pattern>
 	</servlet-mapping>
+    <servlet-mapping>   
+         <servlet-name>EventService</servlet-name> 
+         <url-pattern>/Game/gwteventservice</url-pattern> 
+    </servlet-mapping>
 
 	<!-- Default page to serve -->
 	<welcome-file-list>

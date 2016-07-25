@@ -14,9 +14,14 @@ import com.mrprez.roborally.client.panel.AnimationPlayerPanel;
 import com.mrprez.roborally.client.panel.BoardPanel;
 import com.mrprez.roborally.client.panel.HandCardsPanel;
 import com.mrprez.roborally.shared.GameGwt;
+import com.mrprez.roborally.shared.RefreshEvent;
+
+import de.novanic.eventservice.client.event.Event;
+import de.novanic.eventservice.client.event.RemoteEventService;
+import de.novanic.eventservice.client.event.RemoteEventServiceFactory;
+import de.novanic.eventservice.client.event.listener.RemoteEventListener;
 
 public class Game implements EntryPoint {
-	
 	private GameGwtServiceAsync gameGwtService = GWT.create(GameGwtService.class);
 	private Integer gameId;
 	private FlowPanel eastPanel = new FlowPanel();
@@ -24,6 +29,7 @@ public class Game implements EntryPoint {
 	private HandCardsPanel handCardsPanel = new HandCardsPanel();
 	private AnimationPlayerPanel animationPlayerPanel = new AnimationPlayerPanel();
 	private AdminPanel adminPanel = new AdminPanel();
+	
 	
 	@Override
 	public void onModuleLoad() {
@@ -49,6 +55,21 @@ public class Game implements EntryPoint {
 		
 		handCardsPanel.init(gameId);
 		
+		RemoteEventServiceFactory remoteEventServiceFactory = RemoteEventServiceFactory.getInstance();
+		RemoteEventService remoteEventService = remoteEventServiceFactory.getRemoteEventService();
+		remoteEventService.addListener(RefreshEvent.DOMAIN, buildRefreshRemoteEventListener());
+		
+	}
+	
+	
+	private RemoteEventListener buildRefreshRemoteEventListener(){
+		return new RemoteEventListener() {
+			@Override
+			public void apply(Event event) {
+				// TODO Auto-generated method stub
+				
+			}
+		};
 	}
 	
 	

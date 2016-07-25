@@ -16,6 +16,7 @@ public class RobotGwt implements IsSerializable {
 	private Integer targetNb;
 	private String powerDownState;
 	private List<CardGwt> cards = new ArrayList<CardGwt>();
+	private boolean hasPlayed;
 	
 	
 	public String getImageName(){
@@ -89,6 +90,12 @@ public class RobotGwt implements IsSerializable {
 	}
 	public void setPowerDownState(String powerDownState) {
 		this.powerDownState = powerDownState;
+	}
+	public boolean isHasPlayed() {
+		return hasPlayed;
+	}
+	public void setHasPlayed(boolean hasPlayed) {
+		this.hasPlayed = hasPlayed;
 	}
 	
 

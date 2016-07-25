@@ -53,6 +53,8 @@
 	<bean id="mailResource" class="com.mrprez.roborally.dao.MailResourceImpl" scope="singleton">
 		<constructor-arg ref="mailSenderSession" />
 	</bean>
+	
+	<bean id="pushEventServiceServlet" class="com.mrprez.roborally.push.PushEventServiceServletImpl" scope="singleton"/>
 
 	<!-- BS -->
 	<tx:advice id="bsTxAdvice" transaction-manager="txManager">
@@ -75,6 +77,7 @@
 		<property name="gameDao" ref="gameDao"/>
 		<property name="userDao" ref="userDao"/>
 		<property name="mailResource" ref="mailResource"/>
+		<property name="pushEventServiceServlet" ref="pushEventServiceServlet"/>
 	</bean>
 	
 

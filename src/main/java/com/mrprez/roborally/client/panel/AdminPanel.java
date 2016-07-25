@@ -20,14 +20,14 @@ public class AdminPanel extends FlowPanel {
 	private Integer gameId;
 	private AnimationPlayerPanel animationPlayerPanel;
 	private HandCardsPanel handCardsPanel;
-	private FlexTable robotTable;
+	private FlexTable robotTable = new FlexTable();
 	
 	
 	public void init(GameGwt game, AnimationPlayerPanel animationPlayerPanel, HandCardsPanel handCardsPanel){
 		this.gameId = game.getId();
 		this.animationPlayerPanel = animationPlayerPanel;
 		this.handCardsPanel = handCardsPanel;
-		initRobotTable(game);
+		refreshRobotTable();
 		add(robotTable);
 		Button playButton = new Button("Jouer un tour !");
 		add(playButton);
@@ -35,25 +35,32 @@ public class AdminPanel extends FlowPanel {
 			@Override
 			public void onClick(ClickEvent event) {
 				gameGwtService.playNewRound(gameId, playRoundCallback());
-				
 			}
 		});
 	}
 	
 	
-	private void initRobotTable(GameGwt game){
-		robotTable = new FlexTable();
-		for(RobotGwt robot : game.getRobotList()){
-			robotTable.setWidget(robot.getNumber(), 0, new Image(robot.getImageName()));
-			robotTable.setWidget(robot.getNumber(), 1, new Image("img/Target"+robot.getTargetNb()+".png"));
-			FlowPanel damagePanel = new FlowPanel();
-			if(robot.getHealth()!=0){
-				for(int i=robot.getHealth(); i<RobotGwt.MAX_HEALTH; i++){
-					damagePanel.add(new Image("img/damage20Mark.jpg"));
+	private void refreshRobotTable(){
+		gameGwtService.getGame(gameId, new AbstractAsyncCallback<GameGwt>() {
+			@Override
+			public void onSuccess(GameGwt game) {
+				robotTable.clear();
+				for(RobotGwt robot : game.getRobotList()){
+					robotTable.setWidget(robot.getNumber(), 0, new Image(robot.getImageName()));
+					robotTable.setWidget(robot.getNumber(), 1, new Image("img/Target"+robot.getTargetNb()+".png"));
+					if(!robot.isHasPlayed()){
+						robotTable.setWidget(robot.getNumber(), 2, new Image("img/hourglass.jpg"));
+					}
+					FlowPanel damagePanel = new FlowPanel();
+					if(robot.getHealth()!=0){
+						for(int i=robot.getHealth(); i<RobotGwt.MAX_HEALTH; i++){
+							damagePanel.add(new Image("img/damageMark.jpg"));
+						}
+					}
+					robotTable.setWidget(robot.getNumber(), 3, damagePanel);
 				}
 			}
-			robotTable.setWidget(robot.getNumber(), 2, damagePanel);
-		}
+		});
 	}
 	
 	private AbstractAsyncCallback<RoundGwt> playRoundCallback(){
@@ -62,6 +69,7 @@ public class AdminPanel extends FlowPanel {
 			public void onSuccess(RoundGwt round) {
 				animationPlayerPanel.addAndPlay(round);
 				handCardsPanel.reload();
+				refreshRobotTable();
 			}
 		};
 	}
