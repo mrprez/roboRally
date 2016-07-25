@@ -9,8 +9,18 @@ public class RobotStateGwt implements IsSerializable {
 	private int x;
 	private int y;
 	private boolean ghost;
+	private String powerDownState;
 	
 	
+	public String getImageName(){
+		StringBuilder imageName= new StringBuilder("img/robot/robot");
+		imageName.append(robotNb);
+		if(powerDownState.equals("ONGOING")){
+			imageName.append("HT");
+		}
+		imageName.append(".gif");
+		return imageName.toString();
+	}
 	public int getHealth() {
 		return health;
 	}
@@ -58,5 +68,11 @@ public class RobotStateGwt implements IsSerializable {
 	}
 	public void setGhost(boolean ghost) {
 		this.ghost = ghost;
+	}
+	public String getPowerDownState() {
+		return powerDownState;
+	}
+	public void setPowerDownState(String powerDownState) {
+		this.powerDownState = powerDownState;
 	}
 }

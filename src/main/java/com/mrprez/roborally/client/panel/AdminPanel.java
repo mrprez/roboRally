@@ -48,16 +48,16 @@ public class AdminPanel extends FlowPanel {
 				for(RobotGwt robot : game.getRobotList()){
 					robotTable.setWidget(robot.getNumber(), 0, new Image(robot.getImageName()));
 					robotTable.setWidget(robot.getNumber(), 1, new Image("img/Target"+robot.getTargetNb()+".png"));
-					if(!robot.isHasPlayed()){
-						robotTable.setWidget(robot.getNumber(), 2, new Image("img/hourglass.jpg"));
-					}
-					FlowPanel damagePanel = new FlowPanel();
 					if(robot.getHealth()!=0){
+						if(!robot.isHasPlayed()){
+							robotTable.setWidget(robot.getNumber(), 2, new Image("img/hourglass.png"));
+						}
+						FlowPanel damagePanel = new FlowPanel();
 						for(int i=robot.getHealth(); i<RobotGwt.MAX_HEALTH; i++){
 							damagePanel.add(new Image("img/damageMark.jpg"));
 						}
+						robotTable.setWidget(robot.getNumber(), 3, damagePanel);
 					}
-					robotTable.setWidget(robot.getNumber(), 3, damagePanel);
 				}
 			}
 		});

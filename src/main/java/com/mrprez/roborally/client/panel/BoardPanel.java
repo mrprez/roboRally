@@ -140,14 +140,19 @@ public class BoardPanel extends AbsolutePanel {
 	
 	
 	public void setRoundState(RoundGwt round){
-		for(RobotStateGwt robotState : round.getRobotStateList()){
-			Canvas robotCanva = robotCanvaMap.get(robotState.getRobotNb());
+		for(final RobotStateGwt robotState : round.getRobotStateList()){
+			final Canvas robotCanva = robotCanvaMap.get(robotState.getRobotNb());
 			robotCanva.getCanvasElement().getStyle().setOpacity(robotState.isGhost() ? 0.5 : 1);
 			robotCanva.getCanvasElement().getStyle().setDisplay(robotState.getHealth()==0 ? Display.NONE : Display.INITIAL);
 			setWidgetPosition(robotCanva, robotState.getX()*97, robotState.getY()*97);
-			Image image = new Image(robotCanva.getCanvasElement().getAttribute("imageName"));
-			rotate(robotCanva,image,  - Integer.parseInt(robotCanva.getCanvasElement().getAttribute("direction")) * Math.PI/2);
-			rotate(robotCanva, image, robotState.getAngle());
+			ImageLoader.getInstance().loadImage(robotState.getImageName(), new ImageLoaderCallback() {
+				@Override
+				public void onImageLoaded(Image image) {
+					robotCanva.getCanvasElement().setAttribute("imageName", robotState.getImageName());
+					rotate(robotCanva,image,  - Integer.parseInt(robotCanva.getCanvasElement().getAttribute("direction")) * Math.PI/2);
+					rotate(robotCanva, image, robotState.getAngle());
+				}
+			});
 		}
 	}
 	

@@ -153,7 +153,9 @@ public class GameServiceImpl implements GameService {
 	@Override
 	public Round playRound(Integer gameId, String username) throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InterruptedException, ExecutionException {
 		Game game = gameDao.loadGame(gameId);
-		// TODO check user
+		if( ! game.getOwnername().equals(username) ){
+			throw new IllegalArgumentException("User is not the game owner");
+		}
 		
 		for(Robot robot : game.getRobotList()){
 			if(robot.getUsername()==null && robot.getTarget()!=null && robot.getPowerDownState()!= PowerDownState.ONGOING){
