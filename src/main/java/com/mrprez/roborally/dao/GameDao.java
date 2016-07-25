@@ -36,4 +36,6 @@ public interface GameDao {
 
 	void saveGameState(Game game);
 
+	void updateRobotHasPlayed(int robotNb, int gameId, boolean hasPlayed);
+
 }

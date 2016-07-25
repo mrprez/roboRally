@@ -144,6 +144,7 @@ public class Game {
 		// On redistribue les cartes
 		for(Robot robot : robotList){
 			changeCards(robot);
+			robot.setHasPlayed(false);
 		}
 		
 		history.add(round);

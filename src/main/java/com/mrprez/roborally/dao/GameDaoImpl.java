@@ -277,6 +277,16 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 		}
 		
 	}
+	
+	
+	@Override
+	public void updateRobotHasPlayed(int robotNb, int gameId, boolean hasPlayed){
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("gameId", gameId);
+		params.put("robotNb", robotNb);
+		params.put("hasPlayed", hasPlayed);
+		getSession().insert("updateRobotHasPlayed", params);
+	}
 
 	@Override
 	public void saveRound(Integer gameId, Round round) {

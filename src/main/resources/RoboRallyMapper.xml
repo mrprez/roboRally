@@ -208,7 +208,8 @@
 	</update>
 	<update id="updateRobot">
 		update ROBOT set X=#{robot.square.x}, Y=#{robot.square.y}, DIRECTION=#{robot.direction}, 
-			HEALTH=#{robot.health}, GHOST=#{robot.ghost}, TARGET_NB=#{robot.targetNumber}, POWER_DOWN_STATE=#{robot.powerDownState}
+			HEALTH=#{robot.health}, GHOST=#{robot.ghost}, TARGET_NB=#{robot.targetNumber},
+			POWER_DOWN_STATE=#{robot.powerDownState}, HAS_PLAYED=#{robot.hasPlayed}
 		where NUMBER=#{robot.number} and GAME_ID=#{gameId}
 	</update>
 	<update id="updateCard">
@@ -217,6 +218,9 @@
 	</update>
 	<update id="updateRobotPowerDownState">
 		update ROBOT set POWER_DOWN_STATE=#{powerDownState} where NUMBER=#{robotNb} and GAME_ID=#{gameId}
+	</update>
+	<update id="updateRobotHasPlayed">
+		update ROBOT set HAS_PLAYED=#{hasPlayed} where NUMBER=#{robotNb} and GAME_ID=#{gameId}
 	</update>
 	
 	<delete id="deleteInvitation">

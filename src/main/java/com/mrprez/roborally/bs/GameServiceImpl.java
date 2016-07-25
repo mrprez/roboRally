@@ -70,6 +70,8 @@ public class GameServiceImpl implements GameService {
 		
 		gameDao.saveHandCards(gameId, robot.getNumber(), sortedCardList);
 		
+		gameDao.updateRobotHasPlayed(robot.getNumber(), gameId, true);
+		
 		pushEventServiceServlet.sendRefreshOrder();
 	}
 
