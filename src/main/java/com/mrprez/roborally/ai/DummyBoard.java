@@ -2,7 +2,6 @@ package com.mrprez.roborally.ai;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import com.mrprez.roborally.model.Card;
 import com.mrprez.roborally.model.Direction;
@@ -11,7 +10,7 @@ import com.mrprez.roborally.model.Robot;
 import com.mrprez.roborally.model.Square;
 import com.mrprez.roborally.model.board.GameBoard;
 
-public class DummyBoard extends GameBoard implements Callable<Double> {
+public class DummyBoard extends GameBoard {
 	private List<Card> cardList;
 	private int x;
 	private int y;
@@ -40,7 +39,7 @@ public class DummyBoard extends GameBoard implements Callable<Double> {
 	}
 	
 	
-	private double evaluate(){
+	public double evaluate(){
 		Square square = getSquare(x, y);
 		Robot robot = new Robot(square, false);
 		robot.setHealth(health);
@@ -54,14 +53,14 @@ public class DummyBoard extends GameBoard implements Callable<Double> {
 				robot.setTargetNumber(robot.getTargetNumber()+1);
 				if(robot.getTarget() != null){
 					targetNumber = robot.getTargetNumber();
-					return evaluate() / (Math.pow(getSizeX(), 2) + Math.pow(getSizeY(), 2));
+					return evaluate() / (Math.abs(getSizeX()) + Math.abs(getSizeY()));
 				}else{
 					return 0.0;
 				}
 			}
 		}
-		double result =  Math.pow(robot.getTarget().getX() - robot.getSquare().getX(), 2)
-				+ Math.pow(robot.getTarget().getY() - robot.getSquare().getY(), 2);
+		double result =  Math.abs(robot.getTarget().getX() - robot.getSquare().getX())
+				+ Math.abs(robot.getTarget().getY() - robot.getSquare().getY());
 		
 		if(result == 1.0){
 			for(int i=0; i<Direction.values().length; i++){
@@ -76,12 +75,6 @@ public class DummyBoard extends GameBoard implements Callable<Double> {
 		
 		return result;
 	}
-
-	@Override
-	public Double call() throws Exception {
-		return evaluate();
-	}
-
 
 	public List<Card> getCardList() {
 		return cardList;

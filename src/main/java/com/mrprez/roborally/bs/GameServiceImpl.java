@@ -49,12 +49,21 @@ public class GameServiceImpl implements GameService {
 	public Robot getPlayerRobot(Integer gameId, String username) {
 		return gameDao.loadPlayerRobot(gameId, username);
 	}
+	
+	@Override
+	public void saveRobotCards(Integer gameId, Integer robotNb, List<Integer> cardList) {
+		Robot robot = gameDao.loadRobot(gameId, robotNb);
+		saveRobotCards(gameId, robot, cardList);
+	}
 
 	@Override
 	public void saveRobotCards(Integer gameId, String username, List<Integer> cardList) {
-		
-		Map<Integer, Card> cardMap = new HashMap<Integer, Card>();
 		Robot robot = gameDao.loadPlayerRobot(gameId, username);
+		saveRobotCards(gameId, robot, cardList);
+	}
+	
+	private void saveRobotCards(Integer gameId, Robot robot, List<Integer> cardList) {
+		Map<Integer, Card> cardMap = new HashMap<Integer, Card>();
 		for(Card card : robot.getCards()){
 			cardMap.put(card.getRapidity(), card);
 		}
@@ -62,7 +71,7 @@ public class GameServiceImpl implements GameService {
 		for(Integer rapidity : cardList){
 			Card card = cardMap.get(rapidity);
 			if(card==null){
-				throw new IllegalStateException("No card found for user "+username+" in game "+gameId+" with rapidity "+rapidity);
+				throw new IllegalStateException("No card found for robot "+robot.getNumber()+" in game "+gameId+" with rapidity "+rapidity);
 			}
 			sortedCardList.add(card);
 		}
@@ -147,27 +156,17 @@ public class GameServiceImpl implements GameService {
 		gameDao.insertCardStock(game.getCardStock(), game.getId());
 		for(Robot robot : game.getRobotList()){
 			gameDao.insertHandCards(game.getId(), robot.getNumber(), robot.getCards());
+			if(robot.getUsername()==null){
+				IARobot ia = new IARobot(game.getId(), robot, this);
+				ia.start();
+			}
 		}
 	}
 
 	@Override
 	public Round playRound(Integer gameId, String username) throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InterruptedException, ExecutionException {
 		Game game = gameDao.loadGame(gameId);
-		if( ! game.getOwnername().equals(username) ){
-			throw new IllegalArgumentException("User is not the game owner");
-		}
-		
-		for(Robot robot : game.getRobotList()){
-			if(robot.getUsername()==null && robot.getTarget()!=null && robot.getPowerDownState()!= PowerDownState.ONGOING){
-				IARobot ia = new IARobot(robot);
-				List<Card> orderedCards = ia.orderCard();
-				robot.getCards().clear();
-				robot.getCards().addAll(orderedCards);
-				if(ia.shouldPowerDown()){
-					robot.setPowerDownState(PowerDownState.PLANNED);
-				}
-			}
-		}
+		// TODO check game owner
 		
 		Round round = game.play();
 		
@@ -175,12 +174,29 @@ public class GameServiceImpl implements GameService {
 		
 		gameDao.saveRound(game.getId(), round);
 		
+		for(Robot robot : game.getRobotList()){
+			if(robot.getUsername()==null && robot.getTarget()!=null && robot.getPowerDownState()!= PowerDownState.ONGOING){
+				IARobot ia = new IARobot(game.getId(), robot, this);
+				ia.start();
+			}
+		}
+		
 		return round;
+	}
+	
+	@Override
+	public void updatePowerDownState(Integer gameId, Integer robotNb, PowerDownState powerDownState) {
+		Robot robot = gameDao.loadRobot(gameId, robotNb);
+		updatePowerDownState(gameId, robot, powerDownState);
 	}
 
 	@Override
 	public void updatePowerDownState(Integer gameId, String username, PowerDownState powerDownState) {
 		Robot robot = gameDao.loadPlayerRobot(gameId, username);
+		updatePowerDownState(gameId, robot, powerDownState);
+	}
+	
+	private void updatePowerDownState(Integer gameId, Robot robot, PowerDownState powerDownState) {
 		if(robot.getPowerDownState()==PowerDownState.ONGOING){
 			throw new IllegalArgumentException("Cannot change power down state during power down");
 		}

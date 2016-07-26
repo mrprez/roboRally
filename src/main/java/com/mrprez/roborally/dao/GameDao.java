@@ -18,6 +18,8 @@ public interface GameDao {
 	
 	Robot loadPlayerRobot(Integer gameId, String username);
 
+	Robot loadRobot(Integer gameId, Integer robotNb);
+
 	void saveHandCards(Integer gameId, int robotNumber, List<Card> cardList);
 
 	void insertNewGame(Game game);

@@ -169,8 +169,18 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("gameId", gameId);
 		params.put("username", username);
-		return getSession().selectOne("selectPlayerRobot", params);
+		return getSession().selectOne("selectRobot", params);
 	}
+
+	
+	@Override
+	public Robot loadRobot(Integer gameId, Integer robotNb) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("gameId", gameId);
+		params.put("robotNb", robotNb);
+		return getSession().selectOne("selectRobot", params);
+	}
+	
 	
 	@Override
 	public void insertHandCards(int gameId, int robotNumber, List<Card> cards){
@@ -344,9 +354,6 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 	public void saveGameState(Game game) {
 		getSession().update("updateGameState", game);
 	}
-
-	
-
 	
 
 }

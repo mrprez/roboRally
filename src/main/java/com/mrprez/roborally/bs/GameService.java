@@ -28,7 +28,11 @@ public interface GameService {
 
 	void updatePowerDownState(Integer gameId, String username, PowerDownState valueOf);
 
+	void updatePowerDownState(Integer gameId, Integer robotNb, PowerDownState powerDownState);
+
 	void addRobotToGame(int gameId, String username) throws InstantiationException, IllegalAccessException, ClassNotFoundException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException;
+
+	void saveRobotCards(Integer gameId, Integer robotNb, List<Integer> cardList);
 
 
 }

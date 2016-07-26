@@ -127,10 +127,16 @@
 		where ROBOT.GAME_ID=#{gameId}
 		order by NUMBER, INDEX
 	</select>
-	<select id="selectPlayerRobot" resultMap="playerRobot">
+	<select id="selectRobot" resultMap="playerRobot">
 		select NUMBER,HEALTH,DIRECTION,TARGET_NB,POWER_DOWN_STATE,RAPIDITY,TRANSLATION,ROTATION from ROBOT
 		left join CARD on CARD.ROBOT_NB=ROBOT.NUMBER and CARD.GAME_ID=ROBOT.GAME_ID
-		where ROBOT.GAME_ID=#{gameId} and ROBOT.USER_NAME=#{username}
+		where ROBOT.GAME_ID=#{gameId} 
+		<if test="username != null">
+			and ROBOT.USER_NAME=#{username}
+		</if>
+		<if test="robotNb != null">
+			and ROBOT.NUMBER=#{robotNb}
+		</if>
 		order by INDEX asc
 	</select>
 	<select id="selectHistory" resultMap="action">

@@ -2,37 +2,38 @@ package com.mrprez.roborally.ai;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 
+import com.google.gwt.thirdparty.guava.common.base.Function;
+import com.google.gwt.thirdparty.guava.common.collect.Lists;
+import com.mrprez.roborally.bs.GameService;
 import com.mrprez.roborally.model.Card;
+import com.mrprez.roborally.model.PowerDownState;
 import com.mrprez.roborally.model.Robot;
 import com.mrprez.roborally.model.board.GameBoard;
 
 
-public class IARobot {
-	private Map<DummyBoard, FutureTask<Double>> dummyBoardMap = new HashMap<DummyBoard, FutureTask<Double>>();
+public class IARobot extends Thread {
+	private int gameId;
 	private Robot robot;
-	private Executor executor;
 	private double bestNote = Double.MAX_VALUE;
+	private List<Card> bestCardOrder;
+	private GameService gameService;
 	
 	
-	public IARobot(Robot robot) {
+	public IARobot(int gameId, Robot robot, GameService gameService) {
 		super();
+		this.gameId = gameId;
 		this.robot = robot;
-		this.executor = Executors.newFixedThreadPool(10);
+		this.gameService = gameService;
 	}
 	
-	public List<Card> orderCard() throws InterruptedException, ExecutionException{
+	
+	public void run() {
 		LoggerFactory.getLogger("IA").debug("Robot "+robot.getNumber()+" is on "+robot.getSquare().getX()+"-"+robot.getSquare().getY()+"("+robot.getDirection()+") and want to go to "+robot.getTarget().getX()+"-"+robot.getTarget().getY());
 		List<Card> fixCards = new ArrayList<Card>();
 		Collection<Card> possibilities = new HashSet<Card>();
@@ -44,19 +45,18 @@ public class IARobot {
 		}
 		variateOneCard(fixCards, possibilities );
 		
-		DummyBoard bestEvaluation = null;
-		for(DummyBoard dummyBoard : dummyBoardMap.keySet()){
-			FutureTask<Double> futureTask = dummyBoardMap.get(dummyBoard);
-			if(bestNote>futureTask.get()){
-				bestNote = futureTask.get();
-				bestEvaluation = dummyBoard;
+		LoggerFactory.getLogger("IA").debug("Robot "+robot.getNumber()+" best hand is :"+StringUtils.join(bestCardOrder, ", "));
+		
+		gameService.saveRobotCards(gameId, robot.getNumber(), Lists.transform(bestCardOrder, new Function<Card, Integer>() {
+			@Override
+			public Integer apply(Card card) {
+				return card.getRapidity();
 			}
+		}));
+		
+		if(shouldPowerDown()){
+			gameService.updatePowerDownState(gameId, robot.getNumber(), PowerDownState.PLANNED);
 		}
-		
-		LoggerFactory.getLogger("IA").debug("Robot "+robot.getNumber()+" best hand is :"+StringUtils.join(bestEvaluation.getCardList(), ", "));
-		
-		
-		return bestEvaluation.getCardList();
 	}
 	
 	
@@ -67,9 +67,11 @@ public class IARobot {
 			proposal.addAll(possibilities);
 			GameBoard gameBoard = (GameBoard) robot.getSquare().getBoard();
 			DummyBoard dummyBoard = new DummyBoard(gameBoard, robot, proposal);
-			FutureTask<Double> futureTask = new FutureTask<Double>(dummyBoard);
-			dummyBoardMap.put(dummyBoard, futureTask);
-			executor.execute(futureTask);
+			double note = dummyBoard.evaluate();
+			if(note < bestNote){
+				bestNote = note;
+				bestCardOrder = proposal;
+			}
 		} else {
 			for(Card possibility : possibilities){
 				fixCards.add(0, possibility);
@@ -83,7 +85,7 @@ public class IARobot {
 	
 	
 	public boolean shouldPowerDown(){
-		if(Math.pow(robot.getSquare().getX()-robot.getTarget().getX(), 2) + Math.pow(robot.getSquare().getY()-robot.getTarget().getY(), 2) <= bestNote
+		if(Math.abs(robot.getSquare().getX()-robot.getTarget().getX()) + Math.abs(robot.getSquare().getY()-robot.getTarget().getY()) <= bestNote
 				&& robot.getHealth()<7){
 			return true;
 		}
