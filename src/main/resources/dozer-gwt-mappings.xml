@@ -2,6 +2,15 @@
 <mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
 
+	<configuration>
+		<custom-converters>
+			<converter type="com.mrprez.roborally.server.RoundCustomConverter">
+				<class-a>com.mrprez.roborally.model.history.Round</class-a>
+				<class-b>com.mrprez.roborally.shared.RoundGwt</class-b>
+			</converter>
+		</custom-converters>
+	</configuration>
+
 	<mapping>
 		<class-a>com.mrprez.roborally.model.Game</class-a>
 		<class-b>com.mrprez.roborally.shared.GameGwt</class-b>
@@ -31,12 +40,21 @@
 			<a>targetNumber</a>
 			<b>targetNb</b>
 		</field>
+		<field custom-converter="com.mrprez.roborally.server.DirectionCustomConverter">
+			<a>direction</a>
+			<b>direction</b>
+		</field>
 	</mapping>
 	
 	<mapping>
-		<class-a>com.mrprez.roborally.model.history.Round</class-a>
-		<class-b>com.mrprez.roborally.shared.RoundGwt</class-b>
+		<class-a>com.mrprez.roborally.model.RobotState</class-a>
+		<class-b>com.mrprez.roborally.shared.RobotStateGwt</class-b>
+		<field custom-converter="com.mrprez.roborally.server.DirectionCustomConverter">
+			<a>direction</a>
+			<b>direction</b>
+		</field>
 	</mapping>
+	
 	<mapping>
 		<class-a>com.mrprez.roborally.model.history.Stage</class-a>
 		<class-b>com.mrprez.roborally.shared.StageGwt</class-b>

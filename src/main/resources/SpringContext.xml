@@ -76,17 +76,20 @@
 		<property name="gameDao" ref="gameDao"/>
 		<property name="userDao" ref="userDao"/>
 		<property name="mailResource" ref="mailResource"/>
+		<property name="pushEventServiceServlet" ref="pushEventServiceServlet"/>
 	</bean>
 	
 
 	<!-- GWT -->
-	<bean id="pushEventServiceServlet" class="com.mrprez.roborally.push.PushEventServiceServletImpl" scope="singleton"/>
 	<bean id="gwtDozerMapper" class="org.dozer.DozerBeanMapper">
 		<property name="mappingFiles">
 			<list>
 				<value>dozer-gwt-mappings.xml</value>
 			</list>
 		</property>
+	</bean>
+	<bean id="pushEventServiceServlet" class="com.mrprez.roborally.push.PushEventServiceServletImpl" scope="singleton">
+		<property name="dozerMapper" ref="gwtDozerMapper"/>
 	</bean>
 	<bean id="authenticationGwtService" class="com.mrprez.roborally.server.AuthenticationGwtServiceImpl" scope="request">
 		<property name="userService" ref="userService"/>

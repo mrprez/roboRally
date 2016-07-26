@@ -1,6 +1,6 @@
 package com.mrprez.roborally.push;
 
-import com.mrprez.roborally.shared.RoundGwt;
+import com.mrprez.roborally.model.history.Round;
 
 public interface PushEventServiceServlet {
 	
@@ -8,7 +8,7 @@ public interface PushEventServiceServlet {
 	void sendRefreshOrder();
 	
 	
-	void sendNewRoundEvent(RoundGwt newRoundGwt);
+	void sendNewRoundEvent(Round newRound);
 	
 
 }

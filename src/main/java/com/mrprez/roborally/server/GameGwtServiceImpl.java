@@ -3,7 +3,6 @@ package com.mrprez.roborally.server;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import javax.mail.internet.AddressException;
@@ -17,15 +16,12 @@ import com.mrprez.roborally.model.Direction;
 import com.mrprez.roborally.model.Game;
 import com.mrprez.roborally.model.PowerDownState;
 import com.mrprez.roborally.model.Robot;
-import com.mrprez.roborally.model.RobotState;
 import com.mrprez.roborally.model.Square;
 import com.mrprez.roborally.model.history.Round;
 import com.mrprez.roborally.push.PushEventServiceServlet;
 import com.mrprez.roborally.shared.CardGwt;
 import com.mrprez.roborally.shared.GameGwt;
 import com.mrprez.roborally.shared.RobotGwt;
-import com.mrprez.roborally.shared.RobotStateGwt;
-import com.mrprez.roborally.shared.RoundGwt;
 import com.mrprez.roborally.shared.SquareGwt;
 import com.mrprez.roborally.shared.UserGwt;
 
@@ -78,13 +74,7 @@ public class GameGwtServiceImpl extends AbstractGwtService implements GameGwtSer
 		gameGwt.setRobotList(new ArrayList<RobotGwt>());
 		for(Robot robot : game.getRobotList()){
 			RobotGwt robotGwt = dozerMapper.map(robot, RobotGwt.class);
-			robotGwt.setDirection(getDirectionChar(robot.getDirection()));
 			gameGwt.getRobotList().add(robotGwt);
-		}
-		
-		for(Round round : game.getHistory()){
-			RoundGwt roundGwt = gameGwt.getHistory().get(round.getNumber());
-			mapStates(roundGwt, round.getStateMap());
 		}
 		
 		return gameGwt;
@@ -97,7 +87,6 @@ public class GameGwtServiceImpl extends AbstractGwtService implements GameGwtSer
 		Robot robot = gameService.getPlayerRobot(gameId, user.getUsername());
 		
 		RobotGwt robotGwt = dozerMapper.map(robot, RobotGwt.class);
-		robotGwt.setDirection(getDirectionChar(robot.getDirection()));
 		for(Card card : robot.getCards()){
 			CardGwt cardGwt = dozerMapper.map(card, CardGwt.class);
 			robotGwt.getCards().add(cardGwt);
@@ -106,21 +95,6 @@ public class GameGwtServiceImpl extends AbstractGwtService implements GameGwtSer
 			}
 		}
 		return robotGwt;
-	}
-	
-	
-	private char getDirectionChar(Direction direction){
-		switch (direction) {
-		case DOWN:
-			return 'B';
-		case LEFT:
-			return 'G';
-		case RIGHT:
-			return 'D';
-		default:
-			return 'H';
-		}
-		
 	}
 
 
@@ -147,23 +121,10 @@ public class GameGwtServiceImpl extends AbstractGwtService implements GameGwtSer
 		UserGwt user = (UserGwt) getThreadLocalRequest().getSession().getAttribute(UserGwt.KEY);
 		Round newRound = gameService.playRound(gameId, user.getUsername());
 		
-		RoundGwt newRoundGwt = dozerMapper.map(newRound, RoundGwt.class);
-		mapStates(newRoundGwt, newRound.getStateMap());
-		
-		pushEventServiceServlet.sendNewRoundEvent(newRoundGwt);
+		pushEventServiceServlet.sendNewRoundEvent(newRound);
 	}
 
 	
-	private void mapStates(RoundGwt roundGwt, Map<Robot, RobotState> stateMap){
-		roundGwt.setRobotStateList(new ArrayList<RobotStateGwt>());
-		for(Robot robot : stateMap.keySet()){
-			RobotStateGwt stateGwt = dozerMapper.map(stateMap.get(robot), RobotStateGwt.class);
-			stateGwt.setDirection(getDirectionChar(stateMap.get(robot).getDirection()));
-			stateGwt.setRobotNb(robot.getNumber());
-			roundGwt.getRobotStateList().add(stateGwt);
-		}
-	}
-
 	@Override
 	public void savePowerDownState(Integer gameId, String powerDownState) {
 		UserGwt user = (UserGwt) getThreadLocalRequest().getSession().getAttribute(UserGwt.KEY);
