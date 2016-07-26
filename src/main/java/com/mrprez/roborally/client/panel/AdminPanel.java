@@ -13,21 +13,16 @@ import com.mrprez.roborally.client.GameGwtService;
 import com.mrprez.roborally.client.GameGwtServiceAsync;
 import com.mrprez.roborally.shared.GameGwt;
 import com.mrprez.roborally.shared.RobotGwt;
-import com.mrprez.roborally.shared.RoundGwt;
 
 public class AdminPanel extends FlowPanel {
 	
 	private GameGwtServiceAsync gameGwtService = GWT.create(GameGwtService.class);
 	private Integer gameId;
-	private AnimationPlayerPanel animationPlayerPanel;
-	private HandCardsPanel handCardsPanel;
 	private FlexTable robotTable = new FlexTable();
 	
 	
-	public void init(GameGwt game, AnimationPlayerPanel animationPlayerPanel, HandCardsPanel handCardsPanel){
+	public void init(GameGwt game){
 		this.gameId = game.getId();
-		this.animationPlayerPanel = animationPlayerPanel;
-		this.handCardsPanel = handCardsPanel;
 		refreshRobotTable();
 		add(robotTable);
 		if(game.isUserOwner()){
@@ -36,7 +31,9 @@ public class AdminPanel extends FlowPanel {
 			playButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					gameGwtService.playNewRound(gameId, playRoundCallback());
+					gameGwtService.playNewRound(gameId, new AbstractAsyncCallback<Void>() {
+						public void onSuccess(Void result) {}
+					});
 				}
 			});
 		}
@@ -70,19 +67,5 @@ public class AdminPanel extends FlowPanel {
 			}
 		});
 	}
-	
-	private AbstractAsyncCallback<RoundGwt> playRoundCallback(){
-		return new AbstractAsyncCallback<RoundGwt>(){
-			@Override
-			public void onSuccess(RoundGwt round) {
-				animationPlayerPanel.addAndPlay(round);
-				handCardsPanel.reload();
-				refreshRobotTable();
-			}
-		};
-	}
-	
-	
-	
 
 }

@@ -22,14 +22,12 @@ import com.mrprez.roborally.model.User;
 import com.mrprez.roborally.model.board.BuildingBoard;
 import com.mrprez.roborally.model.board.GameBoard;
 import com.mrprez.roborally.model.history.Round;
-import com.mrprez.roborally.push.PushEventServiceServlet;
 
 public class GameServiceImpl implements GameService {
 
 	private GameDao gameDao;
 	private UserDao userDao;
 	private MailResource mailResource;
-	private PushEventServiceServlet pushEventServiceServlet;
 	
 	
 	@Override
@@ -84,8 +82,6 @@ public class GameServiceImpl implements GameService {
 		gameDao.saveHandCards(gameId, robot.getNumber(), sortedCardList);
 		
 		gameDao.updateRobotHasPlayed(robot.getNumber(), gameId, true);
-		
-		pushEventServiceServlet.sendRefreshOrder();
 	}
 
 	@Override
@@ -230,14 +226,5 @@ public class GameServiceImpl implements GameService {
 	public void setMailResource(MailResource mailResource) {
 		this.mailResource = mailResource;
 	}
-
-	public PushEventServiceServlet getPushEventServiceServlet() {
-		return pushEventServiceServlet;
-	}
-
-	public void setPushEventServiceServlet(PushEventServiceServlet pushEventServiceServlet) {
-		this.pushEventServiceServlet = pushEventServiceServlet;
-	}
 	
-
 }

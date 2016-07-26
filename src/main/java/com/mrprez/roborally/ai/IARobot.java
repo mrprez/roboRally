@@ -2,6 +2,7 @@ package com.mrprez.roborally.ai;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -18,6 +19,8 @@ import com.mrprez.roborally.model.board.GameBoard;
 
 
 public class IARobot extends Thread {
+	private static final long MIN_SPENT_TIME = 1000*3;
+	
 	private int gameId;
 	private Robot robot;
 	private double bestNote = Double.MAX_VALUE;
@@ -34,6 +37,7 @@ public class IARobot extends Thread {
 	
 	
 	public void run() {
+		Date startDate = new Date();
 		LoggerFactory.getLogger("IA").debug("Robot "+robot.getNumber()+" is on "+robot.getSquare().getX()+"-"+robot.getSquare().getY()+"("+robot.getDirection()+") and want to go to "+robot.getTarget().getX()+"-"+robot.getTarget().getY());
 		List<Card> fixCards = new ArrayList<Card>();
 		Collection<Card> possibilities = new HashSet<Card>();
@@ -47,16 +51,27 @@ public class IARobot extends Thread {
 		
 		LoggerFactory.getLogger("IA").debug("Robot "+robot.getNumber()+" best hand is :"+StringUtils.join(bestCardOrder, ", "));
 		
+		
+		
+		if(shouldPowerDown()){
+			gameService.updatePowerDownState(gameId, robot.getNumber(), PowerDownState.PLANNED);
+		}
+		
+		Date endDate = new Date();
+		if(endDate.getTime()-startDate.getTime() < MIN_SPENT_TIME){
+			try {
+				Thread.sleep(MIN_SPENT_TIME-endDate.getTime()+startDate.getTime());
+			} catch (InterruptedException e) {
+				throw new IllegalStateException(e);
+			}
+		}
+		
 		gameService.saveRobotCards(gameId, robot.getNumber(), Lists.transform(bestCardOrder, new Function<Card, Integer>() {
 			@Override
 			public Integer apply(Card card) {
 				return card.getRapidity();
 			}
 		}));
-		
-		if(shouldPowerDown()){
-			gameService.updatePowerDownState(gameId, robot.getNumber(), PowerDownState.PLANNED);
-		}
 	}
 	
 	

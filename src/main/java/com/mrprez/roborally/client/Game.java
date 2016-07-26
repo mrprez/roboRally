@@ -14,6 +14,7 @@ import com.mrprez.roborally.client.panel.AnimationPlayerPanel;
 import com.mrprez.roborally.client.panel.BoardPanel;
 import com.mrprez.roborally.client.panel.HandCardsPanel;
 import com.mrprez.roborally.shared.GameGwt;
+import com.mrprez.roborally.shared.NewRoundEvent;
 import com.mrprez.roborally.shared.RefreshEvent;
 
 import de.novanic.eventservice.client.event.Event;
@@ -66,7 +67,14 @@ public class Game implements EntryPoint {
 		return new RemoteEventListener() {
 			@Override
 			public void apply(Event event) {
-				adminPanel.refreshRobotTable();
+				if(event instanceof RefreshEvent){
+					adminPanel.refreshRobotTable();
+				} else if(event instanceof NewRoundEvent){
+					NewRoundEvent newRoundEvent = (NewRoundEvent) event;
+					animationPlayerPanel.addAndPlay(newRoundEvent.getRound());
+					handCardsPanel.reload();
+					adminPanel.refreshRobotTable();
+				}
 			}
 		};
 	}
@@ -80,7 +88,7 @@ public class Game implements EntryPoint {
 	
 	private void initOngoingGame(GameGwt loadedGame){
 		animationPlayerPanel.init(loadedGame.getHistory(), boardPanel);
-		adminPanel.init(loadedGame, animationPlayerPanel, handCardsPanel);
+		adminPanel.init(loadedGame);
 		eastPanel.add(adminPanel);
 	}
 	

@@ -54,8 +54,7 @@
 		<constructor-arg ref="mailSenderSession" />
 	</bean>
 	
-	<bean id="pushEventServiceServlet" class="com.mrprez.roborally.push.PushEventServiceServletImpl" scope="singleton"/>
-
+	
 	<!-- BS -->
 	<tx:advice id="bsTxAdvice" transaction-manager="txManager">
 		<tx:attributes>
@@ -77,12 +76,11 @@
 		<property name="gameDao" ref="gameDao"/>
 		<property name="userDao" ref="userDao"/>
 		<property name="mailResource" ref="mailResource"/>
-		<property name="pushEventServiceServlet" ref="pushEventServiceServlet"/>
 	</bean>
 	
 
-
 	<!-- GWT -->
+	<bean id="pushEventServiceServlet" class="com.mrprez.roborally.push.PushEventServiceServletImpl" scope="singleton"/>
 	<bean id="gwtDozerMapper" class="org.dozer.DozerBeanMapper">
 		<property name="mappingFiles">
 			<list>
@@ -96,6 +94,7 @@
 	<bean id="gameGwtService" class="com.mrprez.roborally.server.GameGwtServiceImpl" scope="request">
 		<property name="gameService" ref="gameService"/>
 		<property name="dozerMapper" ref="gwtDozerMapper"/>
+		<property name="pushEventServiceServlet" ref="pushEventServiceServlet"/>
 	</bean>
 
 </beans>

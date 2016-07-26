@@ -20,6 +20,7 @@ import com.mrprez.roborally.model.Robot;
 import com.mrprez.roborally.model.RobotState;
 import com.mrprez.roborally.model.Square;
 import com.mrprez.roborally.model.history.Round;
+import com.mrprez.roborally.push.PushEventServiceServlet;
 import com.mrprez.roborally.shared.CardGwt;
 import com.mrprez.roborally.shared.GameGwt;
 import com.mrprez.roborally.shared.RobotGwt;
@@ -33,6 +34,7 @@ public class GameGwtServiceImpl extends AbstractGwtService implements GameGwtSer
 	
 	private DozerBeanMapper dozerMapper;
 	private GameService gameService;
+	private PushEventServiceServlet pushEventServiceServlet;
 	
 	
 	@Override
@@ -122,26 +124,12 @@ public class GameGwtServiceImpl extends AbstractGwtService implements GameGwtSer
 	}
 
 
-	public GameService getGameService() {
-		return gameService;
-	}
-
-	public void setGameService(GameService gameService) {
-		this.gameService = gameService;
-	}
-	
-	public DozerBeanMapper getDozerMapper() {
-		return dozerMapper;
-	}
-
-	public void setDozerMapper(DozerBeanMapper dozerMapper) {
-		this.dozerMapper = dozerMapper;
-	}
-
 	@Override
 	public void saveCards(Integer gameId, List<Integer> cardList) {
 		UserGwt user = (UserGwt) getThreadLocalRequest().getSession().getAttribute(UserGwt.KEY);
 		gameService.saveRobotCards(gameId, user.getUsername(), cardList);
+
+		pushEventServiceServlet.sendRefreshOrder();
 	}
 
 	@Override
@@ -155,14 +143,14 @@ public class GameGwtServiceImpl extends AbstractGwtService implements GameGwtSer
 	}
 
 	@Override
-	public RoundGwt playNewRound(Integer gameId) throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InterruptedException, ExecutionException {
+	public void playNewRound(Integer gameId) throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InterruptedException, ExecutionException {
 		UserGwt user = (UserGwt) getThreadLocalRequest().getSession().getAttribute(UserGwt.KEY);
 		Round newRound = gameService.playRound(gameId, user.getUsername());
 		
 		RoundGwt newRoundGwt = dozerMapper.map(newRound, RoundGwt.class);
 		mapStates(newRoundGwt, newRound.getStateMap());
 		
-		return newRoundGwt;
+		pushEventServiceServlet.sendNewRoundEvent(newRoundGwt);
 	}
 
 	
@@ -183,4 +171,28 @@ public class GameGwtServiceImpl extends AbstractGwtService implements GameGwtSer
 	}
 	
 	
+	public GameService getGameService() {
+		return gameService;
+	}
+
+	public void setGameService(GameService gameService) {
+		this.gameService = gameService;
+	}
+	
+	public DozerBeanMapper getDozerMapper() {
+		return dozerMapper;
+	}
+
+	public void setDozerMapper(DozerBeanMapper dozerMapper) {
+		this.dozerMapper = dozerMapper;
+	}
+	
+	public PushEventServiceServlet getPushEventServiceServlet() {
+		return pushEventServiceServlet;
+	}
+
+	public void setPushEventServiceServlet(PushEventServiceServlet pushEventServiceServlet) {
+		this.pushEventServiceServlet = pushEventServiceServlet;
+	}
+
 }

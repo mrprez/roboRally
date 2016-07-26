@@ -6,7 +6,6 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.mrprez.roborally.shared.GameGwt;
 import com.mrprez.roborally.shared.RobotGwt;
-import com.mrprez.roborally.shared.RoundGwt;
 
 @RemoteServiceRelativePath("gameService")
 public interface GameGwtService extends RemoteService {
@@ -22,7 +21,7 @@ public interface GameGwtService extends RemoteService {
 	
 	int createNewGame(String name, int sizeX, int sizeY, int aiNb, List<String> invitedPlayerEMails) throws Exception;
 	
-	RoundGwt playNewRound(Integer gameId) throws Exception;
+	void playNewRound(Integer gameId) throws Exception;
 	
 	void savePowerDownState(Integer gameId, String powerDownState);
 
