@@ -52,6 +52,7 @@ public class GameGwtServiceImpl extends AbstractGwtService implements GameGwtSer
 		Game game = gameService.getGame(id, user.getUsername());
 		GameGwt gameGwt = new GameGwt();
 		dozerMapper.map(game, gameGwt);
+		gameGwt.setUserOwner(user.getUsername().equals(game.getOwnername()));
 		SquareGwt[][] squareGwtTab = new SquareGwt[game.getBoard().getSizeX()][game.getBoard().getSizeY()]; 
 		for(int y=0; y<game.getBoard().getSizeY(); y++){
 			for(int x=0; x<game.getBoard().getSizeX(); x++){

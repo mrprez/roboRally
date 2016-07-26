@@ -1,7 +1,6 @@
 package com.mrprez.roborally.client.animation;
 
 import com.google.gwt.dom.client.Style.Display;
-import com.google.gwt.user.client.ui.AbsolutePanel;
 
 public class AppearAnimation extends MoveAnimation {
 	private int x;
@@ -16,10 +15,10 @@ public class AppearAnimation extends MoveAnimation {
 	
 	@Override
 	public void onStart(){
+		boardPanel.reinitRobotImageUri(robotNb);
 		robotCanvas.getCanvasElement().getStyle().setDisplay(Display.NONE);
 		robotCanvas.getCanvasElement().getStyle().setOpacity(0.5);
-		AbsolutePanel absolutePanel = (AbsolutePanel) robotCanvas.getParent();
-		absolutePanel.setWidgetPosition(robotCanvas, 97*x, 97*y);
+		boardPanel.setWidgetPosition(robotCanvas, 97*x, 97*y);
 	}
 
 	@Override

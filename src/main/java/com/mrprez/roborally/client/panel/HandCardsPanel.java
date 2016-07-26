@@ -26,13 +26,14 @@ public class HandCardsPanel extends FlexTable {
 	private Image powerDownPlannedImg = new Image("img/PowerDownPlanned.png");
 	private Image powerDownOffImg = new Image("img/PowerDownOff.png");
 	private Image powerDownOngoingImg = new Image("img/PowerDownOnGoing.png");
+	private Button saveButton;
 	
 	
 	public void init(int gameId){
 		this.gameId = gameId;
 		addStyleName("cardPanel");
 		this.getElement().getStyle().clearPosition();
-		Button saveButton = new Button("Sauvegarder");
+		saveButton = new Button("Sauvegarder");
 		saveButton.addClickHandler(buildSaveHandHandler());
 		setWidget(2, 0, saveButton);
 		getFlexCellFormatter().setRowSpan(1, 0, 2);
@@ -73,6 +74,7 @@ public class HandCardsPanel extends FlexTable {
 						setWidget(0, index+1, new Image("img/card/noCard.gif"));
 					}
 				}
+				saveButton.setEnabled(robot.getCards().size() > 0);
 				if(robot.getPowerDownState().equals("ONGOING")){
 					setWidget(0, cardNumber+1, powerDownOngoingImg);
 				}else if(robot.getPowerDownState().equals("PLANNED")){

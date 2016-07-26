@@ -2,7 +2,6 @@ package com.mrprez.roborally.client.animation;
 
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.dom.client.Style.Display;
-import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Image;
 
 public class ReachedTargetAnimation extends MoveAnimation {
@@ -17,8 +16,7 @@ public class ReachedTargetAnimation extends MoveAnimation {
 	
 	@Override
 	public void onStart(){
-		AbsolutePanel absolutePanel = (AbsolutePanel) robotCanvas.getParent();
-		absolutePanel.add(image, absolutePanel.getWidgetLeft(robotCanvas), absolutePanel.getWidgetTop(robotCanvas));
+		boardPanel.add(image, boardPanel.getWidgetLeft(robotCanvas), boardPanel.getWidgetTop(robotCanvas));
 		imageEl.getStyle().setDisplay(Display.BLOCK);
 	}
 

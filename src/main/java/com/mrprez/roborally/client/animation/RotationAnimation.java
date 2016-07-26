@@ -17,7 +17,7 @@ public class RotationAnimation extends MoveAnimation {
 	
 	@Override
 	public void onStart(){
-		Image img = new Image(robotCanvas.getCanvasElement().getAttribute("imageName"));
+		Image img = new Image(boardPanel.getRobotImageUri(robotNb));
 		imageEl = ImageElement.as(img.getElement());
 	}
 

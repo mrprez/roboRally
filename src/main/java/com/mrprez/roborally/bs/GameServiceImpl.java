@@ -40,9 +40,13 @@ public class GameServiceImpl implements GameService {
 	@Override
 	public Game getGame(Integer id, String username) throws InstantiationException, IllegalAccessException, ClassNotFoundException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		Game game = gameDao.loadGame(id);
-		// TODO check user
+		for(Robot robot : game.getRobotList()){
+			if(username.equals(robot.getUsername())){
+				return game;
+			}
+		}
 		
-		return game;
+		throw new IllegalAccessError(username+" has no robot on game "+id);
 	}
 
 	@Override

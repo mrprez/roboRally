@@ -1,13 +1,10 @@
 package com.mrprez.roborally.client.animation;
 
-import com.google.gwt.user.client.ui.AbsolutePanel;
-
 public class FailedTranslationAnimation extends MoveAnimation {
 	private int x;
 	private int y;
 	private int startLeft;
 	private int startTop;
-	private AbsolutePanel absolutePanel;
 	
 	
 	public FailedTranslationAnimation(String direction){
@@ -29,17 +26,16 @@ public class FailedTranslationAnimation extends MoveAnimation {
 	
 	@Override
 	public void onStart(){
-		absolutePanel = (AbsolutePanel) robotCanvas.getParent();
-		startLeft = absolutePanel.getWidgetLeft(robotCanvas);
-		startTop = absolutePanel.getWidgetTop(robotCanvas);
+		startLeft = boardPanel.getWidgetLeft(robotCanvas);
+		startTop = boardPanel.getWidgetTop(robotCanvas);
 	}
 	
 	@Override
 	public void update(double progress) {
 		if(progress < 0.5){
-			absolutePanel.setWidgetPosition(robotCanvas, (int)(startLeft+x*60*progress), (int)(startTop+y*60*progress));
+			boardPanel.setWidgetPosition(robotCanvas, (int)(startLeft+x*60*progress), (int)(startTop+y*60*progress));
 		}else{
-			absolutePanel.setWidgetPosition(robotCanvas, (int)(startLeft+x*60*(1-progress)), (int)(startTop+y*60*(1-progress)));
+			boardPanel.setWidgetPosition(robotCanvas, (int)(startLeft+x*60*(1-progress)), (int)(startTop+y*60*(1-progress)));
 		}
 	}
 

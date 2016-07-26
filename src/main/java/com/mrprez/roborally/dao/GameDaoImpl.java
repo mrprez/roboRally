@@ -50,6 +50,7 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 		GameBoard gameBoard = new GameBoard(gameBoardDto.getBoardId(), gameBoardDto.getSizeX(), gameBoardDto.getSizeY());
 		game.setId(id);
 		game.setName(gameBoardDto.getName());
+		game.setOwnername(gameBoardDto.getOwnername());
 		game.setState(gameBoardDto.getGameState());
 		game.setBoard(gameBoard);
 				

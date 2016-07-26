@@ -1,12 +1,10 @@
 package com.mrprez.roborally.client.animation;
 
 import com.google.gwt.dom.client.Style.Display;
-import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
 
 public class WinAnimation extends MoveAnimation {
-	private AbsolutePanel absolutePanel;
 	private ScrollPanel scrollPanel;
 	private Label label;
 	
@@ -17,18 +15,17 @@ public class WinAnimation extends MoveAnimation {
 	
 	@Override
 	public void onStart(){
-		absolutePanel = (AbsolutePanel) robotCanvas.getParent();
-		scrollPanel = (ScrollPanel) absolutePanel.getParent();
+		scrollPanel = (ScrollPanel) boardPanel.getParent();
 		label = new Label("A Robot has reached the last Target! AMAZING!");
 		label.addStyleName("winMessage");
-		absolutePanel.setWidgetPosition(robotCanvas, 
+		boardPanel.setWidgetPosition(robotCanvas, 
 				scrollPanel.getOffsetWidth()/2-robotCanvas.getOffsetWidth()/2+scrollPanel.getHorizontalScrollPosition(),
 				scrollPanel.getOffsetHeight()/2-robotCanvas.getOffsetHeight()/2+scrollPanel.getVerticalScrollPosition()+30);
-		absolutePanel.add(label,
+		boardPanel.add(label,
 				scrollPanel.getOffsetWidth()/2-label.getOffsetWidth()/2+scrollPanel.getHorizontalScrollPosition(),
 				scrollPanel.getOffsetHeight()/2-label.getOffsetHeight()/2+scrollPanel.getVerticalScrollPosition()-30);
 		label.addStyleName("redWinMessage");
-		absolutePanel.setWidgetPosition(label,
+		boardPanel.setWidgetPosition(label,
 				scrollPanel.getOffsetWidth()/2-label.getOffsetWidth()/2+scrollPanel.getHorizontalScrollPosition(),
 				scrollPanel.getOffsetHeight()/2-label.getOffsetHeight()/2+scrollPanel.getVerticalScrollPosition()-30);
 	}

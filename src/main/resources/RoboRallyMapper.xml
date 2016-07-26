@@ -22,6 +22,7 @@
 	<resultMap id="gameBoard" type="com.mrprez.roborally.dto.GameBoardDto">
 		<result property="boardId" column="BOARD_ID" />
 		<result property="name" column="NAME" />
+		<result property="ownername" column="OWNER" />
 		<result property="gameState" column="STATE" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
 		<result property="sizeX" column="SIZE_X" />
 		<result property="sizeY" column="SIZE_Y" />
@@ -111,7 +112,7 @@
 		where ROBOT.USER_NAME=#{username}
 	</select>
 	<select id="selectGame" resultMap="gameBoard">
-		select GAME.BOARD_ID,NAME,STATE,SIZE_X,SIZE_Y,TARGET.X as TARGET_X,TARGET.Y as TARGET_Y from GAME
+		select GAME.BOARD_ID, NAME, OWNER, STATE, SIZE_X, SIZE_Y, TARGET.X as TARGET_X, TARGET.Y as TARGET_Y from GAME
 		join BOARD on BOARD.ID=GAME.BOARD_ID
 		join TARGET on TARGET.BOARD_ID=BOARD.ID
 		where GAME.ID=#{id}

@@ -3,6 +3,7 @@ package com.mrprez.roborally.client.panel;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -29,14 +30,16 @@ public class AdminPanel extends FlowPanel {
 		this.handCardsPanel = handCardsPanel;
 		refreshRobotTable();
 		add(robotTable);
-		Button playButton = new Button("Jouer un tour !");
-		add(playButton);
-		playButton.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				gameGwtService.playNewRound(gameId, playRoundCallback());
-			}
-		});
+		if(game.isUserOwner()){
+			Button playButton = new Button("Jouer un tour !");
+			add(playButton);
+			playButton.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					gameGwtService.playNewRound(gameId, playRoundCallback());
+				}
+			});
+		}
 	}
 	
 	
@@ -46,17 +49,22 @@ public class AdminPanel extends FlowPanel {
 			public void onSuccess(GameGwt game) {
 				robotTable.clear();
 				for(RobotGwt robot : game.getRobotList()){
-					robotTable.setWidget(robot.getNumber(), 0, new Image(robot.getImageName()));
-					robotTable.setWidget(robot.getNumber(), 1, new Image("img/Target"+robot.getTargetNb()+".png"));
+					AbsolutePanel robotPanel = new AbsolutePanel();
+					robotPanel.setPixelSize(47, 46);
+					robotPanel.add(new Image(robot.getImageName()), 0, 0);
+					robotTable.setWidget(robot.getNumber(), 0, robotPanel);
 					if(robot.getHealth()!=0){
+						robotTable.setWidget(robot.getNumber(), 1, new Image("img/Target"+robot.getTargetNb()+".png"));
 						if(!robot.isHasPlayed() && !robot.getPowerDownState().equals("ONGOING")){
-							robotTable.setWidget(robot.getNumber(), 2, new Image("img/hourglass.png"));
+							robotPanel.add(new Image("img/hourglass.png"), 0, 0);
 						}
 						FlowPanel damagePanel = new FlowPanel();
 						for(int i=robot.getHealth(); i<RobotGwt.MAX_HEALTH; i++){
 							damagePanel.add(new Image("img/damageMark.jpg"));
 						}
-						robotTable.setWidget(robot.getNumber(), 3, damagePanel);
+						robotTable.setWidget(robot.getNumber(), 2, damagePanel);
+					}else{
+						robotTable.setWidget(robot.getNumber(), 1, new Image("img/WinnerFlag.png"));
 					}
 				}
 			}

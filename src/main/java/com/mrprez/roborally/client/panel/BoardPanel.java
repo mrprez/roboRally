@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.dom.client.CanvasElement;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -107,6 +108,7 @@ public class BoardPanel extends AbsolutePanel {
 					robotCanvas.setCoordinateSpaceHeight(97);
 					robotCanvas.setStyleName("gameCanvas");
 					robotCanvas.getCanvasElement().setAttribute("imageName", robot.getImageName());
+					robotCanvas.getCanvasElement().setAttribute("originImageName", robot.getImageName());
 					if(robot.isGhost()){
 						robotCanvas.getCanvasElement().getStyle().setOpacity(0.5);
 					}
@@ -159,6 +161,29 @@ public class BoardPanel extends AbsolutePanel {
 	
 	public Canvas getRobotCanvas(int robotNb){
 		return robotCanvaMap.get(robotNb);
+	}
+	
+	
+	public String getRobotImageUri(int robotNb){
+		return getRobotCanvas(robotNb).getCanvasElement().getAttribute("imageName");
+	}
+	
+	public void reinitRobotImageUri(int robotNb){
+		CanvasElement canvasElement = getRobotCanvas(robotNb).getCanvasElement();
+		setRobotImageUri(robotNb, canvasElement.getAttribute("originImageName"));
+	}
+	
+	public void setRobotImageUri(int robotNb, String imageUri){
+		final Canvas robotCanvas = getRobotCanvas(robotNb);
+		robotCanvas.getCanvasElement().setAttribute("imageName", imageUri);
+		ImageLoader.getInstance().loadImage(imageUri, new ImageLoaderCallback() {
+			@Override
+			public void onImageLoaded(Image image) {
+				ImageElement diedImageEl = ImageElement.as(image.getElement());
+				robotCanvas.getContext2d().clearRect(0, 0, robotCanvas.getCoordinateSpaceWidth(), robotCanvas.getCoordinateSpaceHeight());
+				robotCanvas.getContext2d().drawImage(diedImageEl, 25, 25);
+			}
+		});
 	}
 	
 	

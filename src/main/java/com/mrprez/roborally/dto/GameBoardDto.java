@@ -6,6 +6,7 @@ import com.mrprez.roborally.model.Game.GameState;
 
 public class GameBoardDto {
 	private String name;
+	private String ownername;
 	private GameState gameState;
 	private int boardId;
 	private int sizeX;
@@ -49,6 +50,12 @@ public class GameBoardDto {
 	}
 	public void setGameState(GameState gameState) {
 		this.gameState = gameState;
+	}
+	public String getOwnername() {
+		return ownername;
+	}
+	public void setOwnername(String ownername) {
+		this.ownername = ownername;
 	}
 	
 

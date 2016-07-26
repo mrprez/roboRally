@@ -16,8 +16,9 @@ public abstract class MoveAnimation {
 	private static final String APPEAR = "APPEAR";
 	private static final String DIE = "DIE";
 	private static final String POWER_DOWN = "POWER_DOWN";
-	private int robotNb;
+	protected int robotNb;
 	protected Canvas robotCanvas;
+	protected BoardPanel boardPanel;
 	
 
 	public abstract void update(double progress);
@@ -52,6 +53,8 @@ public abstract class MoveAnimation {
 			throw new IllegalStateException("Invalide Move.type: "+move.getType());
 		}
 		moveAnimation.robotCanvas = boardPanel.getRobotCanvas(move.getRobotNb());
+		moveAnimation.boardPanel = boardPanel;
+		moveAnimation.robotNb = move.getRobotNb();
 		return moveAnimation;
 	}
 	

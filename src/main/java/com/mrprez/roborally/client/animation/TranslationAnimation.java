@@ -1,7 +1,5 @@
 package com.mrprez.roborally.client.animation;
 
-import com.google.gwt.user.client.ui.AbsolutePanel;
-
 public class TranslationAnimation extends MoveAnimation {
 	public static final String UP = "UP";
 	public static final String DOWN = "DOWN";
@@ -12,7 +10,6 @@ public class TranslationAnimation extends MoveAnimation {
 	private int y;
 	private int startLeft;
 	private int startTop;
-	private AbsolutePanel absolutePanel;
 	
 	
 	public TranslationAnimation(String direction){
@@ -33,18 +30,14 @@ public class TranslationAnimation extends MoveAnimation {
 	
 	@Override
 	public void onStart() {
-		absolutePanel = (AbsolutePanel) robotCanvas.getParent();
-		startLeft = absolutePanel.getWidgetLeft(robotCanvas);
-		startTop = absolutePanel.getWidgetTop(robotCanvas);
+		startLeft = boardPanel.getWidgetLeft(robotCanvas);
+		startTop = boardPanel.getWidgetTop(robotCanvas);
 	}
 
 	@Override
 	public void update(double progress) {
-		absolutePanel.setWidgetPosition(robotCanvas, (int)(startLeft+x*97*progress), (int)(startTop+y*97*progress));
+		boardPanel.setWidgetPosition(robotCanvas, (int)(startLeft+x*97*progress), (int)(startTop+y*97*progress));
 	}
 
-
-
-	
 
 }

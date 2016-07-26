@@ -1,6 +1,5 @@
 package com.mrprez.roborally.client.animation;
 
-import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.SimplePanel;
 
@@ -9,7 +8,6 @@ public class LaserAnimation extends MoveAnimation {
 	private int startY;
 	private int endX;
 	private int endY;
-	private AbsolutePanel absolutePanel;
 	private SimplePanel laserPanel = new SimplePanel();
 	private Image explosionImg;
 	
@@ -25,9 +23,8 @@ public class LaserAnimation extends MoveAnimation {
 	
 	@Override
 	public void onStart() {
-		absolutePanel = (AbsolutePanel) robotCanvas.getParent();
 		laserPanel.addStyleName("laser");
-		absolutePanel.add(laserPanel);
+		boardPanel.add(laserPanel);
 	}
 
 	@Override
@@ -39,12 +36,12 @@ public class LaserAnimation extends MoveAnimation {
 			double minY = Math.min(startY*97, (startY+(endY-startY)*lineProgress)*97)+47;
 			double maxY = Math.max(startY*97, (startY+(endY-startY)*lineProgress)*97)+50;
 			
-			absolutePanel.setWidgetPosition(laserPanel, (int)minX, (int)minY);
+			boardPanel.setWidgetPosition(laserPanel, (int)minX, (int)minY);
 			laserPanel.setWidth(Math.round(maxX-minX)+"px");
 			laserPanel.setHeight(Math.round(maxY-minY)+"px");
 		}else if(explosionImg==null){
 			explosionImg = new Image("img/explosion.png");
-			absolutePanel.add(explosionImg, endX*97+10, endY*97+10);
+			boardPanel.add(explosionImg, endX*97+10, endY*97+10);
 		}
 	}
 

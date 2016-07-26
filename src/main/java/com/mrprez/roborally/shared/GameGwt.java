@@ -8,10 +8,12 @@ public class GameGwt implements IsSerializable{
 	private int id;
 	private String name;
 	private String state;
+	private String ownername;
 	private GameBoardGwt board;
 	private List<RobotGwt> robotList;
 	private List<RoundGwt> history;
-		
+	private boolean userOwner = false;
+	
 	
 	public int getId() {
 		return id;
@@ -48,6 +50,18 @@ public class GameGwt implements IsSerializable{
 	}
 	public void setState(String state) {
 		this.state = state;
+	}
+	public String getOwnername() {
+		return ownername;
+	}
+	public void setOwnername(String ownername) {
+		this.ownername = ownername;
+	}
+	public boolean isUserOwner() {
+		return userOwner;
+	}
+	public void setUserOwner(boolean userOwner) {
+		this.userOwner = userOwner;
 	}
 	
 }
