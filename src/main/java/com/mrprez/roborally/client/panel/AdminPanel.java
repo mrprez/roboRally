@@ -49,7 +49,7 @@ public class AdminPanel extends FlowPanel {
 					robotTable.setWidget(robot.getNumber(), 0, new Image(robot.getImageName()));
 					robotTable.setWidget(robot.getNumber(), 1, new Image("img/Target"+robot.getTargetNb()+".png"));
 					if(robot.getHealth()!=0){
-						if(!robot.isHasPlayed()){
+						if(!robot.isHasPlayed() && !robot.getPowerDownState().equals("ONGOING")){
 							robotTable.setWidget(robot.getNumber(), 2, new Image("img/hourglass.png"));
 						}
 						FlowPanel damagePanel = new FlowPanel();
