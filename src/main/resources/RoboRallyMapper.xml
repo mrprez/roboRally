@@ -128,7 +128,7 @@
 		from ROBOT
 		left join CARD on ROBOT.GAME_ID=CARD.GAME_ID and ROBOT.NUMBER=CARD.ROBOT_NB 
 		where ROBOT.GAME_ID=#{gameId}
-		order by NUMBER, INDEX
+		order by NUMBER, CARD_INDEX
 	</select>
 	<select id="selectRobot" resultMap="playerRobot">
 		select NUMBER,HEALTH,DIRECTION,TARGET_NB,POWER_DOWN_STATE,RAPIDITY,TRANSLATION,ROTATION from ROBOT
@@ -140,7 +140,7 @@
 		<if test="robotNb != null">
 			and ROBOT.NUMBER=#{robotNb}
 		</if>
-		order by INDEX asc
+		order by CARD_INDEX asc
 	</select>
 	<select id="selectHistory" resultMap="action">
 		select ACTION.ROUND_NB, ACTION.STAGE_NB, ACTION.ACTION_NB, MOVE.STEP_NB, MOVE.MOVE_NB, ACTION.CARD_RAPIDITY, ACTION.SQUARE_X, ACTION.SQUARE_Y, MOVE.ROBOT_NB, MOVE.TYPE, MOVE.ARGS
@@ -156,7 +156,7 @@
 	<select id="selectCardList" resultMap="card">
 		select RAPIDITY,TRANSLATION,ROTATION from CARD 
 		where GAME_ID=#{gameId} and DISCARDED=#{discarded} and ROBOT_NB is null
-		order by INDEX
+		order by CARD_INDEX
 	</select>
 	<select id="selectInvitations" resultMap="invitation">
 		select GAME_ID, E_MAIL, TOKEN from INVITATION
@@ -183,7 +183,7 @@
 		insert into GAME (OWNER, NAME, STATE, BOARD_ID) values (#{ownername}, #{name}, #{state}, #{board.id})
 	</insert>
 	<insert id="insertCard">
-		insert into CARD (GAME_ID, RAPIDITY, TRANSLATION, ROTATION, INDEX, ROBOT_NB, DISCARDED) 
+		insert into CARD (GAME_ID, RAPIDITY, TRANSLATION, ROTATION, CARD_INDEX, ROBOT_NB, DISCARDED) 
 		values (#{gameId}, #{card.rapidity}, #{card.translation}, #{card.rotation}, #{index}, #{robotNb}, 
 			<if test="discarded!=null">#{discarded}</if><if test="discarded==null">false</if>
 		)
@@ -213,7 +213,7 @@
 		update GAME set STATE=#{state} where ID=#{id}
 	</update>
 	<update id="updateHandCard">
-		update CARD set INDEX=#{index} where GAME_ID=#{gameId} and RAPIDITY=#{rapidity}
+		update CARD set CARD_INDEX=#{index} where GAME_ID=#{gameId} and RAPIDITY=#{rapidity}
 	</update>
 	<update id="updateRobot">
 		update ROBOT set X=#{robot.square.x}, Y=#{robot.square.y}, DIRECTION=#{robot.direction}, 
@@ -222,7 +222,7 @@
 		where NUMBER=#{robot.number} and GAME_ID=#{gameId}
 	</update>
 	<update id="updateCard">
-		update CARD set INDEX=#{index}, ROBOT_NB=#{robotNb}, DISCARDED=#{discarded}
+		update CARD set CARD_INDEX=#{index}, ROBOT_NB=#{robotNb}, DISCARDED=#{discarded}
 		where GAME_ID=#{gameId} and RAPIDITY=#{card.rapidity}
 	</update>
 	<update id="updateRobotPowerDownState">
