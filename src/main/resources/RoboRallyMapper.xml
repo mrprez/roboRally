@@ -20,13 +20,14 @@
 		</constructor>
 	</resultMap>
 	<resultMap id="gameBoard" type="com.mrprez.roborally.dto.GameBoardDto">
-		<result property="boardId" column="BOARD_ID" />
+		<id property="boardId" column="BOARD_ID" />
 		<result property="name" column="NAME" />
 		<result property="ownername" column="OWNER" />
 		<result property="gameState" column="STATE" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
 		<result property="sizeX" column="SIZE_X" />
 		<result property="sizeY" column="SIZE_Y" />
 		<collection property="targetList" ofType="com.mrprez.roborally.dto.TargetDto">
+			<id column="TARGET_NB"/>
 			<result property="x" column="TARGET_X"/>
 			<result property="y" column="TARGET_Y"/>
 		</collection>
