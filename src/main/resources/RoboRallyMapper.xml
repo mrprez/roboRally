@@ -116,6 +116,7 @@
 		join BOARD on BOARD.ID=GAME.BOARD_ID
 		join TARGET on TARGET.BOARD_ID=BOARD.ID
 		where GAME.ID=#{id}
+		order by TARGET.TARGET_NB
 	</select>
 	<select id="selectSquareList" resultMap="square">
 		select X,Y,CLASS,ARGS,WALL_UP,WALL_DOWN,WALL_LEFT,WALL_RIGHT from SQUARE where BOARD_ID=#{boardId}
