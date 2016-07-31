@@ -41,7 +41,14 @@ public class HandCardsPanel extends FlexTable {
 		getFlexCellFormatter().addStyleName(2, 0, "saveCardsLine");
 		
 		for(int index=0; index<cardNumber; index++){
-			Label label = new Label(index<5 ? String.valueOf(index+1) : "X");
+			Label label;
+			if(index<5){
+				label = new Label(String.valueOf(index+1));
+			} else {
+				label = new Label("X");
+				super.getFlexCellFormatter().addStyleName(0, index+1, "xCardCell");
+				super.getFlexCellFormatter().addStyleName(1, index+1, "xCardCell");
+			}
 			label.addStyleName("cardTurnNb");
 			setWidget(1, index+1, label);
 		}
@@ -62,7 +69,11 @@ public class HandCardsPanel extends FlexTable {
 			public void onSuccess(RobotGwt robot) {
 				setWidget(0, 0, new Image(robot.getImageName()));
 				if(robot.getTargetNb()!=null){
-					setWidget(1, 0, new Image("img/Target"+robot.getTargetNb()+".png"));
+					if(robot.getHealth()!=0){
+						setWidget(1, 0, new Image("img/Target"+robot.getTargetNb()+".png"));
+					}else{
+						setWidget(1, 0, new Image("img/WinnerFlag.png"));
+					}
 				}else{
 					clearCell(1, 0);
 				}

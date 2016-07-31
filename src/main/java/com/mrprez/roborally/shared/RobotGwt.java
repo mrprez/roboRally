@@ -28,6 +28,13 @@ public class RobotGwt implements IsSerializable {
 		imageName.append(".gif");
 		return imageName.toString();
 	}
+	public String getOriginImageName(){
+		StringBuilder imageName= new StringBuilder("img/robot/robot");
+		imageName.append(number);
+		imageName.append(".gif");
+		return imageName.toString();
+	}
+	
 	public int getNumber() {
 		return number;
 	}

@@ -4,8 +4,10 @@ import java.util.List;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PushButton;
 import com.mrprez.roborally.client.animation.AnimationManager;
@@ -48,7 +50,6 @@ public class AnimationPlayerPanel extends FlexTable {
 			public void onAnimationEnd() {
 				playButton.setEnabled(true);
 				pauseButton.setEnabled(false);
-				stopButton.setEnabled(false);
 				if(listBox.getSelectedIndex()<listBox.getItemCount()-1){
 					listBox.setSelectedIndex(listBox.getSelectedIndex()+1);
 				}
@@ -58,7 +59,6 @@ public class AnimationPlayerPanel extends FlexTable {
 		pauseButton.addClickHandler(buildPauseClickHandler());
 		stopButton.addClickHandler(buildStopClickHandler());
 		pauseButton.setEnabled(false);
-		stopButton.setEnabled(false);
 		setWidget(0, 0, stopButton);
 		setWidget(0, 1, playButton);
 		setWidget(0, 2, pauseButton);
@@ -76,11 +76,18 @@ public class AnimationPlayerPanel extends FlexTable {
 		history.add(round);
 		listBox.addItem("Tour "+(round.getNumber()+1), String.valueOf(round.getNumber()));
 		listBox.setSelectedIndex(listBox.getItemCount()-1);
-		loadRoundAnimation(round);
-		animationManager.play();
-		playButton.setEnabled(false);
-		pauseButton.setEnabled(true);
-		stopButton.setEnabled(true);
+		if(animationManager.getState()==AnimationManager.STOP){
+			boardPanel.setRoundState(history.get(round.getNumber()));
+			loadRoundAnimation(round);
+			animationManager.play();
+			playButton.setEnabled(false);
+			pauseButton.setEnabled(true);
+		}else{
+			DialogBox dialogBox = new DialogBox(true, true);
+			dialogBox.setText("Nouveau tour");
+			dialogBox.add(new Label("Un nouveau tour de jeu est disponible."));
+			dialogBox.center();
+		}
 	}
 	
 	
@@ -96,7 +103,6 @@ public class AnimationPlayerPanel extends FlexTable {
 				animationManager.play();
 				playButton.setEnabled(false);
 				pauseButton.setEnabled(true);
-				stopButton.setEnabled(true);
 			}
 		};
 	}
@@ -118,7 +124,6 @@ public class AnimationPlayerPanel extends FlexTable {
 				animationManager.pause();
 				playButton.setEnabled(true);
 				pauseButton.setEnabled(false);
-				stopButton.setEnabled(true);
 			}
 		};
 	}
@@ -127,10 +132,22 @@ public class AnimationPlayerPanel extends FlexTable {
 		return new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
+				if(animationManager.getState()==AnimationManager.PAUSE){
+					boardPanel.reloadGame();
+				}else if(animationManager.getState()==AnimationManager.PLAY){
+					animationManager.addAnimationEndHandler(new AnimationEndHandler() {
+						@Override
+						public void onAnimationEnd() {
+							boardPanel.reloadGame();
+							animationManager.removeAnimationEndHandler(this);
+						}
+					});
+				}else if(animationManager.getState()==AnimationManager.STOP){
+					boardPanel.reloadGame();
+				}
 				animationManager.stop();
 				playButton.setEnabled(true);
 				pauseButton.setEnabled(false);
-				stopButton.setEnabled(false);
 			}
 		};
 	}

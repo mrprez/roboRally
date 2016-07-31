@@ -94,20 +94,31 @@ public class NewGameDialogBox extends DialogBox {
 		verticalPanel.add(newPlayerPanel);
 		final TextBox newPlayerTextBox = new TextBox();
 		newPlayerTextBox.addStyleName("newPlayerField");
-		Button addPlayerButton = new Button("+");
+		Button addPlayerButton = new Button("Inviter");
 		addPlayerButton.addStyleName("addPlayerButton");
 		newPlayerPanel.add(newPlayerTextBox);
 		newPlayerPanel.add(addPlayerButton);
 		
 		addPlayerButton.addClickHandler(buildAddPlayerClickHandler(newPlayerTextBox, verticalPanel));
-				
+		
+		FlowPanel buttonPanel = new FlowPanel();
+		buttonPanel.addStyleName("dialogButtonPanel");
+		verticalPanel.add(buttonPanel);
 		Button submitButton = new Button("Créer");
-		submitButton.addStyleName("createGameButton");
-		verticalPanel.add(submitButton);
+		Button cancelButton = new Button("Annuler");
+		buttonPanel.add(submitButton);
+		buttonPanel.add(cancelButton);
 		submitButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				formPanel.submit();
+			}
+		});
+		final DialogBox dialogBox = this;
+		cancelButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				dialogBox.removeFromParent();
 			}
 		});
 		

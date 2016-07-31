@@ -65,21 +65,16 @@ h1 {
 }
 
 .addPlayerButton{
-	width: 30px;
+	width: 50px;
 }
 
 .removeInvitedPlayerButton{
-	width: 30px;
+	width: 50px;
 }
 
 .invitedPlayerMailLabel{
 	display: inline-block;
 	width: 301px;
-}
-
-.createGameButton{
-	display: block;
-	margin: 5px auto !important;
 }
 
 .gameCanvas{
@@ -110,6 +105,10 @@ h1 {
 .cardTurnNb{
 	margin: auto;
 	width: 10px;
+}
+
+.xCardCell{
+	background-color: #b3b3b3;
 }
 
 .saveCardsLine{
@@ -157,4 +156,17 @@ h1 {
 
 .powerDownButton{
 	cursor: pointer;
+}
+
+.dialogButtonPanel{
+	text-align: center;
+}
+
+.dialogButtonPanel button{
+	margin: 5px 20px;
+}
+
+.backHomeLink{
+	display: block;
+	margin-top: 20px;
 }

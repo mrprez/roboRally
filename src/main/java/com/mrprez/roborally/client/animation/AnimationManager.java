@@ -13,13 +13,16 @@ import com.mrprez.roborally.shared.ActionGwt;
 import com.mrprez.roborally.shared.StepGwt;
 
 public class AnimationManager {
+	public static final int STOP = 0;
+	public static final int PLAY = 1;
+	public static final int PAUSE = 2;
 	
 	private EventBus eventBus;
 	private Queue<ActionGwt> actionQueue = new LinkedList<ActionGwt>();
 	private Queue<StepAnimation> stepAnimationQueue;
 	private int animationDuration;
 	private BoardPanel boardPanel;
-	private boolean pause = false;
+	private int state = STOP;
 	private List<AnimationEndHandler> animationEndHandlers = new ArrayList<AnimationManager.AnimationEndHandler>();
 	
 	
@@ -35,7 +38,7 @@ public class AnimationManager {
 	
 
 	public void onActionAnimationEvent(){
-		if( ! pause ){
+		if( state == PLAY ){
 			ActionGwt action = actionQueue.poll();
 			if( action!=null ){
 				stepAnimationQueue = new LinkedList<StepAnimation>();
@@ -47,6 +50,7 @@ public class AnimationManager {
 				for(AnimationEndHandler animationEndHandler : animationEndHandlers){
 					animationEndHandler.onAnimationEnd();
 				}
+				state = STOP;
 			}
 		}
 	}
@@ -65,30 +69,33 @@ public class AnimationManager {
 		animationEndHandlers.add(animationEndHandler);
 	}
 	
+	public void removeAnimationEndHandler(AnimationEndHandler animationEndHandler) {
+		animationEndHandlers.remove(animationEndHandler);
+	}
+	
 	public void addAnimation(ActionGwt action){
 		actionQueue.add(action);
 	}
 	
 	
 	public void stop(){
-		pause = false;
 		actionQueue.clear();
 	}
 	
 	
 	public void pause(){
-		pause = true;
+		state = PAUSE;
 	}
 
 
 	public void play() {
-		pause = false;
+		state = PLAY;
 		eventBus.fireEvent(new ActionAnimationEvent());
 	}
 	
 	
 	public boolean isPaused(){
-		return pause;
+		return state==PAUSE;
 	}
 	
 	
@@ -122,5 +129,13 @@ public class AnimationManager {
 	public static interface AnimationEndHandler {
 		void onAnimationEnd();
 	}
+
+
+	public int getState() {
+		return state;
+	}
+
+
+	
 
 }

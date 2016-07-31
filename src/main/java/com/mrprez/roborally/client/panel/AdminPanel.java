@@ -3,11 +3,16 @@ package com.mrprez.roborally.client.panel;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.mrprez.roborally.client.AbstractAsyncCallback;
 import com.mrprez.roborally.client.GameGwtService;
 import com.mrprez.roborally.client.GameGwtServiceAsync;
@@ -19,24 +24,21 @@ public class AdminPanel extends FlowPanel {
 	private GameGwtServiceAsync gameGwtService = GWT.create(GameGwtService.class);
 	private Integer gameId;
 	private FlexTable robotTable = new FlexTable();
+	private Button playButton;
+	private boolean gameFinished;
+	private boolean everyRobotHasPlayed = false;
 	
 	
 	public void init(GameGwt game){
 		this.gameId = game.getId();
-		refreshRobotTable();
 		add(robotTable);
-		if(game.isUserOwner()){
-			Button playButton = new Button("Jouer un tour !");
+		refreshRobotTable();
+		if(game.isUserOwner() && !gameFinished){
+			playButton = new Button("Jouer un tour !");
 			add(playButton);
-			playButton.addClickHandler(new ClickHandler() {
-				@Override
-				public void onClick(ClickEvent event) {
-					gameGwtService.playNewRound(gameId, new AbstractAsyncCallback<Void>() {
-						public void onSuccess(Void result) {}
-					});
-				}
-			});
+			playButton.addClickHandler(buildPlayNewRoundHandler());
 		}
+		add(buildHomeAnchor());
 	}
 	
 	
@@ -45,15 +47,19 @@ public class AdminPanel extends FlowPanel {
 			@Override
 			public void onSuccess(GameGwt game) {
 				robotTable.clear();
+				gameFinished = true;
+				everyRobotHasPlayed = true;
 				for(RobotGwt robot : game.getRobotList()){
 					AbsolutePanel robotPanel = new AbsolutePanel();
 					robotPanel.setPixelSize(47, 46);
 					robotPanel.add(new Image(robot.getImageName()), 0, 0);
 					robotTable.setWidget(robot.getNumber(), 0, robotPanel);
 					if(robot.getHealth()!=0){
+						gameFinished = false;
 						robotTable.setWidget(robot.getNumber(), 1, new Image("img/Target"+robot.getTargetNb()+".png"));
 						if(!robot.isHasPlayed() && !robot.getPowerDownState().equals("ONGOING")){
 							robotPanel.add(new Image("img/hourglass.png"), 0, 0);
+							everyRobotHasPlayed = false;
 						}
 						FlowPanel damagePanel = new FlowPanel();
 						for(int i=robot.getHealth(); i<RobotGwt.MAX_HEALTH; i++){
@@ -64,8 +70,68 @@ public class AdminPanel extends FlowPanel {
 						robotTable.setWidget(robot.getNumber(), 1, new Image("img/WinnerFlag.png"));
 					}
 				}
+				
+				if(gameFinished && playButton!=null){
+					playButton.removeFromParent();
+					playButton = null;
+				}
 			}
 		});
+	}
+	
+	
+	private ClickHandler buildPlayNewRoundHandler(){
+		return new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				if( ! everyRobotHasPlayed){
+					buildConfirmDialogBox().center();
+				}else{
+					gameGwtService.playNewRound(gameId, new AbstractAsyncCallback<Void>() {
+						public void onSuccess(Void result) {}
+					});
+				}
+			}
+		};
+	}
+	
+	
+	private DialogBox buildConfirmDialogBox(){
+		final DialogBox dialogBox = new DialogBox();
+		dialogBox.setText("Confirmation?");
+		VerticalPanel mainPanel = new VerticalPanel();
+		dialogBox.add(mainPanel);
+		mainPanel.add(new Label("Certains joueurs n'ont pas encore programmé leur robot. Voulez-vous quand même jouer un nouveau tour?"));
+		FlowPanel buttonPanel = new FlowPanel();
+		buttonPanel.addStyleName("dialogButtonPanel");
+		mainPanel.add(buttonPanel);
+		Button noButton = new Button("Non");
+		Button yesButton = new Button("Oui");
+		buttonPanel.add(noButton);
+		buttonPanel.add(yesButton);
+		noButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				dialogBox.hide();
+			}
+		});
+		yesButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				dialogBox.hide();
+				gameGwtService.playNewRound(gameId, new AbstractAsyncCallback<Void>() {
+					public void onSuccess(Void result) {}
+				});
+			}
+		});
+		return dialogBox;
+	}
+	
+	private Anchor buildHomeAnchor(){
+		String homeUrl = Window.Location.createUrlBuilder().setPath("roboRally/Home.html").buildString();
+		Anchor homeAnchor = new Anchor("Retour à l'accueil", homeUrl);
+		homeAnchor.addStyleName("backHomeLink");
+		return homeAnchor;
 	}
 
 }

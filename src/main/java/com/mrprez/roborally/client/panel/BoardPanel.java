@@ -5,12 +5,16 @@ import java.util.Map;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.CanvasElement;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.mrprez.roborally.client.AbstractAsyncCallback;
+import com.mrprez.roborally.client.GameGwtService;
+import com.mrprez.roborally.client.GameGwtServiceAsync;
 import com.mrprez.roborally.client.ImageLoader;
 import com.mrprez.roborally.client.ImageLoaderCallback;
 import com.mrprez.roborally.shared.GameGwt;
@@ -20,16 +24,37 @@ import com.mrprez.roborally.shared.RoundGwt;
 import com.mrprez.roborally.shared.SquareGwt;
 
 public class BoardPanel extends AbsolutePanel {
-	
+	private GameGwtServiceAsync gameGwtService = GWT.create(GameGwtService.class);
 	private Map<Integer, Canvas> robotCanvaMap;
+	private int gameId;
 	
 	
 	public void init(GameGwt game){
+		gameId = game.getId();
 		setWidth(game.getBoard().getSizeX()*97+"px");
 		setHeight(game.getBoard().getSizeY()*97+"px");
 		
 		loadSquares(game);
 		loadRobots(game);
+	}
+	
+	
+	public void reloadGame(){
+		gameGwtService.getGame(gameId, new AbstractAsyncCallback<GameGwt>() {
+			@Override
+			public void onSuccess(GameGwt game) {
+				for(RobotGwt robot : game.getRobotList()){
+					Canvas robotCanvas = robotCanvaMap.get(robot.getNumber());
+					robotCanvas.getCanvasElement().setAttribute("imageName", robot.getImageName());
+					robotCanvas.getCanvasElement().getStyle().setOpacity(robot.isGhost() ? 0.5 : 1);
+					robotCanvas.getCanvasElement().getStyle().setDisplay(robot.getHealth()==0 ? Display.NONE : Display.INITIAL);
+					setWidgetPosition(robotCanvas, robot.getX()*97, robot.getY()*97);
+					Image image = new Image(robot.getImageName());
+					rotate(robotCanvas, image, -Integer.parseInt(robotCanvas.getCanvasElement().getAttribute("direction"))*Math.PI/2.0);
+					rotate(robotCanvas, image, robot.getAngle());
+				}
+			}
+		});
 	}
 	
 	
@@ -108,7 +133,7 @@ public class BoardPanel extends AbsolutePanel {
 					robotCanvas.setCoordinateSpaceHeight(97);
 					robotCanvas.setStyleName("gameCanvas");
 					robotCanvas.getCanvasElement().setAttribute("imageName", robot.getImageName());
-					robotCanvas.getCanvasElement().setAttribute("originImageName", robot.getImageName());
+					robotCanvas.getCanvasElement().setAttribute("originImageName", robot.getOriginImageName());
 					if(robot.isGhost()){
 						robotCanvas.getCanvasElement().getStyle().setOpacity(0.5);
 					}
@@ -142,10 +167,13 @@ public class BoardPanel extends AbsolutePanel {
 	
 	
 	public void setRoundState(RoundGwt round){
+		for(Canvas robotCanva : robotCanvaMap.values()){
+			robotCanva.getCanvasElement().getStyle().setDisplay(Display.NONE);
+		}
 		for(final RobotStateGwt robotState : round.getRobotStateList()){
 			final Canvas robotCanva = robotCanvaMap.get(robotState.getRobotNb());
 			robotCanva.getCanvasElement().getStyle().setOpacity(robotState.isGhost() ? 0.5 : 1);
-			robotCanva.getCanvasElement().getStyle().setDisplay(robotState.getHealth()==0 ? Display.NONE : Display.INITIAL);
+			robotCanva.getCanvasElement().getStyle().setDisplay(Display.INITIAL);
 			setWidgetPosition(robotCanva, robotState.getX()*97, robotState.getY()*97);
 			ImageLoader.getInstance().loadImage(robotState.getImageName(), new ImageLoaderCallback() {
 				@Override
