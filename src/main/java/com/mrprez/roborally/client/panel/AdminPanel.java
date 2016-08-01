@@ -39,6 +39,7 @@ public class AdminPanel extends FlowPanel {
 			playButton.addClickHandler(buildPlayNewRoundHandler());
 		}
 		add(buildHomeAnchor());
+		add(buildRefreshAnchor());
 	}
 	
 	
@@ -130,8 +131,16 @@ public class AdminPanel extends FlowPanel {
 	private Anchor buildHomeAnchor(){
 		String homeUrl = Window.Location.createUrlBuilder().setPath("roboRally/Home.html").buildString();
 		Anchor homeAnchor = new Anchor("Retour à l'accueil", homeUrl);
-		homeAnchor.addStyleName("backHomeLink");
+		homeAnchor.addStyleName("adminPanelLink");
 		return homeAnchor;
+	}
+	
+	private Anchor buildRefreshAnchor(){
+		String refreshUrl = Window.Location.createUrlBuilder().setPath("roboRally/Game.html")
+				.setParameter("gameId", String.valueOf(gameId)).buildString();
+		Anchor refreshAnchor = new Anchor("Rafraichir la page", refreshUrl);
+		refreshAnchor.addStyleName("adminPanelLink");
+		return refreshAnchor;
 	}
 
 }

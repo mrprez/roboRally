@@ -10,6 +10,7 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 import com.mrprez.roborally.client.panel.BoardPanel;
 import com.mrprez.roborally.shared.ActionGwt;
+import com.mrprez.roborally.shared.StageGwt;
 import com.mrprez.roborally.shared.StepGwt;
 
 public class AnimationManager {
@@ -18,13 +19,14 @@ public class AnimationManager {
 	public static final int PAUSE = 2;
 	
 	private EventBus eventBus;
-	private Queue<ActionGwt> actionQueue = new LinkedList<ActionGwt>();
+	private Queue<StageGwt> stageQueue = new LinkedList<StageGwt>();
+	private Queue<ActionGwt> actionQueue;
 	private Queue<StepAnimation> stepAnimationQueue;
 	private int animationDuration;
 	private BoardPanel boardPanel;
 	private int state = STOP;
 	private List<AnimationEndHandler> animationEndHandlers = new ArrayList<AnimationManager.AnimationEndHandler>();
-	
+	private List<StageAnimationHandler> stageAnimationHandlers = new ArrayList<AnimationManager.StageAnimationHandler>();
 	
 	
 	public AnimationManager(int animationDuration, BoardPanel boardPanel){
@@ -32,11 +34,32 @@ public class AnimationManager {
 		eventBus = new SimpleEventBus();
 		eventBus.addHandler(ActionAnimationEvent.TYPE, this);
 		eventBus.addHandler(StepAnimationEvent.TYPE, this);
+		eventBus.addHandler(StageAnimationEvent.TYPE, this);
 		this.animationDuration = animationDuration;
 		this.boardPanel = boardPanel;
 	}
-	
 
+	
+	public void onStageAnimationEvent() {
+		StageGwt stage = stageQueue.poll();
+		if(stage!=null){
+			for(StageAnimationHandler stageAnimationHandler : stageAnimationHandlers){
+				stageAnimationHandler.onStageStart(stage);
+			}
+			actionQueue = new LinkedList<ActionGwt>();
+			for(ActionGwt action : stage.getActionList()){
+				actionQueue.add(action);
+			}
+			eventBus.fireEvent(new ActionAnimationEvent());
+		}else{
+			for(AnimationEndHandler animationEndHandler : animationEndHandlers){
+				animationEndHandler.onAnimationEnd();
+			}
+			state = STOP;
+		}
+		
+	}
+	
 	public void onActionAnimationEvent(){
 		if( state == PLAY ){
 			ActionGwt action = actionQueue.poll();
@@ -47,10 +70,7 @@ public class AnimationManager {
 				}
 				eventBus.fireEvent(new StepAnimationEvent());
 			} else {
-				for(AnimationEndHandler animationEndHandler : animationEndHandlers){
-					animationEndHandler.onAnimationEnd();
-				}
-				state = STOP;
+				eventBus.fireEvent(new StageAnimationEvent());
 			}
 		}
 	}
@@ -73,13 +93,19 @@ public class AnimationManager {
 		animationEndHandlers.remove(animationEndHandler);
 	}
 	
-	public void addAnimation(ActionGwt action){
-		actionQueue.add(action);
+	public void addStageAnimationHandler(StageAnimationHandler stageAnimationHandler){
+		stageAnimationHandlers.add(stageAnimationHandler);
+	}
+	
+	public void addStage(StageGwt stage){
+		stageQueue.add(stage);
 	}
 	
 	
 	public void stop(){
+		stageQueue.clear();
 		actionQueue.clear();
+		stepAnimationQueue.clear();
 	}
 	
 	
@@ -89,13 +115,36 @@ public class AnimationManager {
 
 
 	public void play() {
-		state = PLAY;
-		eventBus.fireEvent(new ActionAnimationEvent());
+		if(state==PAUSE){
+			state = PLAY;
+			eventBus.fireEvent(new ActionAnimationEvent());
+		}else{
+			state = PLAY;
+			eventBus.fireEvent(new StageAnimationEvent());
+		}
+	}
+
+
+	public int getState() {
+		return state;
 	}
 	
 	
 	public boolean isPaused(){
 		return state==PAUSE;
+	}
+	
+	public static class StageAnimationEvent extends Event<AnimationManager> {
+		public static Type<AnimationManager> TYPE = new Type<AnimationManager>();
+		
+		@Override
+		public Event.Type<AnimationManager> getAssociatedType() {
+			return TYPE;
+		}
+		@Override
+		protected void dispatch(AnimationManager handler) {
+			handler.onStageAnimationEvent();
+		}
 	}
 	
 	
@@ -129,13 +178,10 @@ public class AnimationManager {
 	public static interface AnimationEndHandler {
 		void onAnimationEnd();
 	}
-
-
-	public int getState() {
-		return state;
+	
+	public static interface StageAnimationHandler {
+		void onStageStart(StageGwt stage);
 	}
-
-
 	
 
 }

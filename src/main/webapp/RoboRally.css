@@ -105,6 +105,9 @@ h1 {
 .cardTurnNb{
 	margin: auto;
 	width: 10px;
+	font-family: Tahoma;
+	font-weight: bold;
+	color: green;
 }
 
 .xCardCell{
@@ -166,7 +169,15 @@ h1 {
 	margin: 5px 20px;
 }
 
-.backHomeLink{
+.adminPanelLink{
 	display: block;
 	margin-top: 20px;
+}
+
+.stageNbLabel{
+	font-family: Tahoma;
+	font-weight: bold;
+	color: green;
+	font-size: 40px;
+	border: solid 1px green; 
 }

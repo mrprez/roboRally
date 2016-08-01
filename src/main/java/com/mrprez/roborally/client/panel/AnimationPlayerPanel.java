@@ -12,7 +12,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PushButton;
 import com.mrprez.roborally.client.animation.AnimationManager;
 import com.mrprez.roborally.client.animation.AnimationManager.AnimationEndHandler;
-import com.mrprez.roborally.shared.ActionGwt;
+import com.mrprez.roborally.client.animation.AnimationManager.StageAnimationHandler;
 import com.mrprez.roborally.shared.RoundGwt;
 import com.mrprez.roborally.shared.StageGwt;
 
@@ -27,6 +27,7 @@ public class AnimationPlayerPanel extends FlexTable {
 	private PushButton stopButton;
 	private ListBox listBox;
 	private BoardPanel boardPanel;
+	private Label stageNbLabel;
 	
 	
 	public void init(List<RoundGwt> history, BoardPanel boardPanel){
@@ -53,8 +54,10 @@ public class AnimationPlayerPanel extends FlexTable {
 				if(listBox.getSelectedIndex()<listBox.getItemCount()-1){
 					listBox.setSelectedIndex(listBox.getSelectedIndex()+1);
 				}
+				stageNbLabel.setVisible(false);
 			}
 		});
+		animationManager.addStageAnimationHandler(buildStageAnimationHandler());
 		playButton.addClickHandler(buildPlayClickHandler());
 		pauseButton.addClickHandler(buildPauseClickHandler());
 		stopButton.addClickHandler(buildStopClickHandler());
@@ -62,6 +65,7 @@ public class AnimationPlayerPanel extends FlexTable {
 		setWidget(0, 0, stopButton);
 		setWidget(0, 1, playButton);
 		setWidget(0, 2, pauseButton);
+		
 		listBox = new ListBox();
 		listBox.setStyleName("roundListBox");
 		for(RoundGwt round : history){
@@ -70,6 +74,12 @@ public class AnimationPlayerPanel extends FlexTable {
 		listBox.setSelectedIndex(listBox.getItemCount()-1);
 		setWidget(1, 0, listBox);
 		getFlexCellFormatter().setColSpan(1, 0, 3);
+		
+		stageNbLabel = new Label();
+		stageNbLabel.addStyleName("stageNbLabel");
+		stageNbLabel.setVisible(false);
+		setWidget(0, 3, stageNbLabel);
+		getFlexCellFormatter().setRowSpan(0, 3, 2);
 	}
 	
 	public void addAndPlay(RoundGwt round){
@@ -109,9 +119,7 @@ public class AnimationPlayerPanel extends FlexTable {
 	
 	private void loadRoundAnimation(RoundGwt round){
 		for(StageGwt stage : round.getStageList()){
-			for(ActionGwt action : stage.getActionList()){
-				animationManager.addAnimation(action);
-			}
+			animationManager.addStage(stage);
 		}
 	}
 	
@@ -148,6 +156,17 @@ public class AnimationPlayerPanel extends FlexTable {
 				animationManager.stop();
 				playButton.setEnabled(true);
 				pauseButton.setEnabled(false);
+			}
+		};
+	}
+	
+	
+	private StageAnimationHandler buildStageAnimationHandler(){
+		return new StageAnimationHandler() {
+			@Override
+			public void onStageStart(StageGwt stage) {
+				stageNbLabel.setText(String.valueOf(stage.getNumber()+1));
+				stageNbLabel.setVisible(true);
 			}
 		};
 	}
