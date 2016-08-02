@@ -126,7 +126,7 @@ public class GameServiceImpl implements GameService {
 				userDao.saveInvitation(invitation);
 				mailResource.send(invitedEMail, "Invitation à RobotRally", username+" vous a invité à sur RobotRally en ligne."
 						+ " Pour valider votre inscription, cliquez sur le lien: <br/>"
-						+ " http://mrprez.fr/roboRally/Register.html?eMail="+invitedEMail+"&token="+invitation.getToken());
+						+ " http://www.mrprez.fr/roboRally/Register.html?eMail="+invitedEMail+"&token="+invitation.getToken());
 			}
 		}
 		
