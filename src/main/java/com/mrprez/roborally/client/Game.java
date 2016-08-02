@@ -38,7 +38,7 @@ public class Game implements EntryPoint {
 		final DockLayoutPanel dockLayoutPanel = new DockLayoutPanel(Unit.PX);
 		eastPanel.add(animationPlayerPanel);
 		dockLayoutPanel.addEast(eastPanel, 200);
-		dockLayoutPanel.addSouth(handCardsPanel, 150);
+		dockLayoutPanel.addSouth(handCardsPanel, 155);
 		dockLayoutPanel.add(new ScrollPanel(boardPanel));
 		RootLayoutPanel.get().add(dockLayoutPanel);
 		

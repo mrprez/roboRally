@@ -34,7 +34,14 @@ public class CardCanvasFactory implements IsSerializable {
 			public void onImageLoaded(Image image) {
 				ImageElement imageEl = ImageElement.as(image.getElement());
 				cardCanvas.getContext2d().drawImage(imageEl, 5, 5);
-				cardCanvas.getContext2d().fillText(rapidity, 10, 55);
+				cardCanvas.getContext2d().setStrokeStyle("LimeGreen");
+				cardCanvas.getContext2d().setFillStyle("white");
+				cardCanvas.getContext2d().rect(6, 50, 30, 19);
+				cardCanvas.getContext2d().fill();
+				cardCanvas.getContext2d().stroke();
+				cardCanvas.getContext2d().setFont("16px Digital");
+				cardCanvas.getContext2d().setFillStyle("LimeGreen");
+				cardCanvas.getContext2d().fillText(rapidity, 9, 65);
 			}
 		});
 		
