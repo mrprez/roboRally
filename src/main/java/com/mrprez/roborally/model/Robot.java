@@ -120,7 +120,7 @@ public class Robot {
 		}
 		Card card = cards.get(stageNb);
 		Action action = new Action(card);
-		for(int i=0; i<card.getTranslation(); i++){
+		for(int i=0; i<card.getTranslation() && square!=null; i++){
 			Step step = new Step();
 			if(canMove(direction)){
 				step.addAllMove(move(direction));
@@ -129,7 +129,7 @@ public class Robot {
 			}
 			action.addStep(step);
 		}
-		for(int i=0; i>card.getTranslation(); i--){
+		for(int i=0; i>card.getTranslation() && square!=null; i--){
 			Step step = new Step();
 			if(canMove(direction.getOpposite())){
 				step.addAllMove(move(direction.getOpposite()));
@@ -175,6 +175,9 @@ public class Robot {
 			square.setRobot(null);
 		}
 		setSquare(destination);
+		if(!isGhost()){
+			moveList.addAll(square.walkOn(this));
+		}
 		return moveList;
 	}
 	

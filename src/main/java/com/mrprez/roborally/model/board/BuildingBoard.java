@@ -7,6 +7,7 @@ import com.mrprez.roborally.model.Direction;
 import com.mrprez.roborally.model.Square;
 import com.mrprez.roborally.model.square.ConveyorBelt;
 import com.mrprez.roborally.model.square.EmptySquare;
+import com.mrprez.roborally.model.square.HoleSquare;
 
 public class BuildingBoard extends Board {
 	
@@ -20,7 +21,7 @@ public class BuildingBoard extends Board {
 		squares = new Square[sizeX][sizeY];
 		for(int x=0; x<sizeX; x++){
 			for(int y=0; y<sizeY; y++){
-				switch((int)(Math.random()*16)){
+				switch((int)(Math.random()*17)){
 				case 0:
 					squares[x][y] = new ConveyorBelt(x, y, this, Direction.UP);
 					break;
@@ -32,6 +33,9 @@ public class BuildingBoard extends Board {
 					break;
 				case 3:
 					squares[x][y] = new ConveyorBelt(x, y, this, Direction.DOWN);
+					break;
+				case 4:
+					squares[x][y] = new HoleSquare(x, y, this);
 					break;
 				default:
 					squares[x][y] = new EmptySquare(x, y, this);

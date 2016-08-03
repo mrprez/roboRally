@@ -120,7 +120,7 @@ public class Game {
 		
 		// On repositionne les robots sans PV
 		for(Robot robot : robotList){
-			if(robot.getHealth()==0 && robot.getTarget()!=null){
+			if(robot.getHealth()==0 && robot.getTargetNumber()<board.getTargetSquares().size()){
 				logger.debug("Robot "+robot.getNumber()+" is dead");
 				round.getStage(STAGE_NB-1).addAction(setRobotOnCheckpoint(robot));
 			}
@@ -183,7 +183,7 @@ public class Game {
 	private void checkGhosts(Stage stage){
 		Logger logger = LoggerFactory.getLogger("GamePlay");
 		for(Robot robot : robotList){
-			if(robot.isGhost()){
+			if(robot.getSquare()!=null && robot.isGhost()){
 				boolean ghost = false;
 				for(Robot otherRobot : robotList){
 					if(robot.getNumber() != otherRobot.getNumber()){

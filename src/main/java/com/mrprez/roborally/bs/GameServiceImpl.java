@@ -22,6 +22,7 @@ import com.mrprez.roborally.model.User;
 import com.mrprez.roborally.model.board.BuildingBoard;
 import com.mrprez.roborally.model.board.GameBoard;
 import com.mrprez.roborally.model.history.Round;
+import com.mrprez.roborally.model.square.EmptySquare;
 import com.mrprez.roborally.push.PushEventServiceServlet;
 
 public class GameServiceImpl implements GameService {
@@ -98,7 +99,7 @@ public class GameServiceImpl implements GameService {
 		for(int i=0; i<5; i++){
 			int x=(int) (Math.random()*sizeX);
 			int y=(int) (Math.random()*sizeY);
-			while(board.getTargetSquares().contains(board.getSquare(x, y))){
+			while(board.getTargetSquares().contains(board.getSquare(x, y)) && ! (board.getSquare(x, y) instanceof EmptySquare)){
 				x=(int) (Math.random()*sizeX);
 				y=(int) (Math.random()*sizeY);
 			}
