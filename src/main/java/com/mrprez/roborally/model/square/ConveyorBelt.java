@@ -4,6 +4,9 @@ import com.mrprez.roborally.model.Direction;
 import com.mrprez.roborally.model.Square;
 import com.mrprez.roborally.model.board.Board;
 import com.mrprez.roborally.model.history.Action;
+import com.mrprez.roborally.model.history.Move;
+import com.mrprez.roborally.model.history.MoveType;
+import com.mrprez.roborally.model.history.Step;
 
 public class ConveyorBelt extends Square {
 	private Direction direction;
@@ -20,8 +23,15 @@ public class ConveyorBelt extends Square {
 
 	@Override
 	public Action play() {
-		// TODO Auto-generated method stub
-		return null;
+		Action action = new Action(this);
+		Step step = new Step();
+		action.addStep(step);
+		if(getRobot().canMove(direction)){
+			step.addAllMove(getRobot().move(direction));
+		}else{
+			step.addMove(new Move(MoveType.FAILED_TRANSLATION, direction.name(), getRobot()));
+		}
+		return action;
 	}
 
 	@Override

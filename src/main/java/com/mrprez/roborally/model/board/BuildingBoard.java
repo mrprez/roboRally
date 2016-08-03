@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import com.mrprez.roborally.model.Direction;
 import com.mrprez.roborally.model.Square;
+import com.mrprez.roborally.model.square.ConveyorBelt;
 import com.mrprez.roborally.model.square.EmptySquare;
 
 public class BuildingBoard extends Board {
@@ -19,7 +20,22 @@ public class BuildingBoard extends Board {
 		squares = new Square[sizeX][sizeY];
 		for(int x=0; x<sizeX; x++){
 			for(int y=0; y<sizeY; y++){
-				squares[x][y] = new EmptySquare(x, y, this);
+				switch((int)(Math.random()*16)){
+				case 0:
+					squares[x][y] = new ConveyorBelt(x, y, this, Direction.UP);
+					break;
+				case 1:
+					squares[x][y] = new ConveyorBelt(x, y, this, Direction.LEFT);
+					break;
+				case 2:
+					squares[x][y] = new ConveyorBelt(x, y, this, Direction.RIGHT);
+					break;
+				case 3:
+					squares[x][y] = new ConveyorBelt(x, y, this, Direction.DOWN);
+					break;
+				default:
+					squares[x][y] = new EmptySquare(x, y, this);
+				}
 				for(Direction direction : Direction.values()){
 					if(Math.random()*8<1.0){
 						squares[x][y].setWall(direction, true);

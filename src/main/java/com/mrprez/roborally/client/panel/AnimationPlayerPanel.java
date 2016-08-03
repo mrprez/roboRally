@@ -199,7 +199,7 @@ public class AnimationPlayerPanel extends FlexTable {
 	private ActionAnimationHandler buildActionAnimationHandler(){
 		return new ActionAnimationHandler() {
 			@Override
-			public void onActionStart(ActionGwt action) {
+			public void onActionStart(final ActionGwt action) {
 				if(action.getCardRapidity()>0){
 					gameGwtService.getCard(gameId, action.getCardRapidity(), new AbstractAsyncCallback<CardGwt>() {
 						@Override
@@ -207,6 +207,8 @@ public class AnimationPlayerPanel extends FlexTable {
 							ImageLoader.getInstance().loadImage(card.getImageName(), new ImageLoaderCallback() {
 								@Override
 								public void onImageLoaded(Image image) {
+									int robotNb = action.getStepList().get(0).getMoveList().get(0).getRobotNb();
+									actionElementPanel.add(new Image(boardPanel.getRobotOriginImageUri(robotNb)));
 									actionElementPanel.add(image);
 									image.setVisible(true);
 								}

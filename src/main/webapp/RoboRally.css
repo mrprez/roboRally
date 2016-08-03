@@ -136,6 +136,8 @@ h1 {
 
 .actionElement{
 	height: 50px;
+	border: solid 4px black;
+	text-align: center;
 }
 
 .laser{

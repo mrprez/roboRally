@@ -12,7 +12,7 @@ public class SquareGwt implements IsSerializable {
 
 	
 	public String getImageName() {
-		return "img/"+imageName+".png";
+		return "img/square/"+imageName+".png";
 	}
 
 	public void setImageName(String imageName) {

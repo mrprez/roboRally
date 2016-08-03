@@ -196,6 +196,10 @@ public class BoardPanel extends AbsolutePanel {
 		return getRobotCanvas(robotNb).getCanvasElement().getAttribute("imageName");
 	}
 	
+	public String getRobotOriginImageUri(int robotNb){
+		return getRobotCanvas(robotNb).getCanvasElement().getAttribute("originImageName");
+	}
+	
 	public void reinitRobotImageUri(int robotNb){
 		CanvasElement canvasElement = getRobotCanvas(robotNb).getCanvasElement();
 		setRobotImageUri(robotNb, canvasElement.getAttribute("originImageName"));
