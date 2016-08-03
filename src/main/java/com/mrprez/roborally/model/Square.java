@@ -1,10 +1,8 @@
 package com.mrprez.roborally.model;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import com.google.gwt.thirdparty.guava.common.collect.ImmutableList;
 import com.mrprez.roborally.model.board.Board;
 import com.mrprez.roborally.model.history.Action;
 import com.mrprez.roborally.model.history.Move;
@@ -54,11 +52,12 @@ public abstract class Square {
 	public Robot getRobot() {
 		return robot;
 	}
-	public void setRobot(Robot robot) {
+	public Move host(Robot robot) {
 		this.robot = robot;
 		if(robot!=null && robot.getSquare()!=this){
-			robot.setSquare(this);
+			robot.walkOn(this);
 		}
+		return null;
 	}
 	public Square getNextSquare(Direction direction){
 		switch(direction){
@@ -82,11 +81,6 @@ public abstract class Square {
 	
 	public boolean hasSameXY(Square otherSquare){
 		return otherSquare.x==x && otherSquare.y==y;
-	}
-
-
-	public List<Move> walkOn(Robot robot) {
-		return ImmutableList.of();
 	}
 
 }

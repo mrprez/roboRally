@@ -48,7 +48,13 @@ public class DummyBoard extends GameBoard {
 		robot.initCards(cardList);
 		for(int turn=0; turn<Game.STAGE_NB; turn++){
 			robot.playCard(turn);
+			if(robot.getHealth()==0){
+				return Math.abs(getSizeX()) + Math.abs(getSizeY());
+			}
 			robot.getSquare().play();
+			if(robot.getHealth()==0){
+				return Math.abs(getSizeX()) + Math.abs(getSizeY());
+			}
 			if(robot.isOnTarget()){
 				robot.setTargetNumber(robot.getTargetNumber()+1);
 				if(robot.getTarget() != null){

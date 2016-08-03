@@ -99,7 +99,7 @@ public class GameServiceImpl implements GameService {
 		for(int i=0; i<5; i++){
 			int x=(int) (Math.random()*sizeX);
 			int y=(int) (Math.random()*sizeY);
-			while(board.getTargetSquares().contains(board.getSquare(x, y)) && ! (board.getSquare(x, y) instanceof EmptySquare)){
+			while(board.getTargetSquares().contains(board.getSquare(x, y)) || ! (board.getSquare(x, y) instanceof EmptySquare)){
 				x=(int) (Math.random()*sizeX);
 				y=(int) (Math.random()*sizeY);
 			}

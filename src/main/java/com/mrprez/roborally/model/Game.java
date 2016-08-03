@@ -105,9 +105,9 @@ public class Game {
 					robot.setTargetNumber(robot.getTargetNumber()+1);
 					if(robot.getTarget()==null){
 						if(robot.getSquare().getRobot()==robot){
-							robot.getSquare().setRobot(null);
+							robot.getSquare().host(null);
 						}
-						robot.setSquare(null);
+						robot.walkOn(null);
 						robot.setHealth(0);
 						robot.setPowerDownState(PowerDownState.NONE);
 						stage.addAction(buildWinAction(robot));
@@ -173,7 +173,7 @@ public class Game {
 		robot.setGhost(true);
 		int checkPointNb = robot.getTargetNumber()-1;
 		Square checkpointSquare = board.getTargetSquares().get(checkPointNb);
-		robot.setSquare(checkpointSquare);
+		robot.walkOn(checkpointSquare);
 		robot.setHealth(9);
 		action.addStep(new Step(new Move(MoveType.APPEAR, checkpointSquare.getX()+","+checkpointSquare.getY(), robot)));
 		return action;
@@ -197,7 +197,7 @@ public class Game {
 				if(!ghost){
 					logger.debug("Robot "+robot.getNumber()+" is no more ghost on square "+robot.getSquare());
 					robot.setGhost(false);
-					robot.getSquare().setRobot(robot);
+					robot.getSquare().host(robot);
 					stage.addAction(buildUnghostAction(robot));
 				}
 			}

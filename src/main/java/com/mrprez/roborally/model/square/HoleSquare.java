@@ -1,8 +1,5 @@
 package com.mrprez.roborally.model.square;
 
-import java.util.List;
-
-import com.google.gwt.thirdparty.guava.common.collect.ImmutableList;
 import com.mrprez.roborally.model.PowerDownState;
 import com.mrprez.roborally.model.Robot;
 import com.mrprez.roborally.model.Square;
@@ -43,12 +40,15 @@ public class HoleSquare extends Square {
 	}
 	
 	@Override
-	public List<Move> walkOn(Robot robot) {
+	public Move host(Robot robot) {
+		if(robot==null){
+			return null;
+		}
 		robot.setHealth(0);
-		robot.setSquare(null);
+		robot.walkOn(null);
 		robot.setPowerDownState(PowerDownState.NONE);
 		robot.setGhost(true);
-		return ImmutableList.of(new Move(MoveType.DISAPPEAR, null, robot));
+		return new Move(MoveType.DISAPPEAR, null, robot);
 	}
 
 }

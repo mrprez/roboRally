@@ -33,18 +33,19 @@ public class Robot {
 	public Robot(Square square, boolean ghost) {
 		super();
 		this.ghost = ghost;
-		setSquare(square);
+		walkOn(square);
 	}
 
 
 	public Square getSquare() {
 		return square;
 	}
-	public void setSquare(Square square) {
+	public Move walkOn(Square square) {
 		this.square = square;
 		if(square!=null  && square.getRobot()!=this && !ghost){
-			square.setRobot(this);
+			return square.host(this);
 		}
+		return null;
 	}
 	public int getHealth() {
 		return health;
@@ -172,11 +173,11 @@ public class Robot {
 			moveList.addAll(destination.getRobot().move(direction));
 		}
 		if(square.getRobot()==this){
-			square.setRobot(null);
+			square.host(null);
 		}
-		setSquare(destination);
-		if(!isGhost()){
-			moveList.addAll(square.walkOn(this));
+		Move move = walkOn(destination);
+		if(move!=null){
+			moveList.add(move);
 		}
 		return moveList;
 	}

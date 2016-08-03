@@ -41,7 +41,7 @@ public class BuildingBoard extends Board {
 					squares[x][y] = new EmptySquare(x, y, this);
 				}
 				for(Direction direction : Direction.values()){
-					if(Math.random()*8<1.0){
+					if(Math.random()*15<1.0){
 						squares[x][y].setWall(direction, true);
 					}
 				}
