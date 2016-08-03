@@ -134,27 +134,8 @@ h1 {
 	width: 100%;
 }
 
-.winMessage{
-	font-size: x-large;
-	font-weight: bold;
-}
-
-.redWinMessage{
-	color: red;
-}
-
-.yellowWinMessage{
-	color: yellow;
-}
-
-.redBackGround{
-	border-radius: 10px;
-	background-color: red;
-}
-
-.yellowBackGround{
-	border-radius: 10px;
-	background-color: yellow;
+.actionElement{
+	height: 50px;
 }
 
 .laser{

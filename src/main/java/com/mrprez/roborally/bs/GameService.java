@@ -6,6 +6,7 @@ import java.util.concurrent.ExecutionException;
 
 import javax.mail.internet.AddressException;
 
+import com.mrprez.roborally.model.Card;
 import com.mrprez.roborally.model.Game;
 import com.mrprez.roborally.model.PowerDownState;
 import com.mrprez.roborally.model.Robot;
@@ -33,6 +34,8 @@ public interface GameService {
 	void addRobotToGame(int gameId, String username) throws InstantiationException, IllegalAccessException, ClassNotFoundException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException;
 
 	void saveRobotCards(Integer gameId, Integer robotNb, List<Integer> cardList);
+
+	Card getCard(Integer gameId, Integer cardRapidity);
 
 
 }

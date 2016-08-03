@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.mrprez.roborally.shared.CardGwt;
 import com.mrprez.roborally.shared.GameGwt;
 import com.mrprez.roborally.shared.RobotGwt;
 
@@ -24,5 +25,7 @@ public interface GameGwtService extends RemoteService {
 	void playNewRound(Integer gameId) throws Exception;
 	
 	void savePowerDownState(Integer gameId, String powerDownState);
+	
+	CardGwt getCard(Integer gameId, Integer cardRapidity);
 
 }

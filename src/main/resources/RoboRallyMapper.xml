@@ -158,6 +158,10 @@
 		where GAME_ID=#{gameId} and DISCARDED=#{discarded} and ROBOT_NB is null
 		order by CARD_INDEX
 	</select>
+	<select id="selectCard" resultMap="card">
+		select RAPIDITY,TRANSLATION,ROTATION from CARD 
+		where GAME_ID=#{gameId} and RAPIDITY=#{rapidity}
+	</select>
 	<select id="selectInvitations" resultMap="invitation">
 		select GAME_ID, E_MAIL, TOKEN from INVITATION
 		<where>

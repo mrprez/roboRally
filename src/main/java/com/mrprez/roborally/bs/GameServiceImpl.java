@@ -187,6 +187,11 @@ public class GameServiceImpl implements GameService {
 		
 		return round;
 	}
+
+	@Override
+	public Card getCard(Integer gameId, Integer cardRapidity) {
+		return gameDao.loadCard(gameId, cardRapidity);
+	}
 	
 	@Override
 	public void updatePowerDownState(Integer gameId, Integer robotNb, PowerDownState powerDownState) {

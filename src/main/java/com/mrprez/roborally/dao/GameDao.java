@@ -40,4 +40,6 @@ public interface GameDao {
 
 	void updateRobotHasPlayed(int robotNb, int gameId, boolean hasPlayed);
 
+	Card loadCard(Integer gameId, Integer cardRapidity);
+
 }

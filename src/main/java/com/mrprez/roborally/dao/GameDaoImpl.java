@@ -355,6 +355,14 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 	public void saveGameState(Game game) {
 		getSession().update("updateGameState", game);
 	}
+
+	@Override
+	public Card loadCard(Integer gameId, Integer cardRapidity) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("gameId", gameId);
+		params.put("rapidity", cardRapidity);
+		return getSession().selectOne("selectCard", params);
+	}
 	
 
 }

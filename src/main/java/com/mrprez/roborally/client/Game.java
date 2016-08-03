@@ -87,7 +87,7 @@ public class Game implements EntryPoint {
 	
 	
 	private void initOngoingGame(GameGwt loadedGame){
-		animationPlayerPanel.init(loadedGame.getHistory(), boardPanel);
+		animationPlayerPanel.init(loadedGame.getId(), loadedGame.getHistory(), boardPanel);
 		adminPanel.init(loadedGame);
 		eastPanel.add(adminPanel);
 	}

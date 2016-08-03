@@ -27,6 +27,7 @@ public class AnimationManager {
 	private int state = STOP;
 	private List<AnimationEndHandler> animationEndHandlers = new ArrayList<AnimationManager.AnimationEndHandler>();
 	private List<StageAnimationHandler> stageAnimationHandlers = new ArrayList<AnimationManager.StageAnimationHandler>();
+	private List<ActionAnimationHandler> actionAnimationHandlers = new ArrayList<AnimationManager.ActionAnimationHandler>();
 	
 	
 	public AnimationManager(int animationDuration, BoardPanel boardPanel){
@@ -64,6 +65,9 @@ public class AnimationManager {
 		if( state == PLAY ){
 			ActionGwt action = actionQueue.poll();
 			if( action!=null ){
+				for(ActionAnimationHandler actionAnimationHandler : actionAnimationHandlers){
+					actionAnimationHandler.onActionStart(action);
+				}
 				stepAnimationQueue = new LinkedList<StepAnimation>();
 				for(StepGwt step : action.getStepList()){
 					stepAnimationQueue.add(new StepAnimation(step, boardPanel));
@@ -81,6 +85,9 @@ public class AnimationManager {
 			animation.setEventBus(eventBus);
 			animation.run((int) (animationDuration * animation.getTimeCoefficient()));
 		}else{
+			for(ActionAnimationHandler actionAnimationHandler : actionAnimationHandlers){
+				actionAnimationHandler.onActionEnd();
+			}
 			eventBus.fireEvent(new ActionAnimationEvent());
 		}
 	}
@@ -95,6 +102,10 @@ public class AnimationManager {
 	
 	public void addStageAnimationHandler(StageAnimationHandler stageAnimationHandler){
 		stageAnimationHandlers.add(stageAnimationHandler);
+	}
+	
+	public void addActionAnimationHandler(ActionAnimationHandler actionAnimationHandler){
+		actionAnimationHandlers.add(actionAnimationHandler);
 	}
 	
 	public void addStage(StageGwt stage){
@@ -181,6 +192,11 @@ public class AnimationManager {
 	
 	public static interface StageAnimationHandler {
 		void onStageStart(StageGwt stage);
+	}
+	
+	public static interface ActionAnimationHandler {
+		void onActionStart(ActionGwt action);
+		void onActionEnd();
 	}
 	
 

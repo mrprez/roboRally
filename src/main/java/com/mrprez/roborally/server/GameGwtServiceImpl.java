@@ -132,6 +132,12 @@ public class GameGwtServiceImpl extends AbstractGwtService implements GameGwtSer
 	}
 	
 	
+	@Override
+	public CardGwt getCard(Integer gameId, Integer cardRapidity) {
+		return dozerMapper.map(gameService.getCard(gameId, cardRapidity), CardGwt.class);
+	}
+	
+	
 	public GameService getGameService() {
 		return gameService;
 	}
