@@ -197,8 +197,11 @@ public class Game {
 				if(!ghost){
 					logger.debug("Robot "+robot.getNumber()+" is no more ghost on square "+robot.getSquare());
 					robot.setGhost(false);
-					robot.getSquare().host(robot);
 					stage.addAction(buildUnghostAction(robot));
+					Move hostMove = robot.getSquare().host(robot);
+					if(hostMove!=null){
+						stage.addAction(new Action(new Step(hostMove)));
+					}
 				}
 			}
 		}
