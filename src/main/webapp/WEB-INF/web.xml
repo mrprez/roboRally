@@ -13,15 +13,14 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+	<listener>
+		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
 
 	<!-- Servlets -->
 	<servlet>
-		<servlet-name>authenticationServlet</servlet-name>
-		<servlet-class>com.mrprez.roborally.server.AuthenticationGwtServiceImpl</servlet-class>
-	</servlet>
-	<servlet>
-		<servlet-name>gameServlet</servlet-name>
-		<servlet-class>com.mrprez.roborally.server.GameGwtServiceImpl</servlet-class>
+		<servlet-name>gwtServiceServlet</servlet-name>
+		<servlet-class>com.mrprez.roborally.server.GwtServiceServlet</servlet-class>
 	</servlet>
 	<servlet> 
          <servlet-name>EventService</servlet-name> 
@@ -29,19 +28,19 @@
     </servlet>
 
 	<servlet-mapping>
-		<servlet-name>authenticationServlet</servlet-name>
+		<servlet-name>gwtServiceServlet</servlet-name>
 		<url-pattern>/Login/authenticationService</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>authenticationServlet</servlet-name>
+		<servlet-name>gwtServiceServlet</servlet-name>
 		<url-pattern>/Register/authenticationService</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>gameServlet</servlet-name>
+		<servlet-name>gwtServiceServlet</servlet-name>
 		<url-pattern>/Home/gameService</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>gameServlet</servlet-name>
+		<servlet-name>gwtServiceServlet</servlet-name>
 		<url-pattern>/Game/gameService</url-pattern>
 	</servlet-mapping>
     <servlet-mapping>   

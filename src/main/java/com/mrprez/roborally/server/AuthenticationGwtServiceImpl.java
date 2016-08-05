@@ -1,11 +1,12 @@
 package com.mrprez.roborally.server;
 
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.mrprez.roborally.bs.UserService;
 import com.mrprez.roborally.client.AuthenticationGwtService;
 import com.mrprez.roborally.model.User;
 import com.mrprez.roborally.shared.UserGwt;
 
-public class AuthenticationGwtServiceImpl extends AbstractGwtService implements AuthenticationGwtService {
+public class AuthenticationGwtServiceImpl extends RemoteServiceServlet implements AuthenticationGwtService {
 	private static final long serialVersionUID = 1L;
 	
 	private UserService userService;
