@@ -23,7 +23,7 @@ public class GwtServiceServlet extends HttpServlet {
 		int endIndex = url.indexOf("?") >= 0 ? url.indexOf("?") : url.length();
 		String requestedServiceName = url.substring(startIndex, endIndex);
 		String beanRef = requestedServiceName.replace("Service", "GwtService");
-		LoggerFactory.getLogger(getClass()).trace("URL requested "+url+" => GWT Service: "+beanRef);
+		LoggerFactory.getLogger(getClass().getSimpleName()).trace("URL requested "+url+" => GWT Service: "+beanRef);
 		
 		WebApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
 		RemoteServiceServlet remoteServiceServlet = (RemoteServiceServlet) applicationContext.getBean(beanRef);

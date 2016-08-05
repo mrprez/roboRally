@@ -6,11 +6,15 @@
 		</encoder>
 	</appender>
 	
-	<logger name="GamePlay" level="trace" additivity="false">
+	<logger name="GwtServiceServlet" level="info" additivity="false">
+		<appender-ref ref="STDOUT" />
+	</logger>
+	
+	<logger name="GamePlay" level="info" additivity="false">
 		<appender-ref ref="STDOUT" />
 	</logger>
 
-	<logger name="IA" level="debug" additivity="false">
+	<logger name="IA" level="info" additivity="false">
 		<appender-ref ref="STDOUT" />
 	</logger>
 
