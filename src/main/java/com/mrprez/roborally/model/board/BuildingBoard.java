@@ -8,6 +8,7 @@ import com.mrprez.roborally.model.Square;
 import com.mrprez.roborally.model.square.ConveyorBelt;
 import com.mrprez.roborally.model.square.EmptySquare;
 import com.mrprez.roborally.model.square.HoleSquare;
+import com.mrprez.roborally.model.square.RotationSquare;
 
 public class BuildingBoard extends Board {
 	
@@ -36,6 +37,12 @@ public class BuildingBoard extends Board {
 					break;
 				case 4:
 					squares[x][y] = new HoleSquare(x, y, this);
+					break;
+				case 5:
+					squares[x][y] = new RotationSquare(x, y, this, 1);
+					break;
+				case 6:
+					squares[x][y] = new RotationSquare(x, y, this, -1);
 					break;
 				default:
 					squares[x][y] = new EmptySquare(x, y, this);
