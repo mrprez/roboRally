@@ -23,27 +23,10 @@ public class CardCanvasFactory implements IsSerializable {
 	
 	public static Canvas build(CardGwt card, int index){
 		final String rapidity = String.valueOf(card.getRapidity());
-		final Canvas cardCanvas = Canvas.createIfSupported();
-		cardCanvas.setCoordinateSpaceWidth(50);
-		cardCanvas.setCoordinateSpaceHeight(80);
+		Canvas cardCanvas = build(card.getImageName(), rapidity);
 		canvasCardMap.put(rapidity, cardCanvas);
 		cardCanvas.getElement().setAttribute("rapidity", rapidity);
 		cardCanvas.getElement().setAttribute("index", String.valueOf(index));
-		ImageLoader.getInstance().loadImage(card.getImageName(), new ImageLoaderCallback() {
-			@Override
-			public void onImageLoaded(Image image) {
-				ImageElement imageEl = ImageElement.as(image.getElement());
-				cardCanvas.getContext2d().drawImage(imageEl, 5, 5);
-				cardCanvas.getContext2d().setStrokeStyle("LimeGreen");
-				cardCanvas.getContext2d().setFillStyle("white");
-				cardCanvas.getContext2d().rect(6, 50, 30, 19);
-				cardCanvas.getContext2d().fill();
-				cardCanvas.getContext2d().stroke();
-				cardCanvas.getContext2d().setFont("16px Digital");
-				cardCanvas.getContext2d().setFillStyle("LimeGreen");
-				cardCanvas.getContext2d().fillText(rapidity, 9, 65);
-			}
-		});
 		
 		if(card.isBlocked()){
 			return cardCanvas;
@@ -87,6 +70,29 @@ public class CardCanvasFactory implements IsSerializable {
 			}
 		});
 		
+		return cardCanvas;
+	}
+	
+	
+	public static Canvas build(String imageName, final String rapidity){
+		final Canvas cardCanvas = Canvas.createIfSupported();
+		cardCanvas.setCoordinateSpaceWidth(50);
+		cardCanvas.setCoordinateSpaceHeight(80);
+		ImageLoader.getInstance().loadImage(imageName, new ImageLoaderCallback() {
+			@Override
+			public void onImageLoaded(Image image) {
+				ImageElement imageEl = ImageElement.as(image.getElement());
+				cardCanvas.getContext2d().drawImage(imageEl, 5, 5);
+				cardCanvas.getContext2d().setStrokeStyle("LimeGreen");
+				cardCanvas.getContext2d().setFillStyle("white");
+				cardCanvas.getContext2d().rect(6, 50, 30, 19);
+				cardCanvas.getContext2d().fill();
+				cardCanvas.getContext2d().stroke();
+				cardCanvas.getContext2d().setFont("16px Digital");
+				cardCanvas.getContext2d().setFillStyle("LimeGreen");
+				cardCanvas.getContext2d().fillText(rapidity, 9, 65);
+			}
+		});
 		return cardCanvas;
 	}
 

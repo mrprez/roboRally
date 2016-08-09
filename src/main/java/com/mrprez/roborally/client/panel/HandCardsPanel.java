@@ -82,7 +82,8 @@ public class HandCardsPanel extends FlexTable {
 						Canvas cardCanvas = CardCanvasFactory.build(robot.getCards().get(index), index);
 						setWidget(0, index+1, cardCanvas);
 					}else{
-						setWidget(0, index+1, new Image("img/card/noCard.gif"));
+						Canvas cardCanvas = CardCanvasFactory.build("img/card/noCard.gif", "000");
+						setWidget(0, index+1, cardCanvas);
 					}
 				}
 				saveButton.setEnabled(robot.getCards().size() > 0);

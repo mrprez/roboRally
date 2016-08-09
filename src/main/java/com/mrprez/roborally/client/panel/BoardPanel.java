@@ -27,6 +27,7 @@ public class BoardPanel extends AbsolutePanel {
 	private GameGwtServiceAsync gameGwtService = GWT.create(GameGwtService.class);
 	private Map<Integer, Canvas> robotCanvaMap;
 	private int gameId;
+	private Image[][] squareImages;
 	
 	
 	public void init(GameGwt game){
@@ -58,12 +59,18 @@ public class BoardPanel extends AbsolutePanel {
 	}
 	
 	
+	public Image getSquareImage(int x, int y){
+		return squareImages[x][y];
+	}
+	
+	
 	private void loadSquares(GameGwt game) {
 		Canvas squaresCanvas = Canvas.createIfSupported();
 		squaresCanvas.setCoordinateSpaceWidth(game.getBoard().getSizeX()*97);
 		squaresCanvas.setCoordinateSpaceHeight(game.getBoard().getSizeY()*97);
 		squaresCanvas.setStyleName("gameCanvas");
 		add(squaresCanvas);
+		squareImages = new Image[game.getBoard().getSizeX()][game.getBoard().getSizeY()];
 		for (int y = 0; y < game.getBoard().getSizeY(); y++) {
 			for (int x = 0; x < game.getBoard().getSizeX(); x++) {
 				loadSquare(squaresCanvas.getContext2d(), game.getBoard().getSquare(x, y), x, y);
@@ -76,6 +83,7 @@ public class BoardPanel extends AbsolutePanel {
 		ImageLoader.getInstance().loadImage(square.getImageName(), new ImageLoaderCallback() {
 			@Override
 			public void onImageLoaded(Image image) {
+				squareImages[x][y] = image;
 				ImageElement imageEl = ImageElement.as(image.getElement());
 				context2d.drawImage(imageEl, x*97, y*97);
 				if(square.isWallUp()){

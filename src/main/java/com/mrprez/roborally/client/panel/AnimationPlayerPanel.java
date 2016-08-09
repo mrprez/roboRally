@@ -216,6 +216,13 @@ public class AnimationPlayerPanel extends FlexTable {
 						}
 					});
 				}
+				if(action.getSquareX()!=null && action.getSquareY()!=null && !action.getStepList().isEmpty()){
+					int robotNb = action.getStepList().get(0).getMoveList().get(0).getRobotNb();
+					Image squareImage = new Image(boardPanel.getSquareImage(action.getSquareX(), action.getSquareY()).getUrl());
+					squareImage.addStyleName("reducedSquareImg");
+					actionElementPanel.add(squareImage);
+					actionElementPanel.add(new Image(boardPanel.getRobotOriginImageUri(robotNb)));
+				}
 			}
 			@Override
 			public void onActionEnd() {

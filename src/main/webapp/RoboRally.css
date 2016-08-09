@@ -135,9 +135,13 @@ h1 {
 }
 
 .actionElement{
-	height: 50px;
+	height: 55px;
 	border: solid 4px black;
 	text-align: center;
+}
+
+.reducedSquareImg{
+	height: 48px;
 }
 
 .laser{
