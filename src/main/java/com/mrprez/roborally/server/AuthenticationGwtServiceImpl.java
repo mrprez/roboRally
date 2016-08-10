@@ -6,7 +6,7 @@ import com.mrprez.roborally.client.AuthenticationGwtService;
 import com.mrprez.roborally.model.User;
 import com.mrprez.roborally.shared.UserGwt;
 
-public class AuthenticationGwtServiceImpl extends RemoteServiceServlet implements AuthenticationGwtService {
+public class AuthenticationGwtServiceImpl extends RemoteServiceServlet implements AuthenticationGwtService, GwtRemoteService {
 	private static final long serialVersionUID = 1L;
 	
 	private UserService userService;

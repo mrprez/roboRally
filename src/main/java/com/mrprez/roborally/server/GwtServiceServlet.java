@@ -11,8 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-
 public class GwtServiceServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -21,14 +19,13 @@ public class GwtServiceServlet extends HttpServlet {
 		String url = request.getRequestURI();
 		int startIndex = url.lastIndexOf("/")+1;
 		int endIndex = url.indexOf("?") >= 0 ? url.indexOf("?") : url.length();
-		String requestedServiceName = url.substring(startIndex, endIndex);
-		String beanRef = requestedServiceName.replace("Service", "GwtService");
+		String beanRef = url.substring(startIndex, endIndex);
 		LoggerFactory.getLogger(getClass().getSimpleName()).trace("URL requested "+url+" => GWT Service: "+beanRef);
-		
+				
 		WebApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
-		RemoteServiceServlet remoteServiceServlet = (RemoteServiceServlet) applicationContext.getBean(beanRef);
-		remoteServiceServlet.init(this);
-		remoteServiceServlet.doPost(request, response);
+		GwtRemoteService remoteService = (GwtRemoteService) applicationContext.getBean(beanRef);
+		remoteService.init(this);
+		remoteService.doPost(request, response);
 	}
 	
 	

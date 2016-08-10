@@ -81,6 +81,14 @@
 	
 
 	<!-- GWT -->
+	<aop:config>
+		<aop:aspect id="securityInvocationAspect" ref="securityInvocation">
+			<aop:pointcut id="securityInvocationPointcut" expression="execution(* com.mrprez.roborally.server.*.*(..))" />
+			<aop:around pointcut-ref="securityInvocationPointcut" method="afficherTrace" />
+		</aop:aspect>
+	</aop:config>
+	<bean id="securityInvocation" class="com.mrprez.roborally.server.SecurityInvocation"/>
+	
 	<bean id="gwtDozerMapper" class="org.dozer.DozerBeanMapper">
 		<property name="mappingFiles">
 			<list>

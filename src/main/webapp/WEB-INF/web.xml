@@ -29,19 +29,19 @@
 
 	<servlet-mapping>
 		<servlet-name>gwtServiceServlet</servlet-name>
-		<url-pattern>/Login/authenticationService</url-pattern>
+		<url-pattern>/Login/authenticationGwtService</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>gwtServiceServlet</servlet-name>
-		<url-pattern>/Register/authenticationService</url-pattern>
+		<url-pattern>/Register/authenticationGwtService</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>gwtServiceServlet</servlet-name>
-		<url-pattern>/Home/gameService</url-pattern>
+		<url-pattern>/Home/gameGwtService</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>gwtServiceServlet</servlet-name>
-		<url-pattern>/Game/gameService</url-pattern>
+		<url-pattern>/Game/gameGwtService</url-pattern>
 	</servlet-mapping>
     <servlet-mapping>   
          <servlet-name>EventService</servlet-name> 

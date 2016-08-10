@@ -26,7 +26,7 @@ import com.mrprez.roborally.shared.RobotGwt;
 import com.mrprez.roborally.shared.SquareGwt;
 import com.mrprez.roborally.shared.UserGwt;
 
-public class GameGwtServiceImpl extends RemoteServiceServlet implements GameGwtService {
+public class GameGwtServiceImpl extends RemoteServiceServlet implements GameGwtService, GwtRemoteService {
 	private static final long serialVersionUID = 1L;
 	
 	private DozerBeanMapper dozerMapper;

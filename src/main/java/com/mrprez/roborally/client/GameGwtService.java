@@ -8,7 +8,7 @@ import com.mrprez.roborally.shared.CardGwt;
 import com.mrprez.roborally.shared.GameGwt;
 import com.mrprez.roborally.shared.RobotGwt;
 
-@RemoteServiceRelativePath("gameService")
+@RemoteServiceRelativePath("gameGwtService")
 public interface GameGwtService extends RemoteService {
 	
 	
