@@ -12,6 +12,10 @@
 
 
 
+	<aop:config>
+		<aop:pointcut id="daoMethods" expression="execution(* com.mrprez.roborally.dao.*DaoImpl.*(..))" />
+		<aop:advisor advice-ref="daoTxAdvice" pointcut-ref="daoMethods" />
+	</aop:config>
 	
 
 	<jee:jndi-lookup id="roborallyDataSource" jndi-name="java:comp/env/jdbc/RoboRallyDB"/>
@@ -37,11 +41,6 @@
 			<tx:method name="*" propagation="REQUIRED" rollback-for="Throwable" />
 		</tx:attributes>
 	</tx:advice>
-	
-	<aop:config>
-		<aop:pointcut id="daoMethods" expression="execution(* com.mrprez.roborally.dao.*DaoImpl.*(..))" />
-		<aop:advisor advice-ref="daoTxAdvice" pointcut-ref="daoMethods" />
-	</aop:config>
 	
 	<bean id="userDao" class="com.mrprez.roborally.dao.UserDaoImpl" scope="singleton">
 		<property name="session" ref="sqlSession"/>
@@ -81,14 +80,6 @@
 	
 
 	<!-- GWT -->
-	<aop:config>
-		<aop:aspect id="securityInvocationAspect" ref="securityInvocation">
-			<aop:pointcut id="securityInvocationPointcut" expression="execution(* com.mrprez.roborally.server.*.*(..))" />
-			<aop:around pointcut-ref="securityInvocationPointcut" method="afficherTrace" />
-		</aop:aspect>
-	</aop:config>
-	<bean id="securityInvocation" class="com.mrprez.roborally.server.SecurityInvocation"/>
-	
 	<bean id="gwtDozerMapper" class="org.dozer.DozerBeanMapper">
 		<property name="mappingFiles">
 			<list>

@@ -19,7 +19,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User authenticate(String login, String password) throws SQLException {
 		String md5 = buildMD5Digest(password);
-		return userDao.checkUser(login, md5);
+		User user = userDao.checkUser(login, md5);
+		if(user==null){
+			return null;
+		}
+		user.getRoles().add(User.USER_ROLE);
+		return user;
 	}
 	
 	private String buildMD5Digest(String string) {

@@ -6,7 +6,7 @@
 		</encoder>
 	</appender>
 	
-	<logger name="GwtServiceServlet" level="info" additivity="false">
+	<logger name="GwtServiceServlet" level="trace" additivity="false">
 		<appender-ref ref="STDOUT" />
 	</logger>
 	

@@ -19,8 +19,12 @@
 
 	<!-- Servlets -->
 	<servlet>
-		<servlet-name>gwtServiceServlet</servlet-name>
-		<servlet-class>com.mrprez.roborally.server.GwtServiceServlet</servlet-class>
+		<servlet-name>authenticationServlet</servlet-name>
+		<servlet-class>com.mrprez.roborally.server.AuthenticationGwtServiceImpl</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>gameServlet</servlet-name>
+		<servlet-class>com.mrprez.roborally.server.GameGwtServiceImpl</servlet-class>
 	</servlet>
 	<servlet> 
          <servlet-name>EventService</servlet-name> 
@@ -28,19 +32,19 @@
     </servlet>
 
 	<servlet-mapping>
-		<servlet-name>gwtServiceServlet</servlet-name>
+		<servlet-name>authenticationServlet</servlet-name>
 		<url-pattern>/Login/authenticationGwtService</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>gwtServiceServlet</servlet-name>
+		<servlet-name>authenticationServlet</servlet-name>
 		<url-pattern>/Register/authenticationGwtService</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>gwtServiceServlet</servlet-name>
+		<servlet-name>gameServlet</servlet-name>
 		<url-pattern>/Home/gameGwtService</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>gwtServiceServlet</servlet-name>
+		<servlet-name>gameServlet</servlet-name>
 		<url-pattern>/Game/gameGwtService</url-pattern>
 	</servlet-mapping>
     <servlet-mapping>   

@@ -9,7 +9,6 @@ import javax.mail.internet.AddressException;
 
 import org.dozer.DozerBeanMapper;
 
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.mrprez.roborally.bs.GameService;
 import com.mrprez.roborally.client.GameGwtService;
 import com.mrprez.roborally.model.Card;
@@ -26,7 +25,7 @@ import com.mrprez.roborally.shared.RobotGwt;
 import com.mrprez.roborally.shared.SquareGwt;
 import com.mrprez.roborally.shared.UserGwt;
 
-public class GameGwtServiceImpl extends RemoteServiceServlet implements GameGwtService, GwtRemoteService {
+public class GameGwtServiceImpl extends AbstractGwtService implements GameGwtService {
 	private static final long serialVersionUID = 1L;
 	
 	private DozerBeanMapper dozerMapper;
