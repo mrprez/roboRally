@@ -51,6 +51,17 @@ public class Home implements EntryPoint {
 		});
 		verticalPanel.add(newGameButton);
 		
+		final DialogBox newBoardDialogBox = new NewBoardDialogBox();
+		
+		Button newBoardButton = new Button("Créer un nouveau plateau");
+		newBoardButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				newBoardDialogBox.center();
+			}
+		});
+		verticalPanel.add(newBoardButton);
+		
 	}
 	
 	

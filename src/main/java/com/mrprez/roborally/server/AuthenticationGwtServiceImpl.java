@@ -15,7 +15,7 @@ public class AuthenticationGwtServiceImpl extends AbstractGwtService implements 
 	public UserGwt authenticate(String username, String password) throws Exception {
 		User user = userService.authenticate(username, password);
 		if(user==null){
-			throw new Exception("Authentification échoué - Login ou mot de passe incorrect");
+			return null;
 		}
 		UserGwt userGwt = new UserGwt();
 		userGwt.setUsername(user.getUsername());

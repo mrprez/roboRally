@@ -7,6 +7,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -42,9 +43,16 @@ public class Login implements EntryPoint {
 				authenticationGwtService.authenticate(usernameTextBox.getText(), passwordTextBox.getText(), new AbstractAsyncCallback<UserGwt>() {
 					@Override
 					public void onSuccess(UserGwt result) {
-						UrlBuilder urlBuilder = Window.Location.createUrlBuilder();
-						urlBuilder.setPath("roboRally/Home.html");
-						Window.Location.assign(urlBuilder.buildString());
+						if(result==null){
+							DialogBox dialogBox = new DialogBox(true, true);
+							dialogBox.setText("Echec d'authentification");
+							dialogBox.add(new Label("L'authentification a échoué. Vérifiez votre login et votre mot de passe"));
+							dialogBox.center();
+						} else {
+							UrlBuilder urlBuilder = Window.Location.createUrlBuilder();
+							urlBuilder.setPath("roboRally/Home.html");
+							Window.Location.assign(urlBuilder.buildString());
+						}
 					}
 				});
 				
