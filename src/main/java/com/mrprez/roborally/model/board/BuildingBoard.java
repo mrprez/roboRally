@@ -13,48 +13,70 @@ import com.mrprez.roborally.model.square.RotationSquare;
 public class BuildingBoard extends Board {
 	
 	private String name;
+	private String username;
 	
-	public BuildingBoard(String name, int sizeX, int sizeY) {
+	
+	public BuildingBoard(String name, String username, int sizeX, int sizeY){
 		super();
 		this.name = name;
+		this.username = username;
 		setSizeX( sizeX );
 		setSizeY( sizeY );
 		squares = new Square[sizeX][sizeY];
 		for(int x=0; x<sizeX; x++){
 			for(int y=0; y<sizeY; y++){
+				squares[x][y] = new EmptySquare(x, y, this);
+			}
+		}
+	}
+	
+	
+	public static BuildingBoard buildRandomBoard(String name, int sizeX, int sizeY){
+		BuildingBoard board = new BuildingBoard(name, null, sizeX, sizeY);
+		for(int x=0; x<sizeX; x++){
+			for(int y=0; y<sizeY; y++){
 				switch((int)(Math.random()*17)){
 				case 0:
-					squares[x][y] = new ConveyorBelt(x, y, this, Direction.UP);
+					board.squares[x][y] = new ConveyorBelt(x, y, board, Direction.UP);
 					break;
 				case 1:
-					squares[x][y] = new ConveyorBelt(x, y, this, Direction.LEFT);
+					board.squares[x][y] = new ConveyorBelt(x, y, board, Direction.LEFT);
 					break;
 				case 2:
-					squares[x][y] = new ConveyorBelt(x, y, this, Direction.RIGHT);
+					board.squares[x][y] = new ConveyorBelt(x, y, board, Direction.RIGHT);
 					break;
 				case 3:
-					squares[x][y] = new ConveyorBelt(x, y, this, Direction.DOWN);
+					board.squares[x][y] = new ConveyorBelt(x, y, board, Direction.DOWN);
 					break;
 				case 4:
-					squares[x][y] = new HoleSquare(x, y, this);
+					board.squares[x][y] = new HoleSquare(x, y, board);
 					break;
 				case 5:
-					squares[x][y] = new RotationSquare(x, y, this, 1);
+					board.squares[x][y] = new RotationSquare(x, y, board, 1);
 					break;
 				case 6:
-					squares[x][y] = new RotationSquare(x, y, this, -1);
+					board.squares[x][y] = new RotationSquare(x, y, board, -1);
 					break;
 				default:
-					squares[x][y] = new EmptySquare(x, y, this);
+					board.squares[x][y] = new EmptySquare(x, y, board);
 				}
 				for(Direction direction : Direction.values()){
 					if(Math.random()*15<1.0){
-						squares[x][y].setWall(direction, true);
+						board.squares[x][y].setWall(direction, true);
 					}
 				}
 			}
 		}
+		return board;
 	}
+	
+	public void setSquare(String className, int x, int y, String args) throws SecurityException, IllegalArgumentException, NoSuchMethodException, ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException{
+		Constructor<?> constructor = Square.class.getClassLoader().loadClass(className).getConstructor(Integer.class, Integer.class, Board.class);
+		Square square = (Square) constructor.newInstance(x, y, this);
+		square.setArgs(args);
+		addSquare(square);
+	}
+	
 	
 	public String getName() {
 		return name;
@@ -62,11 +84,13 @@ public class BuildingBoard extends Board {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public void setSquare(String className, int x, int y, String args) throws SecurityException, IllegalArgumentException, NoSuchMethodException, ClassNotFoundException, InstantiationException, IllegalAccessException, InvocationTargetException{
-		Constructor<?> constructor = Square.class.getClassLoader().loadClass(className).getConstructor(Integer.class, Integer.class, Board.class);
-		Square square = (Square) constructor.newInstance(x, y, this);
-		square.setArgs(args);
-		addSquare(square);
+	public String getUsername() {
+		return username;
 	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+
 
 }

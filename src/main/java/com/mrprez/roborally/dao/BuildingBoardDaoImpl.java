@@ -4,14 +4,20 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.mrprez.roborally.dto.SquareDto;
 import com.mrprez.roborally.model.board.BuildingBoard;
 
 public class BuildingBoardDaoImpl extends AbstractDao implements BuildingBoardDao {
 
 	@Override
-	public void createBuildingBoard(BuildingBoard buildingBoard) throws SQLException {
-		// TODO Auto-generated method stub
-
+	public void insertBuildingBoard(BuildingBoard buildingBoard) throws SQLException {
+		getSession().insert("insertBuildingBoard", buildingBoard);
+		for(int x=0; x<buildingBoard.getSizeX(); x++){
+			for(int y=0; y<buildingBoard.getSizeY(); y++){
+				getSession().insert("insertSquare", new SquareDto(buildingBoard.getSquare(x, y)));
+			}
+		}
+		getSession().insert("insertBuildingBoardOwner", buildingBoard);
 	}
 
 	@Override

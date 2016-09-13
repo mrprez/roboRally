@@ -94,7 +94,7 @@ public class GameServiceImpl implements GameService {
 		Game game = new Game();
 		game.setName(name);
 		game.setOwnername(username);
-		GameBoard board = new GameBoard(new BuildingBoard("temp", sizeX, sizeY));
+		GameBoard board = new GameBoard(BuildingBoard.buildRandomBoard("temp", sizeX, sizeY));
 		game.setBoard(board);
 		for(int i=0; i<5; i++){
 			int x=(int) (Math.random()*sizeX);

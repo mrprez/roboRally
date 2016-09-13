@@ -176,6 +176,12 @@
 	<insert id="insertGameBoard" keyProperty="id" keyColumn="ID" useGeneratedKeys="true">
 		insert into BOARD (TYPE, SIZE_X, SIZE_Y) values ('Game', #{sizeX}, #{sizeY})
 	</insert>
+	<insert id="insertBuildingBoard" keyProperty="id" keyColumn="ID" useGeneratedKeys="true">
+		insert into BOARD (TYPE, SIZE_X, SIZE_Y) values ('Building', #{sizeX}, #{sizeY})
+	</insert>
+	<insert id="insertBuildingBoardOwner">
+		insert into BUILDING_BOARD (BOARD_ID, OWNER) values (#{id}, #{username})
+	</insert>
 	<insert id="insertSquare">
 		insert into SQUARE (BOARD_ID, X, Y, CLASS, ARGS, WALL_UP, WALL_DOWN, WALL_LEFT, WALL_RIGHT)
 		values (#{boardId}, #{x}, #{y}, #{clazz}, #{args}, #{wallUp}, #{wallDown}, #{wallLeft}, #{wallRight})

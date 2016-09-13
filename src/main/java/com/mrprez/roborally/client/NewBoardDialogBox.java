@@ -1,5 +1,6 @@
 package com.mrprez.roborally.client;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -16,6 +17,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class NewBoardDialogBox extends DialogBox {
 	
+	private BoardGwtServiceAsync boardGwtService = GWT.create(BoardGwtServiceAsync.class);
 	
 	
 	public NewBoardDialogBox(){
@@ -102,7 +104,14 @@ public class NewBoardDialogBox extends DialogBox {
 					return;
 				}
 				
-				// TODO
+				boardGwtService.createNewBoard(nameField.getText(), sizeXBox.getValue(), sizeYBox.getValue(), 
+					new AbstractAsyncCallback<Integer>() {
+						@Override
+						public void onSuccess(Integer result) {
+							// TODO Auto-generated method stub
+						}
+					}
+				);
 			}
 		};
 		

@@ -48,6 +48,9 @@
 	<bean id="gameDao" class="com.mrprez.roborally.dao.GameDaoImpl" scope="singleton">
 		<property name="session" ref="sqlSession"/>
 	</bean>
+	<bean id="buildingBoardDao" class="com.mrprez.roborally.dao.BuildingBoardDaoImpl" scope="singleton">
+		<property name="session" ref="sqlSession"/>
+	</bean>
 	<jee:jndi-lookup id="mailSenderSession" jndi-name="java:comp/env/mail/SenderSession"/>
 	<bean id="mailResource" class="com.mrprez.roborally.dao.MailResourceImpl" scope="singleton">
 		<constructor-arg ref="mailSenderSession" />
@@ -77,6 +80,9 @@
 		<property name="mailResource" ref="mailResource"/>
 		<property name="pushEventServiceServlet" ref="pushEventServiceServlet"/>
 	</bean>
+	<bean id="boardService" class="com.mrprez.roborally.bs.BoardServiceImpl" scope="singleton">
+		<property name="buildingBoardDao" ref="buildingBoardDao"/>
+	</bean>
 	
 
 	<!-- GWT -->
@@ -98,5 +104,9 @@
 		<property name="dozerMapper" ref="gwtDozerMapper"/>
 		<property name="pushEventServiceServlet" ref="pushEventServiceServlet"/>
 	</bean>
+	<bean id="boardGwtService" class="com.mrprez.roborally.server.BoardGwtServiceImpl" scope="request">
+		<property name="boardService" ref="boardService"/>
+	</bean>
+	
 
 </beans>

@@ -8,7 +8,7 @@ import com.mrprez.roborally.model.board.BuildingBoard;
 
 public interface BuildingBoardDao {
 	
-	void createBuildingBoard(BuildingBoard buildingBoard) throws SQLException;
+	void insertBuildingBoard(BuildingBoard buildingBoard) throws SQLException;
 	
 	List<BuildingBoard> loadBuildingBoardList(String username) throws SQLException;
 
