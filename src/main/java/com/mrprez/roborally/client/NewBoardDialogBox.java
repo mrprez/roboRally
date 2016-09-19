@@ -17,7 +17,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class NewBoardDialogBox extends DialogBox {
 	
-	private BoardGwtServiceAsync boardGwtService = GWT.create(BoardGwtServiceAsync.class);
+	private BoardGwtServiceAsync boardGwtService = GWT.create(BoardGwtService.class);
 	
 	
 	public NewBoardDialogBox(){

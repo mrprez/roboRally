@@ -26,6 +26,10 @@
 		<servlet-name>gameServlet</servlet-name>
 		<servlet-class>com.mrprez.roborally.server.GameGwtServiceImpl</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>boardServlet</servlet-name>
+		<servlet-class>com.mrprez.roborally.server.BoardGwtServiceImpl</servlet-class>
+	</servlet>
 	<servlet> 
          <servlet-name>EventService</servlet-name> 
          <servlet-class>de.novanic.eventservice.service.EventServiceImpl</servlet-class> 
@@ -42,6 +46,10 @@
 	<servlet-mapping>
 		<servlet-name>gameServlet</servlet-name>
 		<url-pattern>/Home/gameGwtService</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>boardServlet</servlet-name>
+		<url-pattern>/Home/boardGwtService</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>gameServlet</servlet-name>

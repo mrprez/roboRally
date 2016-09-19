@@ -19,7 +19,15 @@ public class BoardGwtServiceImpl extends AbstractGwtService implements BoardGwtS
 		BuildingBoard board = boardService.createNewBoard(name, user.getUsername(), sizeX, sizeY);
 		return board.getId();
 	}
+
 	
+	public BoardService getBoardService() {
+		return boardService;
+	}
+
+	public void setBoardService(BoardService boardService) {
+		this.boardService = boardService;
+	}
 	
 
 }
