@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.google.gwt.animation.client.Animation;
 import com.google.web.bindery.event.shared.EventBus;
-import com.mrprez.roborally.client.panel.BoardPanel;
+import com.mrprez.roborally.client.game.BoardPanel;
 import com.mrprez.roborally.shared.MoveGwt;
 import com.mrprez.roborally.shared.StepGwt;
 

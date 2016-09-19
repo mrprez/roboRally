@@ -8,7 +8,7 @@ import java.util.Queue;
 import com.google.web.bindery.event.shared.Event;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
-import com.mrprez.roborally.client.panel.BoardPanel;
+import com.mrprez.roborally.client.game.BoardPanel;
 import com.mrprez.roborally.shared.ActionGwt;
 import com.mrprez.roborally.shared.StageGwt;
 import com.mrprez.roborally.shared.StepGwt;

@@ -1,7 +1,7 @@
 package com.mrprez.roborally.client.animation;
 
 import com.google.gwt.canvas.client.Canvas;
-import com.mrprez.roborally.client.panel.BoardPanel;
+import com.mrprez.roborally.client.game.BoardPanel;
 import com.mrprez.roborally.shared.MoveGwt;
 
 public abstract class MoveAnimation {

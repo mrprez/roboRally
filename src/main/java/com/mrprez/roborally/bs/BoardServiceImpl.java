@@ -1,5 +1,6 @@
 package com.mrprez.roborally.bs;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 
 import com.mrprez.roborally.dao.BuildingBoardDao;
@@ -16,6 +17,15 @@ public class BoardServiceImpl implements BoardService {
 		return buildingBoard;
 	}
 	
+	@Override
+	public BuildingBoard loadBuildingBoard(int boardId, String username) throws SecurityException, IllegalArgumentException, SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException {
+		BuildingBoard buildingBoard = buildingBoardDao.loadBuildingBoard(boardId);
+		if( ! buildingBoard.getUsername().equals(username)){
+			throw new IllegalAccessError("User "+username+" cannot access to building board "+boardId);
+		}
+		return buildingBoard;
+	}
+	
 
 	public BuildingBoardDao getBuildingBoardDao() {
 		return buildingBoardDao;
@@ -24,5 +34,7 @@ public class BoardServiceImpl implements BoardService {
 	public void setBuildingBoardDao(BuildingBoardDao buildingBoardDao) {
 		this.buildingBoardDao = buildingBoardDao;
 	}
+
+
 
 }

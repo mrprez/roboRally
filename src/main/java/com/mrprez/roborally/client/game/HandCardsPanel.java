@@ -1,4 +1,4 @@
-package com.mrprez.roborally.client.panel;
+package com.mrprez.roborally.client.game;
 
 import java.util.ArrayList;
 import java.util.List;
