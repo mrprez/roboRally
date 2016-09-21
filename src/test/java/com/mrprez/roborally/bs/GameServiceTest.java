@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.mrprez.roborally.builder.GameBuilder;
 import com.mrprez.roborally.dao.GameDao;
 import com.mrprez.roborally.model.Game;
 
@@ -44,12 +45,27 @@ public class GameServiceTest {
 		// GIVEN
 		String username = "username";
 		Integer id = 42;
+		Game game = GameBuilder.newGame().withId(id).withPlayer(username).get();;
+		Mockito.when(gameDao.loadGame(id)).thenReturn(game);
 		
 		// WHEN
 		Game resultGame = gameService.getGame(id, username);
 		
 		// THEN
+		Assert.assertEquals(game, resultGame);
+	}
+	
+	@Test(expected=IllegalAccessError.class)
+	public void testGetGame_Fail_BadUser() throws InstantiationException, IllegalAccessException, ClassNotFoundException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
+		// GIVEN
+		String username = "username";
+		Integer id = 42;
+		Game game = new Game();
+		game.setOwnername("otherUsername");
+		Mockito.when(gameDao.loadGame(id)).thenReturn(game);
 		
+		// WHEN
+		gameService.getGame(id, username);
 	}
 	
 	
