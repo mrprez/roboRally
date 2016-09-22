@@ -1,6 +1,7 @@
 package com.mrprez.roborally.bs;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
@@ -14,8 +15,10 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.mrprez.roborally.builder.GameBuilder;
+import com.mrprez.roborally.builder.RobotBuilder;
 import com.mrprez.roborally.dao.GameDao;
 import com.mrprez.roborally.model.Game;
+import com.mrprez.roborally.model.Robot;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GameServiceTest {
@@ -45,7 +48,7 @@ public class GameServiceTest {
 		// GIVEN
 		String username = "username";
 		Integer id = 42;
-		Game game = GameBuilder.newGame().withId(id).withPlayer(username).get();;
+		Game game = GameBuilder.newGame().withId(id).withPlayer(username).build();
 		Mockito.when(gameDao.loadGame(id)).thenReturn(game);
 		
 		// WHEN
@@ -67,6 +70,42 @@ public class GameServiceTest {
 		// WHEN
 		gameService.getGame(id, username);
 	}
+	
+	@Test
+	public void testGetPlayerRobot() {
+		// GIVEN
+		String username = "username";
+		Integer gameId = 42;
+		Game game = GameBuilder.newGame().withRobot(RobotBuilder.newRobot().withUsername(username)).build();
+		Robot robot = game.getRobot(0);
+		Mockito.when(gameDao.loadPlayerRobot(gameId, username)).thenReturn(robot);
+		
+		// WHEN
+		Robot returnedRobot = gameService.getPlayerRobot(gameId, username);
+		
+		// THEN
+		Assert.assertEquals(robot, returnedRobot);
+	}
+	
+	@Test
+	public void testSaveRobotCards_Success_RobotNb() {
+		// GIVEN
+		Integer gameId = 42;
+		Game game = GameBuilder.newGame().withId(gameId).withRobot(
+				RobotBuilder.newRobot(),
+				RobotBuilder.newRobot()
+				).build();
+		
+		// WHEN
+		gameService.saveRobotCards(gameId, 1, cardList);
+		
+		// THEN
+		
+	}
+	
+	
+	
+	
 	
 	
 }
