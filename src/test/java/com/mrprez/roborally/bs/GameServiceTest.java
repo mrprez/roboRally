@@ -48,7 +48,7 @@ public class GameServiceTest {
 		// GIVEN
 		String username = "username";
 		Integer id = 42;
-		Game game = GameBuilder.newGame().withId(id).withPlayer(username).build();
+		Game game = GameBuilder.newGame().withId(id).withRobot(RobotBuilder.newRobot().withUsername(username)).build();
 		Mockito.when(gameDao.loadGame(id)).thenReturn(game);
 		
 		// WHEN
