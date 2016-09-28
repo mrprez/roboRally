@@ -1,7 +1,6 @@
 package com.mrprez.roborally.bs;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
@@ -14,9 +13,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.google.gwt.thirdparty.guava.common.base.Function;
+import com.google.gwt.thirdparty.guava.common.collect.Lists;
 import com.mrprez.roborally.builder.GameBuilder;
 import com.mrprez.roborally.builder.RobotBuilder;
 import com.mrprez.roborally.dao.GameDao;
+import com.mrprez.roborally.model.Card;
 import com.mrprez.roborally.model.Game;
 import com.mrprez.roborally.model.Robot;
 
@@ -91,13 +93,25 @@ public class GameServiceTest {
 	public void testSaveRobotCards_Success_RobotNb() {
 		// GIVEN
 		Integer gameId = 42;
-		Game game = GameBuilder.newGame().withId(gameId).withRobot(
+		int robotNb = 0;
+		Game game = GameBuilder.newGame().started().withId(gameId).withRobot(
 				RobotBuilder.newRobot(),
 				RobotBuilder.newRobot()
 				).build();
+		Robot robot = game.getRobot(robotNb);
+		Mockito.when(gameDao.loadRobot(gameId, robotNb)).thenReturn(robot);
 		
 		// WHEN
-		gameService.saveRobotCards(gameId, 1, cardList);
+		//gameService.saveRobotCards(gameId, 1, cardList);
+		List<Card> originCards = robot.getCards();
+		List<Card> cardList = Lists.newArrayList(originCards.get(1), originCards.get(0), originCards.get(2), originCards.get(4), originCards.get(8), originCards.get(7), originCards.get(5), originCards.get(6), originCards.get(3));
+		List<Integer> saveList = Lists.transform(cardList, new Function<Card, Integer>() {
+			@Override
+			public Integer apply(Card card) {
+				return card.getRapidity();
+			}
+		});
+		gameService.saveRobotCards(gameId, robotNb, saveList);
 		
 		// THEN
 		
