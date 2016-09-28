@@ -11,7 +11,7 @@ import java.util.Set;
 public class CardStock {
 	private LinkedList<Card> stock = new LinkedList<Card>();
 	private Set<Card> discard = new HashSet<Card>();
-	private static int CARD_NUMBER = 84;
+	public final static int CARD_NUMBER = 84;
 	
 	
 	public CardStock(){

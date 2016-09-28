@@ -15,6 +15,7 @@ public class GameBuilder {
 	private int sizeY = 12;
 	private int startX = 0;
 	private int startY = 0;
+	private boolean started = false;
 	
 	
 	private GameBuilder(){
@@ -48,6 +49,11 @@ public class GameBuilder {
 		return this;
 	}
 	
+	public GameBuilder started(){
+		started = true;
+		return this;
+	}
+	
 	public Game build(){
 		Game game = new Game();
 		GameBoard board = new GameBoard((int) (Math.random()*100), sizeX, sizeY);
@@ -55,8 +61,11 @@ public class GameBuilder {
 		game.setId(id);
 		game.setName(name);
 		board.getTargetSquares().add(board.getSquare(startX, startY));
+		if(started){
+			game.start();
+		}
 		for(RobotBuilder robotBuilder : robotBuilders){
-			game.getRobotList().add(robotBuilder.buildOnGameBoard(board));
+			game.getRobotList().add(robotBuilder.buildOnGame(game));
 		}
 		return game;
 	}

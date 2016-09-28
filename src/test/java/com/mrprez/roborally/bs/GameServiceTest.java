@@ -102,7 +102,6 @@ public class GameServiceTest {
 		Mockito.when(gameDao.loadRobot(gameId, robotNb)).thenReturn(robot);
 		
 		// WHEN
-		//gameService.saveRobotCards(gameId, 1, cardList);
 		List<Card> originCards = robot.getCards();
 		List<Card> cardList = Lists.newArrayList(originCards.get(1), originCards.get(0), originCards.get(2), originCards.get(4), originCards.get(8), originCards.get(7), originCards.get(5), originCards.get(6), originCards.get(3));
 		List<Integer> saveList = Lists.transform(cardList, new Function<Card, Integer>() {
