@@ -51,8 +51,6 @@ public class IARobot extends Thread {
 		
 		LoggerFactory.getLogger("IA").debug("Robot "+robot.getNumber()+" best hand is :"+StringUtils.join(bestCardOrder, ", "));
 		
-		
-		
 		if(shouldPowerDown()){
 			gameService.updatePowerDownState(gameId, robot.getNumber(), PowerDownState.PLANNED);
 		}
