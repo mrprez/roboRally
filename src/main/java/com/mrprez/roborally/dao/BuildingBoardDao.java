@@ -1,6 +1,5 @@
 package com.mrprez.roborally.dao;
 
-import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -12,7 +11,7 @@ public interface BuildingBoardDao {
 	
 	List<BuildingBoard> loadBuildingBoardList(String username) throws SQLException;
 
-	BuildingBoard loadBuildingBoard(Integer id) throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException;
+	BuildingBoard loadBuildingBoard(Integer id) throws Exception;
 
 	void updateBuildingBoard(BuildingBoard board) throws SQLException;
 

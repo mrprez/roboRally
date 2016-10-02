@@ -10,61 +10,76 @@ import com.google.gwt.http.client.UrlBuilder;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.Tree;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.mrprez.roborally.shared.BuildingBoardGwt;
 import com.mrprez.roborally.shared.GameGwt;
 
 public class Home implements EntryPoint {
 	private GameGwtServiceAsync gameGwtService = GWT.create(GameGwtService.class);
-	private Tree gameList = new Tree();
-	private UrlBuilder urlBuilder = Window.Location.createUrlBuilder();
+	private BoardGwtServiceAsync boardGwtService = GWT.create(BoardGwtService.class);
+	private Grid grid = new Grid(1, 2);
+	private UrlBuilder gameUrlBuilder = Window.Location.createUrlBuilder().setPath("roboRally/Game.html");
+	private UrlBuilder editUrlBuilder = Window.Location.createUrlBuilder().setPath("roboRally/Edit.html");
 	
 	
 	public void onModuleLoad() {
-		urlBuilder.setPath("roboRally/Game.html");
-		VerticalPanel verticalPanel = new VerticalPanel();
-		RootPanel.get().add(verticalPanel);
-		verticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		verticalPanel.setWidth("100%");
-		verticalPanel.add(gameList);
+		RootPanel.get().add(grid);
+		
+		grid.setWidget(0, 0, buildNewGameButton());
 		gameGwtService.getGameList(new AbstractAsyncCallback<List<GameGwt>>() {
 			@Override
 			public void onSuccess(List<GameGwt> result) {
+				int rowNb = 1;
 				for(GameGwt game : result){
-					urlBuilder.setParameter("gameId", String.valueOf(game.getId()));
-					gameList.add(new Anchor(game.getName(), urlBuilder.buildString()));
+					while(grid.getRowCount() <= rowNb){
+						grid.insertRow(grid.getRowCount());
+					}
+					gameUrlBuilder.setParameter("gameId", String.valueOf(game.getId()));
+					grid.setWidget(rowNb++, 0, new Anchor(game.getName(), gameUrlBuilder.buildString()));
 				}
 			}
 		});
 		
-		final DialogBox newGameDialogBox = new NewGameDialogBox();
-		
+		grid.setWidget(0, 1, buildNewBoardButton());
+		boardGwtService.getBoardList(new AbstractAsyncCallback<List<BuildingBoardGwt>>() {
+			@Override
+			public void onSuccess(List<BuildingBoardGwt> result) {
+				int rowNb = 1;
+				for(BuildingBoardGwt buildingBoard : result){
+					while(grid.getRowCount() <= rowNb){
+						grid.insertRow(grid.getRowCount());
+					}
+					editUrlBuilder.setParameter("boardId", String.valueOf(buildingBoard.getId()));
+					grid.setWidget(rowNb++, 1, new Anchor(buildingBoard.getName(), editUrlBuilder.buildString()));
+				}
+			}
+		});
+	}
+	
+	
+	private Button buildNewGameButton(){
 		Button newGameButton = new Button("Nouvelle partie");
 		newGameButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				newGameDialogBox.center();
+				new NewBoardDialogBox().center();
 			}
 		});
-		verticalPanel.add(newGameButton);
-		
-		final DialogBox newBoardDialogBox = new NewBoardDialogBox();
-		
+		return newGameButton;
+	}
+	
+	
+	private Button buildNewBoardButton(){
 		Button newBoardButton = new Button("Créer un nouveau plateau");
 		newBoardButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				newBoardDialogBox.center();
+				new NewBoardDialogBox().center();
 			}
 		});
-		verticalPanel.add(newBoardButton);
-		
+		return newBoardButton;
 	}
-	
-	
 	
 	
 }

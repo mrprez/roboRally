@@ -16,7 +16,7 @@ public class BuildingBoard extends Board {
 	private String username;
 	
 	
-	public BuildingBoard(String name, String username, int sizeX, int sizeY){
+	public BuildingBoard(String name, String username, Integer sizeX, Integer sizeY){
 		super();
 		this.name = name;
 		this.username = username;

@@ -176,6 +176,7 @@
 						<module>com.mrprez.roborally.Register</module>
 						<module>com.mrprez.roborally.Home</module>
 						<module>com.mrprez.roborally.Game</module>
+						<module>com.mrprez.roborally.Edit</module>
 					</modules>
 				</configuration>
 			</plugin>

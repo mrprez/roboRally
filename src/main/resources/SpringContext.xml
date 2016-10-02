@@ -106,6 +106,7 @@
 	</bean>
 	<bean id="boardGwtService" class="com.mrprez.roborally.server.BoardGwtServiceImpl" scope="request">
 		<property name="boardService" ref="boardService"/>
+		<property name="dozerMapper" ref="gwtDozerMapper"/>
 	</bean>
 	
 

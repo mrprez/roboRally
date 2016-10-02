@@ -47,7 +47,7 @@ public class Game implements EntryPoint {
 			public void onSuccess(GameGwt loadedGame) {
 				boardPanel.init(loadedGame);
 				if(loadedGame.getState().equals("INITIALIZATION")){
-					initIntializingGmae();
+					initIntializingGame();
 				}else if(loadedGame.getState().equals("ONGOING")){
 					initOngoingGame(loadedGame);
 				}
@@ -80,7 +80,7 @@ public class Game implements EntryPoint {
 	}
 	
 	
-	private void initIntializingGmae(){
+	private void initIntializingGame(){
 		eastPanel.add(new Label("Partie en cours d'initialisation"));
 		boardPanel.disable();
 	}

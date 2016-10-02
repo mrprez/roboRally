@@ -7,20 +7,21 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.mrprez.roborally.shared.BuildingBoardGwt;
-import com.mrprez.roborally.shared.GameGwt;
 
 public class Edit implements EntryPoint {
 	private BoardGwtServiceAsync boardGwtService = GWT.create(BoardGwtService.class);
 	private int boardId;
-	private Grid grid = new Grid();
+	private DockLayoutPanel dockLayoutPanel;
+	private Grid grid;
 	
 
 	@Override
 	public void onModuleLoad() {
 		boardId = Integer.parseInt(Window.Location.getParameter("boardId"));
-		DockLayoutPanel dockLayoutPanel = new DockLayoutPanel(Unit.PX);
-		dockLayoutPanel.add(grid);
+		dockLayoutPanel = new DockLayoutPanel(Unit.PX);
+		RootPanel.get().add(dockLayoutPanel);
 		boardGwtService.loadBuildingBoard(boardId, new AbstractAsyncCallback<BuildingBoardGwt>() {
 			@Override
 			public void onSuccess(BuildingBoardGwt result) {
@@ -28,11 +29,12 @@ public class Edit implements EntryPoint {
 			}
 		});
 		
-		
 	}
 	
 	
 	private void initGrid(BuildingBoardGwt buildingBoard){
+		grid = new Grid(buildingBoard.getSizeY(), buildingBoard.getSizeX());
+		dockLayoutPanel.add(grid);
 		for(int y=0; y<buildingBoard.getSizeY(); y++){
 			for(int x=0; x<buildingBoard.getSizeX(); x++){
 				grid.setWidget(y, x, new Image(buildingBoard.getSquare(x, y).getImageName()));

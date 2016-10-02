@@ -52,6 +52,10 @@
 		<url-pattern>/Home/boardGwtService</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
+		<servlet-name>boardServlet</servlet-name>
+		<url-pattern>/Edit/boardGwtService</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
 		<servlet-name>gameServlet</servlet-name>
 		<url-pattern>/Game/gameGwtService</url-pattern>
 	</servlet-mapping>

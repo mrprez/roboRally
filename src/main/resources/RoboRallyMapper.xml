@@ -32,6 +32,15 @@
 			<result property="y" column="TARGET_Y"/>
 		</collection>
 	</resultMap>
+	<resultMap id="buildingBoard" type="com.mrprez.roborally.model.board.BuildingBoard">
+		<constructor>
+			<arg column="NAME" javaType="String"/>
+			<arg column="OWNER" javaType="String"/>
+			<arg column="SIZE_X" javaType="int"/>
+			<arg column="SIZE_Y" javaType="int"/>
+		</constructor>
+		<id property="id" column="ID" />
+	</resultMap>
 	<resultMap id="square" type="com.mrprez.roborally.dto.SquareDto">
 		<result property="x" column="X" />
 		<result property="y" column="Y" />
@@ -169,6 +178,16 @@
 			<if test="gameId!=null">GAME_ID=#{gameId}</if>
 		</where>
 	</select>
+	<select id="selectUserBuildingBoards" resultMap="buildingBoard">
+		select ID,NAME,OWNER,SIZE_X,SIZE_Y from BUILDING_BOARD
+		join BOARD on BUILDING_BOARD.BOARD_ID=BOARD.ID
+		where OWNER=#{username}
+	</select>
+	<select id="selectBuildingBoard" resultMap="buildingBoard">
+		select ID,NAME,OWNER,SIZE_X,SIZE_Y from BUILDING_BOARD
+		join BOARD on BUILDING_BOARD.BOARD_ID=BOARD.ID
+		where ID=#{boardId}
+	</select>
 	
 	<insert id="insertUser">
 		insert into ACCOUNT (USERNAME, E_MAIL, PASSWORD) values (#{user.username}, #{user.eMail}, #{password})
@@ -180,7 +199,7 @@
 		insert into BOARD (TYPE, SIZE_X, SIZE_Y) values ('Building', #{sizeX}, #{sizeY})
 	</insert>
 	<insert id="insertBuildingBoardOwner">
-		insert into BUILDING_BOARD (BOARD_ID, OWNER) values (#{id}, #{username})
+		insert into BUILDING_BOARD (BOARD_ID, NAME, OWNER) values (#{id}, #{name}, #{username})
 	</insert>
 	<insert id="insertSquare">
 		insert into SQUARE (BOARD_ID, X, Y, CLASS, ARGS, WALL_UP, WALL_DOWN, WALL_LEFT, WALL_RIGHT)

@@ -1,5 +1,7 @@
 package com.mrprez.roborally.client;
 
+import java.util.List;
+
 import javax.annotation.security.RolesAllowed;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -14,5 +16,7 @@ public interface BoardGwtService extends RemoteService {
 	int createNewBoard(String name, int sizeX, int sizeY) throws Exception;
 	
 	BuildingBoardGwt loadBuildingBoard(int boardId) throws Exception;
+
+	List<BuildingBoardGwt> getBoardList() throws Exception;
 
 }
