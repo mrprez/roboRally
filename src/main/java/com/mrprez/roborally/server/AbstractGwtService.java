@@ -3,6 +3,7 @@ package com.mrprez.roborally.server;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -23,7 +24,15 @@ public class AbstractGwtService extends RemoteServiceServlet {
 		if(securityCheck(rpcRequest)){
 			WebApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
 			applicationContext.getAutowireCapableBeanFactory().autowireBeanProperties(this, Autowire.BY_TYPE.value(), true);
-			return super.processCall(rpcRequest);
+			try{
+				return super.processCall(rpcRequest);
+			}catch (Error error) {
+				LoggerFactory.getLogger("technical").error("Error in RPC service", error);
+				throw error;
+			}catch (SerializationException se) {
+				LoggerFactory.getLogger("technical").error("SerializationException in RPC service", se);
+				throw se;
+			}
 		}else{
 			rpcRequest.getSerializationPolicy().validateSerialize(AuthenticationException.class);
 			return RPC.encodeResponseForFailedRequest(rpcRequest, new AuthenticationException());
