@@ -13,10 +13,9 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.UIObject;
-import com.mrprez.roborally.client.AbstractAsyncCallback;
-import com.mrprez.roborally.client.CardCanvasFactory;
-import com.mrprez.roborally.client.GameGwtService;
-import com.mrprez.roborally.client.GameGwtServiceAsync;
+import com.mrprez.roborally.client.service.AbstractAsyncCallback;
+import com.mrprez.roborally.client.service.GameGwtService;
+import com.mrprez.roborally.client.service.GameGwtServiceAsync;
 import com.mrprez.roborally.shared.RobotGwt;
 
 public class HandCardsPanel extends FlexTable {

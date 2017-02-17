@@ -193,6 +193,10 @@
 							    <groupId>org.hsqldb</groupId>
 							    <artifactId>hsqldb</artifactId>
 							</dependency>
+							<dependency>
+								<groupId>javax.mail</groupId>
+								<artifactId>mail</artifactId>
+							</dependency>
 						</dependencies>
 					</container>
 					<configuration>
@@ -204,6 +208,19 @@
 								cargo.datasource.username=admin|
 								cargo.datasource.password=hlttclm
 							</cargo.datasource.datasource.hsqldb>
+							<cargo.resource.resourceMail>
+								cargo.resource.name=mail/SenderSession|
+								cargo.resource.mail.debug=true|
+								cargo.resource.type=javax.mail.Session|
+								cargo.resource.mail.transport.protocol=smtp|
+								cargo.resource.mail.smtp.host=smtp.gmail.com|
+								cargo.resource.mail.smtp.port=465|
+								cargo.resource.mail.smtp.user=gencross.mrprez@gmail.com|
+								cargo.resource.password=Sa2gle2m.|
+								cargo.resource.mail.smtp.socketFactory.class=javax.net.ssl.SSLSocketFactory|
+            					cargo.resource.mail.smtp.starttls.enable=true|
+            					cargo.resource.mail.smtp.auth=true
+							</cargo.resource.resourceMail>
 						</properties>
 					</configuration>
 				</configuration>

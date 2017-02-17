@@ -1,4 +1,4 @@
-package com.mrprez.roborally.client;
+package com.mrprez.roborally.client.game;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +16,8 @@ import com.google.gwt.event.dom.client.DropHandler;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
+import com.mrprez.roborally.client.ImageLoader;
+import com.mrprez.roborally.client.service.ImageLoaderCallback;
 import com.mrprez.roborally.shared.CardGwt;
 
 public class CardCanvasFactory implements IsSerializable {

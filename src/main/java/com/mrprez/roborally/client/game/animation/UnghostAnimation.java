@@ -1,4 +1,4 @@
-package com.mrprez.roborally.client.animation;
+package com.mrprez.roborally.client.game.animation;
 
 public class UnghostAnimation extends MoveAnimation {
 	

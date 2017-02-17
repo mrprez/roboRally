@@ -13,10 +13,12 @@
   <!-- Other module inherits                                      -->
 
   <!-- Specify the app entry point class.                         -->
-  <entry-point class='com.mrprez.roborally.client.Home' />
+  <entry-point class='com.mrprez.roborally.client.home.Home' />
 
   <!-- Specify the paths for translatable code                    -->
   <source path='client' />
+  <source path='client/service' />
+  <source path='client/home' />
   <source path='shared' />
 
 </module>

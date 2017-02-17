@@ -1,7 +1,7 @@
 package com.mrprez.roborally.server;
 
 import com.mrprez.roborally.bs.UserService;
-import com.mrprez.roborally.client.AuthenticationGwtService;
+import com.mrprez.roborally.client.service.AuthenticationGwtService;
 import com.mrprez.roborally.model.User;
 import com.mrprez.roborally.shared.UserGwt;
 

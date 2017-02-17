@@ -6,7 +6,7 @@ import java.util.List;
 import org.dozer.DozerBeanMapper;
 
 import com.mrprez.roborally.bs.BoardService;
-import com.mrprez.roborally.client.BoardGwtService;
+import com.mrprez.roborally.client.service.BoardGwtService;
 import com.mrprez.roborally.model.Direction;
 import com.mrprez.roborally.model.Square;
 import com.mrprez.roborally.model.board.BuildingBoard;

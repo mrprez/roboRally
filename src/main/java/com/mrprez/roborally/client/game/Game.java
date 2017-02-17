@@ -1,4 +1,4 @@
-package com.mrprez.roborally.client;
+package com.mrprez.roborally.client.game;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -9,10 +9,9 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
-import com.mrprez.roborally.client.game.AdminPanel;
-import com.mrprez.roborally.client.game.AnimationPlayerPanel;
-import com.mrprez.roborally.client.game.BoardPanel;
-import com.mrprez.roborally.client.game.HandCardsPanel;
+import com.mrprez.roborally.client.service.AbstractAsyncCallback;
+import com.mrprez.roborally.client.service.GameGwtService;
+import com.mrprez.roborally.client.service.GameGwtServiceAsync;
 import com.mrprez.roborally.shared.GameGwt;
 import com.mrprez.roborally.shared.NewRoundEvent;
 import com.mrprez.roborally.shared.RefreshEvent;

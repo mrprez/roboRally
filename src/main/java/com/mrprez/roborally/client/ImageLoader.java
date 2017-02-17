@@ -8,6 +8,7 @@ import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.mrprez.roborally.client.service.ImageLoaderCallback;
 
 public class ImageLoader {
 	private static ImageLoader instance = new ImageLoader();

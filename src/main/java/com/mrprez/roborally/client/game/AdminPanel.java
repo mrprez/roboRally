@@ -13,9 +13,9 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.mrprez.roborally.client.AbstractAsyncCallback;
-import com.mrprez.roborally.client.GameGwtService;
-import com.mrprez.roborally.client.GameGwtServiceAsync;
+import com.mrprez.roborally.client.service.AbstractAsyncCallback;
+import com.mrprez.roborally.client.service.GameGwtService;
+import com.mrprez.roborally.client.service.GameGwtServiceAsync;
 import com.mrprez.roborally.shared.GameGwt;
 import com.mrprez.roborally.shared.RobotGwt;
 

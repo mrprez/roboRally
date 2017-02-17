@@ -10,7 +10,7 @@ import javax.mail.internet.AddressException;
 import org.dozer.DozerBeanMapper;
 
 import com.mrprez.roborally.bs.GameService;
-import com.mrprez.roborally.client.GameGwtService;
+import com.mrprez.roborally.client.service.GameGwtService;
 import com.mrprez.roborally.model.Card;
 import com.mrprez.roborally.model.Direction;
 import com.mrprez.roborally.model.Game;

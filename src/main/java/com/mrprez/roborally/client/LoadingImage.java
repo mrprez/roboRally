@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Image;
+import com.mrprez.roborally.client.service.ImageLoaderCallback;
 
 public class LoadingImage {
 	private Image image;

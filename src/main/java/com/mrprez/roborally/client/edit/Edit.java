@@ -1,4 +1,4 @@
-package com.mrprez.roborally.client;
+package com.mrprez.roborally.client.edit;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -8,6 +8,9 @@ import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.mrprez.roborally.client.service.AbstractAsyncCallback;
+import com.mrprez.roborally.client.service.BoardGwtService;
+import com.mrprez.roborally.client.service.BoardGwtServiceAsync;
 import com.mrprez.roborally.shared.BuildingBoardGwt;
 
 public class Edit implements EntryPoint {

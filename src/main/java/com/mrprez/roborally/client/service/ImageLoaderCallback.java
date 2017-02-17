@@ -1,4 +1,4 @@
-package com.mrprez.roborally.client;
+package com.mrprez.roborally.client.service;
 
 import com.google.gwt.user.client.ui.Image;
 

@@ -53,7 +53,7 @@ public class GameDaoImpl extends AbstractDao implements GameDao {
 		game.setOwnername(gameBoardDto.getOwnername());
 		game.setState(gameBoardDto.getGameState());
 		game.setBoard(gameBoard);
-				
+
 		// Squares
 		loadSquares(gameBoard);
 		

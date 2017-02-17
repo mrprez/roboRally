@@ -1,4 +1,4 @@
-package com.mrprez.roborally.client.animation;
+package com.mrprez.roborally.client.game.animation;
 
 import java.util.ArrayList;
 import java.util.List;
