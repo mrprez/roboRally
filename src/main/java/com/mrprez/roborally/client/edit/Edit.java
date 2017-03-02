@@ -7,7 +7,9 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.mrprez.roborally.client.service.AbstractAsyncCallback;
 import com.mrprez.roborally.client.service.BoardGwtService;
 import com.mrprez.roborally.client.service.BoardGwtServiceAsync;
@@ -24,7 +26,8 @@ public class Edit implements EntryPoint {
 	public void onModuleLoad() {
 		boardId = Integer.parseInt(Window.Location.getParameter("boardId"));
 		dockLayoutPanel = new DockLayoutPanel(Unit.PX);
-		RootPanel.get().add(dockLayoutPanel);
+		RootLayoutPanel.get().add(dockLayoutPanel);
+		dockLayoutPanel.addEast(new Label("East"), 300);
 		boardGwtService.loadBuildingBoard(boardId, new AbstractAsyncCallback<BuildingBoardGwt>() {
 			@Override
 			public void onSuccess(BuildingBoardGwt result) {
@@ -37,7 +40,9 @@ public class Edit implements EntryPoint {
 	
 	private void initGrid(BuildingBoardGwt buildingBoard){
 		grid = new Grid(buildingBoard.getSizeY(), buildingBoard.getSizeX());
-		dockLayoutPanel.add(grid);
+		grid.addStyleName("editTable");
+		ScrollPanel scrollPanel = new ScrollPanel(grid);
+		dockLayoutPanel.add(scrollPanel);
 		for(int y=0; y<buildingBoard.getSizeY(); y++){
 			for(int x=0; x<buildingBoard.getSizeX(); x++){
 				grid.setWidget(y, x, new Image(buildingBoard.getSquare(x, y).getImageName()));
@@ -45,6 +50,4 @@ public class Edit implements EntryPoint {
 		}
 	}
 	
-	
-
 }

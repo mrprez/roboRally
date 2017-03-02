@@ -12,11 +12,11 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.mrprez.roborally.client.service.BoardGwtServiceAsync;
-import com.mrprez.roborally.client.service.GameGwtServiceAsync;
 import com.mrprez.roborally.client.service.AbstractAsyncCallback;
 import com.mrprez.roborally.client.service.BoardGwtService;
+import com.mrprez.roborally.client.service.BoardGwtServiceAsync;
 import com.mrprez.roborally.client.service.GameGwtService;
+import com.mrprez.roborally.client.service.GameGwtServiceAsync;
 import com.mrprez.roborally.shared.BuildingBoardGwt;
 import com.mrprez.roborally.shared.GameGwt;
 
@@ -68,7 +68,7 @@ public class Home implements EntryPoint {
 		newGameButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				new NewBoardDialogBox().center();
+				new NewGameDialogBox().center();
 			}
 		});
 		return newGameButton;

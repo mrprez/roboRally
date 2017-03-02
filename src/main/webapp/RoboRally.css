@@ -172,3 +172,17 @@ h1 {
 	font-size: 40px;
 	border: solid 1px green; 
 }
+
+.editTable{
+	border-spacing: 0px;
+	border-collapse: collapse;
+}
+
+.editTable td{
+	padding: 0;
+	border: none;
+}
+
+.editTable td img{
+	display: block;
+}
