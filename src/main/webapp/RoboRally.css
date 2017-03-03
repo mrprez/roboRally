@@ -186,3 +186,7 @@ h1 {
 .editTable td img{
 	display: block;
 }
+
+.elementPanel img {
+	margin: 5px;
+}
