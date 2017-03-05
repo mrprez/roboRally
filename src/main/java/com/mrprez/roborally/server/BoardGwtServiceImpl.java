@@ -84,6 +84,7 @@ public class BoardGwtServiceImpl extends AbstractGwtService implements BoardGwtS
 		UserGwt user = (UserGwt) getThreadLocalRequest().getSession().getAttribute(UserGwt.KEY);
 		BuildingBoard buildingBoard = new BuildingBoard(null, user.getUsername(), buildingBoardGwt.getSizeX(), buildingBoardGwt.getSizeY());
 		
+		boardService.updateBuildingBoard(buildingBoard);
 	}
 	
 	public BoardService getBoardService() {

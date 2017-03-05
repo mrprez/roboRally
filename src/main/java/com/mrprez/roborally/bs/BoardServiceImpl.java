@@ -60,6 +60,15 @@ public class BoardServiceImpl implements BoardService {
 				new ConveyorBelt(0, 0, null, Direction.LEFT));
 	}
 
+	@Override
+	public void updateBuildingBoard(BuildingBoard buildingBoard) throws Exception {
+		BuildingBoard existingBuildingBoard = buildingBoardDao.loadBuildingBoard(buildingBoard.getId());
+		if( ! existingBuildingBoard.getUsername().equals(buildingBoard.getUsername())){
+			throw new IllegalAccessError("User "+buildingBoard.getUsername()+" cannot access to building board "+buildingBoard.getId());
+		}
+		buildingBoardDao.updateBuildingBoard(existingBuildingBoard);
+	}
+
 
 
 }

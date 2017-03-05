@@ -14,5 +14,7 @@ public interface BoardService {
 	List<BuildingBoard> getUserBuildingBoards(String username) throws Exception;
 
 	List<Square> getAvailableSquareList();
+
+	void updateBuildingBoard(BuildingBoard buildingBoard) throws Exception;
 	
 }
