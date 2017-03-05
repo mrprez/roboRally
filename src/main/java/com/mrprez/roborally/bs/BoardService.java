@@ -2,6 +2,7 @@ package com.mrprez.roborally.bs;
 
 import java.util.List;
 
+import com.mrprez.roborally.model.Square;
 import com.mrprez.roborally.model.board.BuildingBoard;
 
 public interface BoardService {
@@ -11,5 +12,7 @@ public interface BoardService {
 	BuildingBoard loadBuildingBoard(int boardId, String username) throws Exception;
 
 	List<BuildingBoard> getUserBuildingBoards(String username) throws Exception;
+
+	List<Square> getAvailableSquareList();
 	
 }

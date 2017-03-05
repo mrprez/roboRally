@@ -190,3 +190,16 @@ h1 {
 .elementPanel img {
 	margin: 5px;
 }
+
+.editTable .dropping {
+	opacity: 0.5;
+}
+
+.editTable .targetImage {
+	position: absolute;
+	top: 0;
+}
+
+.editTable .squareDiv {
+	position: relative;
+}

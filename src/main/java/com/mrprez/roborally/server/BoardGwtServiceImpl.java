@@ -67,6 +67,24 @@ public class BoardGwtServiceImpl extends AbstractGwtService implements BoardGwtS
 		return boardGwt;
 	}
 
+
+	@Override
+	public List<SquareGwt> getAvailableSquareList() {
+		List<SquareGwt> result = new ArrayList<SquareGwt>();
+		for(Square square : boardService.getAvailableSquareList()) {
+			SquareGwt squareGwt = new SquareGwt();
+			squareGwt.setImageName(square.getImageName());
+			result.add(squareGwt);
+		}
+		return result;
+	}
+
+	@Override
+	public void saveBuildingBoard(BuildingBoardGwt buildingBoardGwt) throws Exception {
+		UserGwt user = (UserGwt) getThreadLocalRequest().getSession().getAttribute(UserGwt.KEY);
+		BuildingBoard buildingBoard = new BuildingBoard(null, user.getUsername(), buildingBoardGwt.getSizeX(), buildingBoardGwt.getSizeY());
+		
+	}
 	
 	public BoardService getBoardService() {
 		return boardService;

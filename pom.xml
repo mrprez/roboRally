@@ -172,6 +172,7 @@
 					documentation at codehaus.org -->
 				<configuration>
 					<modules>
+						<module>com.mrprez.roborally.Common</module>
 						<module>com.mrprez.roborally.Login</module>
 						<module>com.mrprez.roborally.Register</module>
 						<module>com.mrprez.roborally.Home</module>

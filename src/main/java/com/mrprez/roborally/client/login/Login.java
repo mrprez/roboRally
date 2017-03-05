@@ -35,6 +35,7 @@ public class Login implements EntryPoint {
 		errorLabel.setVisible(false);
 		verticalPanel.add(usernameLabel);
 		verticalPanel.add(usernameTextBox);
+		usernameTextBox.setFocus(true);
 		verticalPanel.add(passwordLabel);
 		verticalPanel.add(passwordTextBox);
 		verticalPanel.add(validateButton);

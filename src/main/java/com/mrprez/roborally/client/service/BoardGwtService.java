@@ -8,6 +8,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.mrprez.roborally.model.User;
 import com.mrprez.roborally.shared.BuildingBoardGwt;
+import com.mrprez.roborally.shared.SquareGwt;
 
 @RolesAllowed(User.USER_ROLE)
 @RemoteServiceRelativePath("boardGwtService")
@@ -18,5 +19,8 @@ public interface BoardGwtService extends RemoteService {
 	BuildingBoardGwt loadBuildingBoard(int boardId) throws Exception;
 
 	List<BuildingBoardGwt> getBoardList() throws Exception;
-
+	
+	List<SquareGwt> getAvailableSquareList();
+	
+	void saveBuildingBoard(BuildingBoardGwt buildingBoardGwt) throws Exception;
 }

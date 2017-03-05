@@ -11,8 +11,16 @@ public class SquareGwt implements IsSerializable {
 	private boolean wallRight;
 
 	
-	public String getImageName() {
+	public String getImageUrl() {
 		return "img/square/"+imageName+".png";
+	}
+	
+	public void useUrl(String url) {
+		imageName = url.substring(url.indexOf("img/square/")+11, url.indexOf(".png"));
+	}
+	
+	public String getImageName() {
+		return imageName;
 	}
 
 	public void setImageName(String imageName) {

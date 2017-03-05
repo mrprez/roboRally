@@ -1,10 +1,17 @@
 package com.mrprez.roborally.bs;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 import com.mrprez.roborally.dao.BuildingBoardDao;
+import com.mrprez.roborally.model.Direction;
+import com.mrprez.roborally.model.Square;
 import com.mrprez.roborally.model.board.BuildingBoard;
+import com.mrprez.roborally.model.square.ConveyorBelt;
+import com.mrprez.roborally.model.square.EmptySquare;
+import com.mrprez.roborally.model.square.HoleSquare;
+import com.mrprez.roborally.model.square.RotationSquare;
 
 public class BoardServiceImpl implements BoardService {
 
@@ -38,6 +45,19 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public List<BuildingBoard> getUserBuildingBoards(String username) throws SQLException {
 		return buildingBoardDao.loadBuildingBoardList(username);
+	}
+
+	@Override
+	public List<Square> getAvailableSquareList() {
+		return Arrays.asList(
+				new EmptySquare(0, 0, null),
+				new HoleSquare(0, 0, null), 
+				new RotationSquare(0, 0, null, 1),
+				new RotationSquare(0, 0, null, -1),
+				new ConveyorBelt(0, 0, null, Direction.UP),
+				new ConveyorBelt(0, 0, null, Direction.RIGHT),
+				new ConveyorBelt(0, 0, null, Direction.DOWN),
+				new ConveyorBelt(0, 0, null, Direction.LEFT));
 	}
 
 

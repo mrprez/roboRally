@@ -80,7 +80,7 @@ public class BoardPanel extends AbsolutePanel {
 	
 	
 	private void loadSquare(final Context2d context2d, final SquareGwt square, final int x, final int y) {
-		ImageLoader.getInstance().loadImage(square.getImageName(), new ImageLoaderCallback() {
+		ImageLoader.getInstance().loadImage(square.getImageUrl(), new ImageLoaderCallback() {
 			@Override
 			public void onImageLoaded(Image image) {
 				squareImages[x][y] = image;
