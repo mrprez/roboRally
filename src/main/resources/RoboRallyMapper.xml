@@ -26,11 +26,12 @@
 		<result property="gameState" column="STATE" typeHandler="org.apache.ibatis.type.EnumTypeHandler" />
 		<result property="sizeX" column="SIZE_X" />
 		<result property="sizeY" column="SIZE_Y" />
-		<collection property="targetList" ofType="com.mrprez.roborally.dto.TargetDto">
-			<id column="TARGET_NB"/>
-			<result property="x" column="TARGET_X"/>
-			<result property="y" column="TARGET_Y"/>
-		</collection>
+		<collection property="targetList" resultMap="targetDto"/>
+	</resultMap>
+	<resultMap id="targetDto" type="com.mrprez.roborally.dto.TargetDto">
+		<id property="index" column="TARGET_NB"/>
+		<result property="x" column="TARGET_X"/>
+		<result property="y" column="TARGET_Y"/>
 	</resultMap>
 	<resultMap id="buildingBoard" type="com.mrprez.roborally.model.board.BuildingBoard">
 		<constructor>
@@ -188,6 +189,9 @@
 		join BOARD on BUILDING_BOARD.BOARD_ID=BOARD.ID
 		where ID=#{boardId}
 	</select>
+	<select id="selectBoardTargetList" resultMap="targetDto">
+		select TARGET_NB, X, Y from TARGET where BOARD_ID=#{boardId} order by TARGET_NB asc
+	</select>
 	
 	<insert id="insertUser">
 		insert into ACCOUNT (USERNAME, E_MAIL, PASSWORD) values (#{user.username}, #{user.eMail}, #{password})
@@ -260,8 +264,15 @@
 	<update id="updateRobotHasPlayed">
 		update ROBOT set HAS_PLAYED=#{hasPlayed} where NUMBER=#{robotNb} and GAME_ID=#{gameId}
 	</update>
+	<update id="updateSquare">
+		update SQUARE set CLASS=#{clazz}, ARGS=#{args}, WALL_UP=#{wallUp}, WALL_DOWN=#{wallDown}, WALL_LEFT=#{wallLeft}, WALL_RIGHT=#{wallRight}
+			where BOARD_ID=#{boardId} and X=#{x} and Y=#{y}
+	</update>
 	
 	<delete id="deleteInvitation">
 		delete from INVITATION where E_MAIL=#{eMail} and GAME_ID=#{gameId}
+	</delete>
+	<delete id="deleteTargets">
+		delete from TARGET where BOARD_ID=#{boardId}
 	</delete>
 </mapper>

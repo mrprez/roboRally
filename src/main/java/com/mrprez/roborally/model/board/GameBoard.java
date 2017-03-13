@@ -1,15 +1,11 @@
 package com.mrprez.roborally.model.board;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.mrprez.roborally.model.Square;
 
 public class GameBoard extends Board {
 	
-	protected List<Square> targetSquares = new ArrayList<Square>();
-
 	
+
 	public GameBoard(BuildingBoard buildingBoard){
 		super();
 		sizeX = buildingBoard.getSizeX();
@@ -29,15 +25,6 @@ public class GameBoard extends Board {
 		setSizeX(sizeX);
 		setSizeY(sizeY);
 		squares = new Square[sizeX][sizeY];
-	}
-
-	
-	public List<Square> getTargetSquares() {
-		return targetSquares;
-	}
-
-	public Square getStartSquare() {
-		return targetSquares.get(0);
 	}
 
 	

@@ -66,7 +66,7 @@ public class BoardServiceImpl implements BoardService {
 		if( ! existingBuildingBoard.getUsername().equals(buildingBoard.getUsername())){
 			throw new IllegalAccessError("User "+buildingBoard.getUsername()+" cannot access to building board "+buildingBoard.getId());
 		}
-		buildingBoardDao.updateBuildingBoard(existingBuildingBoard);
+		buildingBoardDao.updateBuildingBoard(buildingBoard);
 	}
 
 

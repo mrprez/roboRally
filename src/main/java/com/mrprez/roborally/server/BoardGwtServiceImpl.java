@@ -56,6 +56,8 @@ public class BoardGwtServiceImpl extends AbstractGwtService implements BoardGwtS
 				squareGwtTab[x][y] = new SquareGwt();
 				Square square = board.getSquare(x, y);
 				squareGwtTab[x][y].setImageName(square.getImageName());
+				squareGwtTab[x][y].setArgs(square.getArgs());
+				squareGwtTab[x][y].setType(square.getClass().getName());
 				squareGwtTab[x][y].setWallUp(square.getWall(Direction.UP));
 				squareGwtTab[x][y].setWallDown(square.getWall(Direction.DOWN));
 				squareGwtTab[x][y].setWallLeft(square.getWall(Direction.LEFT));
@@ -64,6 +66,14 @@ public class BoardGwtServiceImpl extends AbstractGwtService implements BoardGwtS
 		}
 		boardGwt.setSquares(squareGwtTab);
 		
+		int targetNumber = 0;
+		for (Square targetSquare : board.getTargetSquares()) {
+			if (targetSquare != null) {
+				squareGwtTab[targetSquare.getX()][targetSquare.getY()].setTargetNumber(targetNumber);
+			}
+			targetNumber++;
+		}
+
 		return boardGwt;
 	}
 
@@ -73,17 +83,31 @@ public class BoardGwtServiceImpl extends AbstractGwtService implements BoardGwtS
 		List<SquareGwt> result = new ArrayList<SquareGwt>();
 		for(Square square : boardService.getAvailableSquareList()) {
 			SquareGwt squareGwt = new SquareGwt();
+			squareGwt.setType(square.getClass().getName());
+			squareGwt.setArgs(square.getArgs());
 			squareGwt.setImageName(square.getImageName());
 			result.add(squareGwt);
 		}
 		return result;
 	}
 
+
 	@Override
 	public void saveBuildingBoard(BuildingBoardGwt buildingBoardGwt) throws Exception {
 		UserGwt user = (UserGwt) getThreadLocalRequest().getSession().getAttribute(UserGwt.KEY);
 		BuildingBoard buildingBoard = new BuildingBoard(null, user.getUsername(), buildingBoardGwt.getSizeX(), buildingBoardGwt.getSizeY());
-		
+		for (int y = 0; y < buildingBoardGwt.getSizeY(); y++) {
+			for (int x = 0; x < buildingBoardGwt.getSizeX(); x++) {
+				SquareGwt squareGwt = buildingBoardGwt.getSquare(x, y);
+				buildingBoard.getSquareTab()[x][y] = Square.buildSquare(squareGwt.getType(), buildingBoard, x, y, squareGwt.getArgs());
+				if (squareGwt.getTargetNumber() != null) {
+					while (buildingBoard.getTargetSquares().size() <= squareGwt.getTargetNumber()) {
+						buildingBoard.getTargetSquares().add(null);
+					}
+					buildingBoard.getTargetSquares().set(squareGwt.getTargetNumber(), buildingBoard.getSquareTab()[x][y]);
+				}
+			}
+		}
 		boardService.updateBuildingBoard(buildingBoard);
 	}
 	

@@ -1,5 +1,7 @@
 package com.mrprez.roborally.model;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,6 +27,19 @@ public abstract class Square {
 	}
 	
 	
+	public static Square buildSquare(String className, Board board, Integer x, Integer y, String args, Direction... walls) throws IllegalArgumentException, InstantiationException, IllegalAccessException, InvocationTargetException, SecurityException, NoSuchMethodException, ClassNotFoundException {
+		@SuppressWarnings("unchecked")
+		Constructor<Square> squareConstructor = (Constructor<Square>) Class.forName(className).getConstructor(Integer.class, Integer.class, Board.class);
+		Square square = squareConstructor.newInstance(x, y, board);
+		square.setArgs(args);
+		for (Direction wallDirection : walls) {
+			if (wallDirection != null) {
+				square.setWall(wallDirection, true);
+			}
+		}
+		return square;
+	}
+
 	public abstract Action play();
 	protected abstract Square copy();
 	public abstract String getImageName();

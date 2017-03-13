@@ -4,6 +4,8 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class SquareGwt implements IsSerializable {
 	private String imageName;
+	private String type;
+	private String args;
 	private Integer targetNumber;
 	private boolean wallUp;
 	private boolean wallDown;
@@ -13,10 +15,6 @@ public class SquareGwt implements IsSerializable {
 	
 	public String getImageUrl() {
 		return "img/square/"+imageName+".png";
-	}
-	
-	public void useUrl(String url) {
-		imageName = url.substring(url.indexOf("img/square/")+11, url.indexOf(".png"));
 	}
 	
 	public String getImageName() {
@@ -75,6 +73,22 @@ public class SquareGwt implements IsSerializable {
 
 	public void setWallRight(boolean wallRight) {
 		this.wallRight = wallRight;
+	}
+
+	public String getArgs() {
+		return args;
+	}
+
+	public void setArgs(String args) {
+		this.args = args;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 	

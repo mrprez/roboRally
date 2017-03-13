@@ -1,14 +1,17 @@
 package com.mrprez.roborally.dao;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.collections.list.GrowthList;
 
 import com.mrprez.roborally.dto.SquareDto;
+import com.mrprez.roborally.dto.TargetDto;
 import com.mrprez.roborally.model.Direction;
 import com.mrprez.roborally.model.Square;
-import com.mrprez.roborally.model.board.Board;
 import com.mrprez.roborally.model.board.BuildingBoard;
 
 public class BuildingBoardDaoImpl extends AbstractDao implements BuildingBoardDao {
@@ -33,28 +36,51 @@ public class BuildingBoardDaoImpl extends AbstractDao implements BuildingBoardDa
 	public BuildingBoard loadBuildingBoard(Integer id) throws Exception {
 		BuildingBoard buildingBoard = getSession().selectOne("selectBuildingBoard", id);
 		loadSquares(buildingBoard);
+		loadTargets(buildingBoard);
 		return buildingBoard;
 	}
 
 	@Override
-	public void updateBuildingBoard(BuildingBoard board) throws SQLException {
-		// TODO Auto-generated method stub
-
+	public void updateBuildingBoard(BuildingBoard buildingBoard) throws SQLException {
+		for (int x = 0; x < buildingBoard.getSizeX(); x++) {
+			for (int y = 0; y < buildingBoard.getSizeY(); y++) {
+				getSession().update("updateSquare", new SquareDto(buildingBoard.getSquare(x, y)));
+			}
+		}
+		getSession().delete("deleteTargets", buildingBoard.getId());
+		int targetNb = 0;
+		for (Square target : buildingBoard.getTargetSquares()) {
+			if (target != null) {
+				Map<String, Object> params = new HashMap<String, Object>();
+				params.put("boardId", buildingBoard.getId());
+				params.put("targetNb", targetNb);
+				params.put("x", target.getX());
+				params.put("y", target.getY());
+				getSession().insert("insertTarget", params);
+			}
+			targetNb++;
+		}
 	}
 	
 	
 	private void loadSquares(BuildingBoard buildingBoard) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException{
 		List<SquareDto> squareDtoList = getSession().selectList("selectSquareList", buildingBoard.getId());
 		for(SquareDto squareDto : squareDtoList){
-			@SuppressWarnings("unchecked")
-			Constructor<Square> squareConstructor = (Constructor<Square>) Class.forName(squareDto.getClazz()).getConstructor(Integer.class, Integer.class, Board.class);;
-			Square square = squareConstructor.newInstance(squareDto.getX(), squareDto.getY(), buildingBoard);
-			square.setArgs(squareDto.getArgs());
-			square.setWall(Direction.DOWN, squareDto.isWallDown());
-			square.setWall(Direction.UP, squareDto.isWallUp());
-			square.setWall(Direction.LEFT, squareDto.isWallLeft());
-			square.setWall(Direction.RIGHT, squareDto.isWallRight());
+			Square square = Square.buildSquare(squareDto.getClazz(), buildingBoard, squareDto.getX(), squareDto.getY(), squareDto.getArgs(),
+					squareDto.isWallDown() ? Direction.DOWN : null,
+					squareDto.isWallUp() ? Direction.UP : null,
+					squareDto.isWallLeft() ? Direction.LEFT : null,
+					squareDto.isWallRight() ? Direction.RIGHT : null);
 			buildingBoard.addSquare(square);
+		}
+	}
+
+	private void loadTargets(BuildingBoard buildingBoard) {
+		List<TargetDto> targetDtoList = getSession().selectList("selectBoardTargetList", buildingBoard.getId());
+		@SuppressWarnings("unchecked")
+		List<Square> targetList = GrowthList.decorate(buildingBoard.getTargetSquares());
+		for (TargetDto targetDto : targetDtoList) {
+			targetList.add(targetDto.getIndex(), buildingBoard.getSquare(targetDto.getX(), targetDto.getY()));
 		}
 	}
 

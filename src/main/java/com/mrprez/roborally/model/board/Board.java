@@ -1,5 +1,8 @@
 package com.mrprez.roborally.model.board;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.mrprez.roborally.model.Square;
 
 public abstract class Board {
@@ -8,7 +11,7 @@ public abstract class Board {
 	protected int sizeX;
 	protected int sizeY;
 	protected Square[][] squares;
-	
+	protected List<Square> targetSquares = new ArrayList<Square>();
 	
 	
 	public Square getSquare(int x, int y){
@@ -46,6 +49,13 @@ public abstract class Board {
 		return squares;
 	}
 	
+	public List<Square> getTargetSquares() {
+		return targetSquares;
+	}
+
+	public Square getStartSquare() {
+		return targetSquares.get(0);
+	}
 	
 	
 	public void addSquare(Square square){
