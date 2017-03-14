@@ -184,6 +184,11 @@
 		join BOARD on BUILDING_BOARD.BOARD_ID=BOARD.ID
 		where OWNER=#{username}
 	</select>
+	<select id="selectValidUserBuildingBoards" resultMap="buildingBoard">
+		select ID,NAME,OWNER,SIZE_X,SIZE_Y from BUILDING_BOARD
+		join BOARD on BUILDING_BOARD.BOARD_ID=BOARD.ID
+		where OWNER=#{username} and VALID=TRUE
+	</select>
 	<select id="selectBuildingBoard" resultMap="buildingBoard">
 		select ID,NAME,OWNER,SIZE_X,SIZE_Y from BUILDING_BOARD
 		join BOARD on BUILDING_BOARD.BOARD_ID=BOARD.ID
@@ -263,6 +268,9 @@
 	</update>
 	<update id="updateRobotHasPlayed">
 		update ROBOT set HAS_PLAYED=#{hasPlayed} where NUMBER=#{robotNb} and GAME_ID=#{gameId}
+	</update>
+	<update id="updateBuildingBoardValidity">
+		update BUILDING_BOARD set VALID=#{valid} where BOARD_ID=#{id}
 	</update>
 	<update id="updateSquare">
 		update SQUARE set CLASS=#{clazz}, ARGS=#{args}, WALL_UP=#{wallUp}, WALL_DOWN=#{wallDown}, WALL_LEFT=#{wallLeft}, WALL_RIGHT=#{wallRight}

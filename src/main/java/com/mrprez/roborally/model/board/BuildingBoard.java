@@ -2,6 +2,8 @@ package com.mrprez.roborally.model.board;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.mrprez.roborally.model.Direction;
 import com.mrprez.roborally.model.Square;
@@ -14,6 +16,7 @@ public class BuildingBoard extends Board {
 	
 	private String name;
 	private String username;
+	private boolean valid;
 	
 	
 	public BuildingBoard(String name, String username, Integer sizeX, Integer sizeY){
@@ -30,6 +33,19 @@ public class BuildingBoard extends Board {
 		}
 	}
 	
+	public BuildingBoard(Integer id, String username, Integer sizeX, Integer sizeY) {
+		super();
+		setId(id);
+		this.username = username;
+		setSizeX(sizeX);
+		setSizeY(sizeY);
+		squares = new Square[sizeX][sizeY];
+		for (int x = 0; x < sizeX; x++) {
+			for (int y = 0; y < sizeY; y++) {
+				squares[x][y] = new EmptySquare(x, y, this);
+			}
+		}
+	}
 	
 	public static BuildingBoard buildRandomBoard(String name, int sizeX, int sizeY){
 		BuildingBoard board = new BuildingBoard(name, null, sizeX, sizeY);
@@ -77,6 +93,22 @@ public class BuildingBoard extends Board {
 		addSquare(square);
 	}
 	
+	public List<String> calculateValidity() {
+		List<String> errors = new ArrayList<String>();
+		if (targetSquares.isEmpty() || targetSquares.get(0) == null) {
+			errors.add("Vous n'avez pas de point de départ");
+		}
+		if (targetSquares.size() < 2) {
+			errors.add("Vous devez avoir au moins un objectif");
+		}
+		for (int targetIndex = 1; targetIndex < targetSquares.size(); targetIndex++) {
+			if (targetSquares.get(targetIndex) == null) {
+				errors.add("Objectif " + targetIndex + " manquant");
+			}
+		}
+		valid = errors.isEmpty();
+		return errors;
+	}
 	
 	public String getName() {
 		return name;
@@ -89,6 +121,9 @@ public class BuildingBoard extends Board {
 	}
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	public boolean isValid() {
+		return valid;
 	}
 
 

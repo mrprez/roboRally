@@ -14,6 +14,8 @@ import com.google.gwt.event.dom.client.DragStartHandler;
 import com.google.gwt.event.dom.client.DropEvent;
 import com.google.gwt.event.dom.client.DropHandler;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.http.client.UrlBuilder;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -76,6 +78,7 @@ public class ElementPanel extends StackLayoutPanel {
 
 	private FlowPanel buildCommandPanel() {
 		final FlowPanel commandPanel = new FlowPanel();
+
 		Button saveButton = new Button("Sauvegarder");
 		commandPanel.add(saveButton);
 		saveButton.addClickHandler(new ClickHandler() {
@@ -84,6 +87,18 @@ public class ElementPanel extends StackLayoutPanel {
 				handlerManager.fireEvent(new SaveBoardEvent());
 			}
 		});
+
+		Button homeButton = new Button("Accueil");
+		commandPanel.add(homeButton);
+		homeButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				UrlBuilder urlBuilder = Window.Location.createUrlBuilder();
+				urlBuilder.setPath("roboRally/Home.html");
+				Window.Location.assign(urlBuilder.buildString());
+			}
+		});
+
 		return commandPanel;
 	}
 

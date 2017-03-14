@@ -22,5 +22,7 @@ public interface BoardGwtService extends RemoteService {
 	
 	List<SquareGwt> getAvailableSquareList();
 	
-	void saveBuildingBoard(BuildingBoardGwt buildingBoardGwt) throws Exception;
+	List<String> validAndSaveBuildingBoard(BuildingBoardGwt buildingBoardGwt) throws Exception;
+
+	List<BuildingBoardGwt> listUserValidBuildingBoard() throws Exception;
 }

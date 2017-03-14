@@ -30,6 +30,7 @@ public class Home implements EntryPoint {
 	
 	public void onModuleLoad() {
 		RootPanel.get().add(grid);
+		grid.addStyleName("homeGrid");
 		
 		grid.setWidget(0, 0, buildNewGameButton());
 		gameGwtService.getGameList(new AbstractAsyncCallback<List<GameGwt>>() {
@@ -60,6 +61,8 @@ public class Home implements EntryPoint {
 				}
 			}
 		});
+
+		grid.getRowFormatter().addStyleName(0, "header");
 	}
 	
 	

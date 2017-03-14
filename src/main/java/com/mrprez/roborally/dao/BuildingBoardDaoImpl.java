@@ -42,6 +42,7 @@ public class BuildingBoardDaoImpl extends AbstractDao implements BuildingBoardDa
 
 	@Override
 	public void updateBuildingBoard(BuildingBoard buildingBoard) throws SQLException {
+		getSession().update("updateBuildingBoardValidity", buildingBoard);
 		for (int x = 0; x < buildingBoard.getSizeX(); x++) {
 			for (int y = 0; y < buildingBoard.getSizeY(); y++) {
 				getSession().update("updateSquare", new SquareDto(buildingBoard.getSquare(x, y)));
@@ -82,6 +83,11 @@ public class BuildingBoardDaoImpl extends AbstractDao implements BuildingBoardDa
 		for (TargetDto targetDto : targetDtoList) {
 			targetList.add(targetDto.getIndex(), buildingBoard.getSquare(targetDto.getX(), targetDto.getY()));
 		}
+	}
+
+	@Override
+	public List<BuildingBoard> listUserValidBuildingBoard(String username) {
+		return getSession().selectList("selectValidUserBuildingBoards", username);
 	}
 
 }

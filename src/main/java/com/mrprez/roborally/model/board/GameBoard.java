@@ -17,6 +17,10 @@ public class GameBoard extends Board {
 				squares[x][y] = buildingBoard.getSquare(x, y).copyForNewBoard(this);
 			}
 		}
+
+		for (Square target : buildingBoard.getTargetSquares()) {
+			targetSquares.add(getSquare(target.getX(), target.getY()));
+		}
 	}
 	
 	public GameBoard(Integer id, Integer sizeX, Integer sizeY){

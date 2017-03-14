@@ -26,6 +26,8 @@ public interface GameGwtService extends RemoteService {
 	
 	int createNewGame(String name, int sizeX, int sizeY, int aiNb, List<String> invitedPlayerEMails) throws Exception;
 	
+	int createNewGame(String name, Integer buildingBoardId, int aiNb, List<String> invitedPlayerEMails) throws Exception;
+
 	void playNewRound(Integer gameId) throws Exception;
 	
 	void savePowerDownState(Integer gameId, String powerDownState);

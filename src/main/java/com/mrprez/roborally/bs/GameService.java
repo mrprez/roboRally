@@ -25,6 +25,8 @@ public interface GameService {
 	
 	Game createNewGame(String name, String username, int sizeX, int sizeY, int aiNb, List<String> invitedPlayerEMails) throws AddressException, Exception;
 
+	Game createNewGame(String name, String username, Integer buildingBoardId, int aiNb, List<String> invitedPlayerEMails) throws Exception;
+
 	Round playRound(Integer gameId, String username) throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InterruptedException, ExecutionException;
 
 	void updatePowerDownState(Integer gameId, String username, PowerDownState valueOf);

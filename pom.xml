@@ -157,7 +157,7 @@
 		</dependency>
 
 	</dependencies>
-
+	
 	<build>
 		<!-- Output classes directly into the webapp, so that IDEs and "mvn process-classes" 
 			update them in DevMode -->
@@ -235,6 +235,24 @@
 						</properties>
 					</configuration>
 				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.6.0</version>
+				<executions>
+					<execution>
+						<id>hsqldb</id>
+						<goals>
+							<goal>java</goal>
+						</goals>
+						<configuration>
+							<mainClass>org.hsqldb.util.DatabaseManagerSwing</mainClass>
+							<classpathScope>compile</classpathScope>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			
 		</plugins>

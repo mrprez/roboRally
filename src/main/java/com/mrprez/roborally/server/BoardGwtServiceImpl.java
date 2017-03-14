@@ -93,9 +93,9 @@ public class BoardGwtServiceImpl extends AbstractGwtService implements BoardGwtS
 
 
 	@Override
-	public void saveBuildingBoard(BuildingBoardGwt buildingBoardGwt) throws Exception {
+	public List<String> validAndSaveBuildingBoard(BuildingBoardGwt buildingBoardGwt) throws Exception {
 		UserGwt user = (UserGwt) getThreadLocalRequest().getSession().getAttribute(UserGwt.KEY);
-		BuildingBoard buildingBoard = new BuildingBoard(null, user.getUsername(), buildingBoardGwt.getSizeX(), buildingBoardGwt.getSizeY());
+		BuildingBoard buildingBoard = new BuildingBoard(buildingBoardGwt.getId(), user.getUsername(), buildingBoardGwt.getSizeX(), buildingBoardGwt.getSizeY());
 		for (int y = 0; y < buildingBoardGwt.getSizeY(); y++) {
 			for (int x = 0; x < buildingBoardGwt.getSizeX(); x++) {
 				SquareGwt squareGwt = buildingBoardGwt.getSquare(x, y);
@@ -108,7 +108,23 @@ public class BoardGwtServiceImpl extends AbstractGwtService implements BoardGwtS
 				}
 			}
 		}
-		boardService.updateBuildingBoard(buildingBoard);
+		return boardService.validAndSaveBuildingBoard(buildingBoard);
+	}
+
+	@Override
+	public List<BuildingBoardGwt> listUserValidBuildingBoard() throws Exception {
+		UserGwt user = (UserGwt) getThreadLocalRequest().getSession().getAttribute(UserGwt.KEY);
+		List<BuildingBoard> buildingBoardList = boardService.listUserValidBuildingBoard(user.getUsername());
+		List<BuildingBoardGwt> result = new ArrayList<BuildingBoardGwt>(buildingBoardList.size());
+		for (BuildingBoard buildingBoard : buildingBoardList) {
+			BuildingBoardGwt buildingBoardGwt = new BuildingBoardGwt();
+			buildingBoardGwt.setId(buildingBoard.getId());
+			buildingBoardGwt.setName(buildingBoard.getName());
+			buildingBoardGwt.setSizeX(buildingBoard.getSizeX());
+			buildingBoardGwt.setSizeY(buildingBoard.getSizeY());
+			result.add(buildingBoardGwt);
+		}
+		return result;
 	}
 	
 	public BoardService getBoardService() {

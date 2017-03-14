@@ -15,4 +15,6 @@ public interface BuildingBoardDao {
 
 	void updateBuildingBoard(BuildingBoard board) throws SQLException;
 
+	List<BuildingBoard> listUserValidBuildingBoard(String username);
+
 }

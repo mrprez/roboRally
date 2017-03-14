@@ -117,6 +117,13 @@ public class GameGwtServiceImpl extends AbstractGwtService implements GameGwtSer
 	}
 
 	@Override
+	public int createNewGame(String name, Integer buildingBoardId, int aiNb, List<String> invitedPlayerEMails) throws Exception {
+		UserGwt user = (UserGwt) getThreadLocalRequest().getSession().getAttribute(UserGwt.KEY);
+		Game game = gameService.createNewGame(name, user.getUsername(), buildingBoardId, aiNb, invitedPlayerEMails);
+		return game.getId();
+	}
+
+	@Override
 	public void playNewRound(Integer gameId) throws IllegalArgumentException, SecurityException, InstantiationException, IllegalAccessException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InterruptedException, ExecutionException {
 		UserGwt user = (UserGwt) getThreadLocalRequest().getSession().getAttribute(UserGwt.KEY);
 		Round newRound = gameService.playRound(gameId, user.getUsername());

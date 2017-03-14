@@ -76,6 +76,7 @@
 	</bean>
 	<bean id="gameService" class="com.mrprez.roborally.bs.GameServiceImpl" scope="singleton">
 		<property name="gameDao" ref="gameDao"/>
+		<property name="buildingBoardDao" ref="buildingBoardDao"/>
 		<property name="userDao" ref="userDao"/>
 		<property name="mailResource" ref="mailResource"/>
 		<property name="pushEventServiceServlet" ref="pushEventServiceServlet"/>

@@ -1,5 +1,7 @@
 package com.mrprez.roborally.client.edit;
 
+import java.util.List;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
@@ -8,8 +10,10 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.mrprez.roborally.client.service.AbstractAsyncCallback;
 import com.mrprez.roborally.client.service.BoardGwtService;
 import com.mrprez.roborally.client.service.BoardGwtServiceAsync;
@@ -53,12 +57,21 @@ public class Edit implements EntryPoint, SaveBoardEvent.Handler, SetTargetEvent.
 	@Override
 	public void onEvent(SaveBoardEvent event) {
 		BuildingBoardGwt board = boardGrid.buildBuildingBoardGwt();
-		boardGwtService.saveBuildingBoard(board, new AbstractAsyncCallback<Void>() {
+		boardGwtService.validAndSaveBuildingBoard(board, new AbstractAsyncCallback<List<String>>() {
 			@Override
-			public void onSuccess(Void result) {
+			public void onSuccess(List<String> errors) {
 				final DialogBox dialogBox = new DialogBox(true);
 				dialogBox.setText("Sauvegarde réussie");
-				dialogBox.show();
+				if (errors.isEmpty()) {
+					dialogBox.add(new Label("Votre plateau est valide"));
+				} else {
+					VerticalPanel panel = new VerticalPanel();
+					for (String error : errors) {
+						panel.add(new Label(error));
+					}
+					dialogBox.add(panel);
+				}
+				dialogBox.center();
 			}
 		});
 	}

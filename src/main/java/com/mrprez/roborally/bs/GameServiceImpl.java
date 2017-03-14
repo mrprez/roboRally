@@ -10,6 +10,7 @@ import java.util.concurrent.ExecutionException;
 import javax.mail.internet.AddressException;
 
 import com.mrprez.roborally.ai.IARobot;
+import com.mrprez.roborally.dao.BuildingBoardDao;
 import com.mrprez.roborally.dao.GameDao;
 import com.mrprez.roborally.dao.MailResource;
 import com.mrprez.roborally.dao.UserDao;
@@ -30,6 +31,7 @@ public class GameServiceImpl implements GameService {
 	private GameDao gameDao;
 	private UserDao userDao;
 	private MailResource mailResource;
+	private BuildingBoardDao buildingBoardDao;
 	private PushEventServiceServlet pushEventServiceServlet;
 	
 	
@@ -135,6 +137,51 @@ public class GameServiceImpl implements GameService {
 			initGame(game);
 		}
 		
+		return game;
+	}
+
+	@Override
+	public Game createNewGame(String name, String username, Integer buildingBoardId, int aiNb, List<String> invitedPlayerEMails) throws Exception {
+		BuildingBoard buildingBoard = buildingBoardDao.loadBuildingBoard(buildingBoardId);
+		if (!username.equals(buildingBoard.getUsername())) {
+			throw new IllegalAccessError("Bad user");
+		}
+		
+		Game game = new Game();
+		game.setName(name);
+		game.setOwnername(username);
+		GameBoard board = new GameBoard(buildingBoard);
+		game.setBoard(board);
+
+		gameDao.insertNewGame(game);
+
+		Robot robot = game.addRobot();
+		robot.setUsername(username);
+		gameDao.saveRobot(robot, game.getId());
+		for (int i = 0; i < aiNb; i++) {
+			Robot aiRobot = game.addRobot();
+			gameDao.saveRobot(aiRobot, game.getId());
+		}
+		for (String invitedEMail : invitedPlayerEMails) {
+			User user = userDao.getUserByEMail(invitedEMail);
+			if (user != null) {
+				Robot invitedRobot = game.addRobot();
+				invitedRobot.setUsername(user.getUsername());
+				gameDao.saveRobot(invitedRobot, game.getId());
+				mailResource.send(invitedEMail, "Nouvelle partie de RobotRally", username + " vous a invité à jouer à la partie " + name);
+			} else {
+				Invitation invitation = Invitation.newInvitation(invitedEMail, game.getId());
+				userDao.saveInvitation(invitation);
+				mailResource.send(invitedEMail, "Invitation à RobotRally", username + " vous a invité à sur RobotRally en ligne."
+						+ " Pour valider votre inscription, cliquez sur le lien: <br/>"
+						+ " http://www.mrprez.fr/roboRally/Register.html?eMail=" + invitedEMail + "&token=" + invitation.getToken());
+			}
+		}
+
+		if (userDao.getInvitationsForGame(game.getId()).isEmpty()) {
+			initGame(game);
+		}
+
 		return game;
 	}
 	
@@ -243,6 +290,14 @@ public class GameServiceImpl implements GameService {
 
 	public void setPushEventServiceServlet(PushEventServiceServlet pushEventServiceServlet) {
 		this.pushEventServiceServlet = pushEventServiceServlet;
+	}
+
+	public BuildingBoardDao getBuildingBoardDao() {
+		return buildingBoardDao;
+	}
+
+	public void setBuildingBoardDao(BuildingBoardDao buildingBoardDao) {
+		this.buildingBoardDao = buildingBoardDao;
 	}
 	
 }
