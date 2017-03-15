@@ -212,6 +212,11 @@
 	top: 0;
 }
 
+.editTable .wallImage {
+	position: absolute;
+	top: 0;
+}
+
 .editTable .squareDiv {
 	position: relative;
 }

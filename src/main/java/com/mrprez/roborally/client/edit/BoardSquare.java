@@ -49,6 +49,11 @@ public class BoardSquare extends FlowPanel implements DropHandler, DragStartHand
 		if (event.getData("targetNb") != null && event.getData("targetNb").length() > 0) {
 			handlerManager.fireEvent(new SetTargetEvent(this, Integer.parseInt(event.getData("targetNb"))));
 		}
+		if (event.getData("wallImgUrl") != null && event.getData("wallImgUrl").length() > 0) {
+			Image wallImage = new Image(event.getData("wallImgUrl"));
+			wallImage.addStyleName("wallImage");
+			add(wallImage);
+		}
 		squareImage.removeStyleName("dropping");
 	}
 

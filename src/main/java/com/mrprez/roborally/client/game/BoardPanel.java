@@ -87,16 +87,16 @@ public class BoardPanel extends AbsolutePanel {
 				ImageElement imageEl = ImageElement.as(image.getElement());
 				context2d.drawImage(imageEl, x*97, y*97);
 				if(square.isWallUp()){
-					drawWall("img/WallUp.gif", context2d, x, y);
+					drawWall("img/HorizontalWall.gif", context2d, x * 97, y * 97);
 				}
 				if(square.isWallLeft()){
-					drawWall("img/WallLeft.gif", context2d, x, y);
+					drawWall("img/VerticalWall.gif", context2d, x * 97, y * 97);
 				}
 				if(square.isWallRight()){
-					drawWall("img/WallRight.gif", context2d, x, y);
+					drawWall("img/VerticalWall.gif", context2d, x * 97 + 87, y * 97);
 				}
 				if(square.isWallDown()){
-					drawWall("img/WallDown.gif", context2d, x, y);
+					drawWall("img/HorizontalWall.gif", context2d, x * 97, y * 97 + 87);
 				}
 				
 				if(square.getTargetNumber()!=null){
@@ -124,7 +124,7 @@ public class BoardPanel extends AbsolutePanel {
 			@Override
 			public void onImageLoaded(Image image) {
 				ImageElement imageEl = ImageElement.as(image.getElement());
-				context2d.drawImage(imageEl, x*97, y*97);
+				context2d.drawImage(imageEl, x, y);
 			}
 		});
 	}

@@ -1,6 +1,7 @@
 package com.mrprez.roborally.client.edit;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
@@ -39,7 +40,8 @@ public class ElementPanel extends StackLayoutPanel {
 		final FlowPanel commonSquarePanel = new FlowPanel();
 		add(commonSquarePanel, "Divers", 2.5);
 		final FlowPanel convoyerSquarePanel = new FlowPanel();
-		add(convoyerSquarePanel, "Convoyeur", 2.5);
+		add(convoyerSquarePanel, "Convoyeurs", 2.5);
+		add(buildWallPanel(), "Murs", 2.5);
 		add(buildTargetPanel(), "Parcours", 2.5);
 		add(buildCommandPanel(), "Commandes", 2.5);
 
@@ -100,6 +102,22 @@ public class ElementPanel extends StackLayoutPanel {
 		});
 
 		return commandPanel;
+	}
+
+	private FlowPanel buildWallPanel() {
+		final FlowPanel wallPanel = new FlowPanel();
+		List<String> wallImgUrlList = Arrays.asList("img/WallTop.gif", "img/WallDown.gif", "img/WallLeft.gif", "img/WallRight.gif");
+		for (final String wallImgUrl : wallImgUrlList) {
+			Image wallImg = new Image(wallImgUrl);
+			wallImg.addDragStartHandler(new DragStartHandler() {
+				@Override
+				public void onDragStart(DragStartEvent event) {
+					event.setData("wallImgUrl", wallImgUrl);
+				}
+			});
+			wallPanel.add(wallImg);
+		}
+		return wallPanel;
 	}
 
 
