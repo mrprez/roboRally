@@ -106,7 +106,7 @@ public class ElementPanel extends StackLayoutPanel {
 
 	private FlowPanel buildWallPanel() {
 		final FlowPanel wallPanel = new FlowPanel();
-		List<String> wallImgUrlList = Arrays.asList("img/WallTop.gif", "img/WallDown.gif", "img/WallLeft.gif", "img/WallRight.gif");
+		List<String> wallImgUrlList = Arrays.asList("img/VerticalWall.gif", "img/HorizontalWall.gif");
 		for (final String wallImgUrl : wallImgUrlList) {
 			Image wallImg = new Image(wallImgUrl);
 			wallImg.addDragStartHandler(new DragStartHandler() {

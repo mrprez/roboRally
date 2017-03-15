@@ -212,9 +212,28 @@
 	top: 0;
 }
 
-.editTable .wallImage {
+.editTable .wallTop {
 	position: absolute;
 	top: 0;
+	left: 0;
+}
+
+.editTable .wallLeft {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.editTable .wallRight {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+.editTable .wallBottom {
+	position: absolute;
+	bottom: 0;
+	left: 0;
 }
 
 .editTable .squareDiv {

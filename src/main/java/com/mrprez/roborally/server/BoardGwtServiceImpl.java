@@ -100,6 +100,10 @@ public class BoardGwtServiceImpl extends AbstractGwtService implements BoardGwtS
 			for (int x = 0; x < buildingBoardGwt.getSizeX(); x++) {
 				SquareGwt squareGwt = buildingBoardGwt.getSquare(x, y);
 				buildingBoard.getSquareTab()[x][y] = Square.buildSquare(squareGwt.getType(), buildingBoard, x, y, squareGwt.getArgs());
+				buildingBoard.getSquareTab()[x][y].setWall(Direction.DOWN, squareGwt.isWallDown());
+				buildingBoard.getSquareTab()[x][y].setWall(Direction.UP, squareGwt.isWallUp());
+				buildingBoard.getSquareTab()[x][y].setWall(Direction.LEFT, squareGwt.isWallLeft());
+				buildingBoard.getSquareTab()[x][y].setWall(Direction.RIGHT, squareGwt.isWallRight());
 				if (squareGwt.getTargetNumber() != null) {
 					while (buildingBoard.getTargetSquares().size() <= squareGwt.getTargetNumber()) {
 						buildingBoard.getTargetSquares().add(null);

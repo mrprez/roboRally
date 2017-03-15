@@ -93,10 +93,10 @@ public class BoardPanel extends AbsolutePanel {
 					drawWall("img/VerticalWall.gif", context2d, x * 97, y * 97);
 				}
 				if(square.isWallRight()){
-					drawWall("img/VerticalWall.gif", context2d, x * 97 + 87, y * 97);
+					drawWall("img/VerticalWall.gif", context2d, x * 97 + 90, y * 97);
 				}
 				if(square.isWallDown()){
-					drawWall("img/HorizontalWall.gif", context2d, x * 97, y * 97 + 87);
+					drawWall("img/HorizontalWall.gif", context2d, x * 97, y * 97 + 90);
 				}
 				
 				if(square.getTargetNumber()!=null){
