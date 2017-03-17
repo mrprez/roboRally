@@ -5,4 +5,4 @@ To launch se server, launch following maven commands:
 * To initialiase hsqldb database: mvn resources:copy-resources@reset-hsqldb
 * To launch tomcat server: mvn cargo:run
 
-Then go to loacalhost:8080/roboRally
+Then go to localhost:8080/roboRally
