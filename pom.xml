@@ -214,7 +214,7 @@
 						<properties>
 							<cargo.datasource.datasource.hsqldb>
 								cargo.datasource.driver=org.hsqldb.jdbc.JDBCDriver|
-								cargo.datasource.url=jdbc:hsqldb:file://${project.basedir}/sql/hsqldb/RoboRallyDB|
+								cargo.datasource.url=jdbc:hsqldb:file://${project.build.directory}/hsqldb/RoboRallyDB|
 								cargo.datasource.jndi=jdbc/RoboRallyDB|
 								cargo.datasource.username=admin|
 								cargo.datasource.password=hlttclm
@@ -238,6 +238,28 @@
 			</plugin>
 			
 			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.0.2</version>
+				<executions>
+					<execution>
+						<id>reset-hsqldb</id>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/hsqldb</outputDirectory>
+							<overwrite>true</overwrite>
+							<resources>
+								<resource>
+									<directory>sql/hsqldb</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>1.6.0</version>
@@ -250,6 +272,7 @@
 						<configuration>
 							<mainClass>org.hsqldb.util.DatabaseManagerSwing</mainClass>
 							<classpathScope>compile</classpathScope>
+							
 						</configuration>
 					</execution>
 				</executions>
