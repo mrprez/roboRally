@@ -20,6 +20,7 @@ import com.mrprez.roborally.shared.UserGwt;
 
 public class Login implements EntryPoint {
 	private Label errorLabel = new Label();
+	private Label titleLabel = new Label("Authentication");
 	private Label usernameLabel = new Label("Login:");
 	private Label passwordLabel = new Label("Mot de passe:");
 	private TextBox usernameTextBox = new TextBox();
@@ -31,14 +32,28 @@ public class Login implements EntryPoint {
 		VerticalPanel verticalPanel = new VerticalPanel();
 		verticalPanel.setStyleName("authenticationPanel");
 		RootPanel.get().add(verticalPanel);
+
+		verticalPanel.add(titleLabel);
+		titleLabel.addStyleName("title");
+
 		verticalPanel.add(errorLabel);
 		errorLabel.setVisible(false);
+
 		verticalPanel.add(usernameLabel);
+		usernameLabel.addStyleName("label");
+
 		verticalPanel.add(usernameTextBox);
+		usernameTextBox.addStyleName("field");
 		usernameTextBox.setFocus(true);
+
 		verticalPanel.add(passwordLabel);
+		passwordLabel.addStyleName("label");
+
 		verticalPanel.add(passwordTextBox);
+		passwordTextBox.addStyleName("field");
+
 		verticalPanel.add(validateButton);
+		validateButton.addStyleName("validateButton");
 		validateButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent arg0) {
